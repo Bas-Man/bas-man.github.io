@@ -2,3 +2,5 @@ name: Adam Spann, Part-time Dev
 markdown: kramdown
 
 permalink: /blog/:year/:month/:day/:title
+
+theme: jekyll-theme-cayman
