@@ -1,4 +1,4 @@
 theme: jekyll-theme-architect
-name: Adam Spann, Part-time Dev
+Title: Adam Spann, Part-time Dev
 markdown: kramdown
 permalink: /blog/:year/:month/:day/:title
