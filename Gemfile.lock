@@ -247,6 +247,7 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   jekyll-feed (~> 0.12)
+  jekyll-gist
   jekyll-redirect-from
   tzinfo (~> 1.2)
   tzinfo-data
