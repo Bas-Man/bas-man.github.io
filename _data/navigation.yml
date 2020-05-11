@@ -1,6 +1,5 @@
-- title: Home
-  url: /
-- title: About
-  url: /about/
-- title: Blog
-  link: /blog.html
+toc:
+  - title: Blog
+    url: /blog.html
+  - title: About
+    url: /about/
