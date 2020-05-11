@@ -18,7 +18,10 @@ I have been living and working in Tokyo for the past 18 years.
     - Automation
   - Reading Fantasy
     - Brandon Sanderson
-      - The Way of Kings
+      - Stormlight Archive
+      - The Wheel of Time
+    - Robert Jordan
+      - The Wheel of Time
     - David Gemmell
       - The Drenai Series
       - Jon Shannow Series
