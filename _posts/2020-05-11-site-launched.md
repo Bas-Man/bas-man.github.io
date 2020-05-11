@@ -2,6 +2,7 @@
 layout: post
 title: "Site Launch."
 date: 2020-05-11
+author: Adam Spann
 categories: Thoughts
 tags: [Thoughts, Introduction]
 ---
