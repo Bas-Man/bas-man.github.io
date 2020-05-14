@@ -16,6 +16,7 @@ I have been living and working in Tokyo for the past 18 years.
     - Perl
     - Python
     - Automation
+
   - Reading Fantasy
     - Brandon Sanderson
       - Stormlight Archive
