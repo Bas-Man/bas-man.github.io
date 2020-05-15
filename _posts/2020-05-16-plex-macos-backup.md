@@ -22,7 +22,6 @@ You will probably need to modify the following variables.
   - plexDatabase
   - plexPlistFile
   - backupDirectory
-  - plexBackupDirectory
 
 Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not
 complete if your machine can go to sleep. As it suggests use the 'caffinate' command to prevent
