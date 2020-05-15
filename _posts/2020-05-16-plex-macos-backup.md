@@ -24,7 +24,7 @@ You will probably need to modify the following variables.
   - backupDirectory
 
 Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not
-complete if your machine can go to sleep. As it suggests use the 'caffinate' command to prevent
+complete if your machine can go to sleep. As it suggests use the 'caffeinate' command to prevent
 your machine from sleeping during backup. It will be able to sleep after the script completes.
 
 Don't forget to give the script execution permission using 'chmod +x scriptname'
