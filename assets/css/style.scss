@@ -2,13 +2,25 @@
 ---
 @import "{{ site.theme }}";
 
+/* Widen header text on full screen browsers */
 header h2 {
   width: 1040px;
 line-height: 1.3;
 }
+
+/* widen main content on full screen browsers */
 #main-content {
   width: 850px;
 }
+
+/* Move right side bar more to the right on full screen browers */
 aside#sidebar {
   width: 30px;
+}
+
+/* Undo header widening on small device screens */
+@media only screen and (max-width: 767px) {
+  header h2 {
+    width: 540px;
+  }
 }
