@@ -37,6 +37,10 @@ for the future.
     004
     ```
       Reference: [Stack Overflow](https://stackoverflow.com/questions/339007/how-to-pad-zeroes-to-a-string)
+
+  - Mock Python Version for testing.
+    {% gist bd3425dd09585398da7e7970f62b67e7 %}
+    
 ### Modules
   - [Pendulm](https://pendulum.eustace.io)
     An alternative to the datetime module
