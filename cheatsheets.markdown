@@ -13,3 +13,23 @@ for the future.
 
 ## JavaScript / Clasp
   - [Clasp - youtube](https://www.youtube.com/watch?v=V_7kvwcZf_c)
+
+## Python
+  - [Excel Spreadsheet](https://www.marsja.se/your-guide-to-reading-excel-xlsx-files-in-python/?amp)
+  - Padding Strings
+      ```py
+      >>> n = 4
+      >>> print(f'{n:03}') # Preferred method, python >= 3.6
+      004
+      >>> print('%03d' % n)
+      004
+      >>> print(format(n, '03')) # python >= 2.6
+      004
+      >>> print('{0:03d}'.format(n))  # python >= 2.6 + python 3
+      004
+      >>> print('{foo:03d}'.format(foo=n))  # python >= 2.6 + python 3
+      004
+      >>> print('{:03d}'.format(n))  # python >= 2.7 + python3
+      004
+      ```
+      Reference: [StackOverflow](https://stackoverflow.com/questions/339007/how-to-pad-zeroes-to-a-string)

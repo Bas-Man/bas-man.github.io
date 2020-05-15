@@ -1,0 +1,14 @@
+---
+---
+@import "{{ site.theme }}";
+
+header h2 {
+  width: 1040px;
+line-height: 1.3;
+}
+#main-content {
+  width: 850px;
+}
+aside#sidebar {
+  width: 30px;
+}

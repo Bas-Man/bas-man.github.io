@@ -3,8 +3,8 @@ layout: post
 title:  "Delay Services launch until external drive mount is complete."
 date:   2020-05-14 14:30:00 +0900
 author: Adam Spann
-categories: [Coding, AppleScript]
-tags: [AppleScript, Mac Mini]
+categories: [Coding, AppleScript, Automation]
+tags: [AppleScript, Mac Mini, Automation]
 ---
 
 ## The Challenge:

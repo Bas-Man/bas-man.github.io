@@ -1,6 +1,11 @@
 toc:
   - title: Blog
     url: /blog.html
+    subfolderitems:
+      - page: Categories
+        url: /categories/
+      - page: Tags
+        url: /tags/
   - title: Cheatsheets
     url: /cheatsheets/
   - title: About
