@@ -18,6 +18,9 @@ for the future.
 
 ### Guides:
   - [Excel Spreadsheet](https://www.marsja.se/your-guide-to-reading-excel-xlsx-files-in-python/?amp)
+  - [Schedule Posts in Jekyll](https://alxmjo.com/2017/05/30/how-to-schedule-posts-with-jekyll/)
+  - [Deprecating a Package](https://www.dampfkraft.com/code/how-to-deprecate-a-pypi-package.html) Reference: [Pycoder's Weekly](https://pycoders.com/issues/421)
+  - [Untangling Decorators](https://rednafi.github.io/digressions/python/2020/05/13/python-decorators.html)
 
 ### Code Snipets:
   - Padding Numbers
@@ -40,11 +43,11 @@ for the future.
 
   - Mock Python Version for testing.
     {% gist bd3425dd09585398da7e7970f62b67e7 %}
-    
+
 ### Modules
   - [Pendulm](https://pendulum.eustace.io)
     An alternative to the datetime module
   - [pyfakefs](https://pypi.org/project/pyfakefs/)
     Mock your file system calls.
   - [inflect](https://pypi.org/project/inflect/)
-    automatically plurual words
+    Automatically plurualise words
