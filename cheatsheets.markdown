@@ -25,6 +25,10 @@ for the future.
 ### Sphinx
     - [Don't be afraid to commit](https://dont-be-afraid-to-commit.readthedocs.io/en/latest/prerequisites.html)
     - [Getting started with Sphinx](https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html)
+### LaTeX
+    - [Writing Japanese with LaTeX Part 1](https://www.preining.info/blog/2014/12/writing-japanese-in-latex-part-1-introduction/)
+    - [Writing Japese with LaTex Part 2](https://www.preining.info/blog/2014/12/writing-japanese-in-latex-part-2-characters-and-encodings/)
+    - [Writing Japanese with LaTeX Part 3](https://www.preining.info/blog/2014/12/writing-japanese-in-latex-part-3-simple-documents/)
 
 ### Code Snipets:
   - Padding Numbers
@@ -49,9 +53,12 @@ for the future.
     {% gist bd3425dd09585398da7e7970f62b67e7 %}
 
 ### Modules
+This is a list of modules that I am interested in using.
   - [Pendulm](https://pendulum.eustace.io)
     An alternative to the datetime module
   - [pyfakefs](https://pypi.org/project/pyfakefs/)
     Mock your file system calls.
   - [inflect](https://pypi.org/project/inflect/)
     Automatically plurualise words
+  - [Deprecated](https://pypi.org/project/Deprecated/)
+    Deprecate code in Python.
