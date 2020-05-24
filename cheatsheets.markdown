@@ -39,7 +39,7 @@ for the future.
   - [Learning Rust: Github](https://learning-rust.github.io)
   - [Tour of Rust](https://tourofrust.com)
 
-### Modules
+## Modules
 This is a list of modules that I am interested in using.
   - [Pendulm](https://pendulum.eustace.io)
     An alternative to the datetime module
