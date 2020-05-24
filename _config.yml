@@ -35,6 +35,7 @@ plugins:
   - jekyll-feed
   - jekyll-redirect-from
   - jekyll-gist
+  - jekyll-sitemap
 
 feed_items: 10
 feed_update_period: daily
