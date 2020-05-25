@@ -23,6 +23,11 @@ for the future.
   - [Untangling Decorators](https://rednafi.github.io/digressions/python/2020/05/13/python-decorators.html)
   - [Google Script](https://medium.com/@jsarafajr/google-apps-script-without-pain-or-success-story-of-atlassian-cloud-for-gmail-6cd99ba40de0)
 
+### CI:
+  - [CI: Hitchhicker's guide to Python](https://docs.python-guide.org/scenarios/ci/)
+  - [CircleCi](https://circleci.com/signup/)
+  - [Travis CI](https://travis-ci.com)
+
 ### Sphinx:
   - [Don't be afraid to commit](https://dont-be-afraid-to-commit.readthedocs.io/en/latest/prerequisites.html)
   - [Getting started with Sphinx](https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html)
