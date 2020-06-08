@@ -22,6 +22,7 @@ for the future.
   - [Deprecating a Package](https://www.dampfkraft.com/code/how-to-deprecate-a-pypi-package.html) Reference: [Pycoder's Weekly](https://pycoders.com/issues/421)
   - [Untangling Decorators](https://rednafi.github.io/digressions/python/2020/05/13/python-decorators.html)
   - [Google Script](https://medium.com/@jsarafajr/google-apps-script-without-pain-or-success-story-of-atlassian-cloud-for-gmail-6cd99ba40de0)
+  - [Python Tips](https://book.pythontips.com/en/latest/)
 
 ### CI:
   - [CI: Hitchhicker's guide to Python](https://docs.python-guide.org/scenarios/ci/)
@@ -43,6 +44,9 @@ for the future.
   - [Learn Rust](https://hackr.io/tutorials/learn-rust)
   - [Learning Rust: Github](https://learning-rust.github.io)
   - [Tour of Rust](https://tourofrust.com)
+
+### Generic:
+  - [Code Pull Request Reviews](https://dev.to/mjuraj/i-made-over-1-000-code-reviews-this-is-what-i-learned-4e9e?utm_source=digest_mailer&utm_medium=email&utm_campaign=digest_email)
 
 ## Modules
 This is a list of modules that I am interested in using.
