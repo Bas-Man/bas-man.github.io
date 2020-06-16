@@ -23,6 +23,8 @@ for the future.
   - [Untangling Decorators](https://rednafi.github.io/digressions/python/2020/05/13/python-decorators.html)
   - [Google Script](https://medium.com/@jsarafajr/google-apps-script-without-pain-or-success-story-of-atlassian-cloud-for-gmail-6cd99ba40de0)
   - [Python Tips](https://book.pythontips.com/en/latest/)
+  - [Martin Heinz](https://martinheinz.dev)
+    - [Ultimate Python Setup](https://martinheinz.dev/blog/14)
 
 ### CI:
   - [CI: Hitchhicker's guide to Python](https://docs.python-guide.org/scenarios/ci/)
