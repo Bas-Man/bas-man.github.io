@@ -8,6 +8,9 @@ toc:
         url: /tags/
   - title: Cheatsheets
     url: /cheatsheets/
+    subfolderitems:
+      - page: Python
+        url: /cheatsheets/python/
   - title: Code Snipets
     url: /codesnipets/
   - title: About
