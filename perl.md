@@ -4,9 +4,10 @@ title: Cheat Sheets&#58; Perl
 permalink: /cheatsheets/perl/
 ---
 
-## Sites:
-  - [Perl.com](https://perl.com)
-  - [Perl.org](https://perl.org)
+# Perl
 
-## Articles
-  - [Creating IP address tools from scratch](https://www.perl.com/article/creating-ip-address-tools-from-scratch/)
+## Sites:
+{% include_relative perl/sites %}
+
+## Articles:
+{% include_relative perl/articles %}

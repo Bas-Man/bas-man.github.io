@@ -4,6 +4,6 @@ title: Cheat Sheets&#58; Python
 permalink: /cheatsheets/python/
 ---
 
-{% include_relative python.links %}
+{% include_relative python/links %}
 
-{% include_relative python.modules %}
+{% include_relative python/modules %}
