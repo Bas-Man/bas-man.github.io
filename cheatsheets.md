@@ -16,7 +16,11 @@ for the future.
 
 ## Guides
 
-### [Python & Modules]({% link python.markdown %})
+{% include_relative python.links %}
+
+{% include_relative python.modules %}
+
+### [Perl]({% link perl.md %})
 
 ### CI:
   - [CI: Hitchhicker's guide to Python](https://docs.python-guide.org/scenarios/ci/)

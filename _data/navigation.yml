@@ -11,6 +11,8 @@ toc:
     subfolderitems:
       - page: Python
         url: /cheatsheets/python/
+      - page: Perl
+        url: /cheatsheets/perl/
   - title: Code Snipets
     url: /codesnipets/
   - title: About
