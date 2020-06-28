@@ -8,3 +8,5 @@ This is a list of modules that I am interested in using.
     Automatically plurualise words
   - [Deprecated](https://pypi.org/project/Deprecated/)
     Deprecate code in Python.
+  - [netaddr](https://pypi.org/project/netaddr/)
+    Layer 3 handling for IP Addresses
