@@ -10,6 +10,9 @@ for the future.
 
 ## Ansible
 
+### sites
+{% include_relative ansible/sites %}
+### Articles
 {% include_relative ansible/articles %}
 
 ## Jekyll
