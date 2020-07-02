@@ -8,6 +8,10 @@ permalink: /cheatsheets/
 This is just my personal reference for things that I might use or find interesting
 for the future.
 
+## Ansible
+
+{% include_relative ansible/articles %}
+
 ## Jekyll
   - [Jekyll Categories](https://blog.webjeda.com/jekyll-categories/)
 
