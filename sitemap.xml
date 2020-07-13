@@ -3,249 +3,253 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://bas-man.github.io/</loc>
-    <lastmod>2020-07-10T22:22:41+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://bas-man.github.io/python/modules/</loc>
-    <lastmod>2020-07-10T22:22:41+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://bas-man.github.io/python/</loc>
-    <lastmod>2020-07-10T22:22:41+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/privacy/</loc>
-    <lastmod>2020-07-10T10:13:25+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/cheatsheets/</loc>
-    <lastmod>2020-07-10T00:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/git/articles/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/perl/articles/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/python/articles/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://bas-man.github.io/git/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://bas-man.github.io/perl/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/perl/sites/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/about/</loc>
-    <lastmod>2020-07-07T23:55:00+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://bas-man.github.io/post/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/automation/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/post/plex-macos-backup/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/backup/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/bash/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/bash/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/coding/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/mac-os/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/plex/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/</loc>
-    <lastmod>2020-05-16T12:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/applescript/</loc>
-    <lastmod>2020-05-14T14:30:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/applescript/</loc>
-    <lastmod>2020-05-14T14:30:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/automation/</loc>
-    <lastmod>2020-05-14T14:30:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/post/startup-apple-script/</loc>
-    <lastmod>2020-05-14T14:30:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/mac-mini/</loc>
-    <lastmod>2020-05-14T14:30:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/introduction/</loc>
-    <lastmod>2020-05-11T00:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/post/site-launched/</loc>
-    <lastmod>2020-05-11T00:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/tags/thoughts/</loc>
-    <lastmod>2020-05-11T00:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/categories/thoughts/</loc>
-    <lastmod>2020-05-11T00:00:00+09:00</lastmod>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/ansible/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/ansible/articles/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://bas-man.github.io/post/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://bas-man.github.io/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://bas-man.github.io/git/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/javascript/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://bas-man.github.io/perl/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://bas-man.github.io/python/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://bas-man.github.io/ansible/sites/</loc>
+    <lastmod>2020-07-12T22:41:32+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
