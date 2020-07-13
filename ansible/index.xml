@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ansible on Bas-Man&#39;s Ponderings</title>
+    <link>https://bas-man.github.io/ansible/</link>
+    <description>Recent content in Ansible on Bas-Man&#39;s Ponderings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://bas-man.github.io/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Articles</title>
+      <link>https://bas-man.github.io/ansible/articles/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://bas-man.github.io/ansible/articles/</guid>
+      <description> Installing Ansible / Raspberry Pi Setting up SSH Looking at basic security  </description>
+    </item>
+    
+    <item>
+      <title>Sites</title>
+      <link>https://bas-man.github.io/ansible/sites/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://bas-man.github.io/ansible/sites/</guid>
+      <description> Galaxy Ansible  Geerlingguy    </description>
+    </item>
+    
+  </channel>
+</rss>
