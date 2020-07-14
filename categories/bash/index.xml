@@ -1,29 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Bash on Bas-Man&#39;s Ponderings</title>
-    <link>https://bas-man.github.io/categories/bash/</link>
-    <description>Recent content in Bash on Bas-Man&#39;s Ponderings</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 16 May 2020 12:00:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://bas-man.github.io/categories/bash/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Back up your Plex Media Server on Mac OS</title>
-      <link>https://bas-man.github.io/post/plex-macos-backup/</link>
-      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
-      
-      <guid>https://bas-man.github.io/post/plex-macos-backup/</guid>
-      <description>The Challenge: How to automate the backing up of my Plex Media Server
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bash on Bas-Man's Ponderings</title><link>https://bas-man.github.io/categories/bash/</link><description>Recent content in Bash on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 16 May 2020 12:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Back up your Plex Media Server on Mac OS</title><link>https://bas-man.github.io/post/plex-macos-backup/</link><pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/plex-macos-backup/</guid><description>The Challenge: How to automate the backing up of my Plex Media Server
 Solution: A Bash Script
 I wanted to automate this process. If I didn&amp;rsquo;t, it probably wouldn&amp;rsquo;t get done.
 This script was adapted from another GitHub Gist that I found here.
- You will probably need to modify the following variables.
- plexDatabase plexPlistFile backupDirectory  Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not complete if your machine can go to sleep.</description>
-    </item>
-    
-  </channel>
-</rss>
+You will probably need to modify the following variables.
+plexDatabase plexPlistFile backupDirectory Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not complete if your machine can go to sleep.</description></item></channel></rss>
