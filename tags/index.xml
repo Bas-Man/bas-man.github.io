@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Bas-Man&#39;s Ponderings</title>
+    <link>https://bas-man.github.io/tags/</link>
+    <description>Recent content in Tags on Bas-Man&#39;s Ponderings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 16 May 2020 12:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://bas-man.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Automation</title>
+      <link>https://bas-man.github.io/tags/automation/</link>
+      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/automation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Backup</title>
+      <link>https://bas-man.github.io/tags/backup/</link>
+      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/backup/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bash</title>
+      <link>https://bas-man.github.io/tags/bash/</link>
+      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mac OS</title>
+      <link>https://bas-man.github.io/tags/mac-os/</link>
+      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/mac-os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Plex</title>
+      <link>https://bas-man.github.io/tags/plex/</link>
+      <pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/plex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AppleScript</title>
+      <link>https://bas-man.github.io/tags/applescript/</link>
+      <pubDate>Thu, 14 May 2020 14:30:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/applescript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mac Mini</title>
+      <link>https://bas-man.github.io/tags/mac-mini/</link>
+      <pubDate>Thu, 14 May 2020 14:30:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/mac-mini/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Introduction</title>
+      <link>https://bas-man.github.io/tags/introduction/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/introduction/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Thoughts</title>
+      <link>https://bas-man.github.io/tags/thoughts/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/thoughts/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
