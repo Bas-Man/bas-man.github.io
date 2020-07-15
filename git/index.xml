@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on Bas-Man's Ponderings</title><link>https://bas-man.github.io/git/</link><description>Recent content in Git on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://bas-man.github.io/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Articles</title><link>https://bas-man.github.io/git/articles/</link><pubDate>Tue, 07 Jul 2020 23:55:00 +0900</pubDate><guid>https://bas-man.github.io/git/articles/</guid><description> Private Git server</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Bas-Man&#39;s Ponderings</title>
+    <link>https://bas-man.github.io/git/</link>
+    <description>Recent content in Git on Bas-Man&#39;s Ponderings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://bas-man.github.io/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Articles</title>
+      <link>https://bas-man.github.io/git/articles/</link>
+      <pubDate>Tue, 07 Jul 2020 23:55:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/git/articles/</guid>
+      <description> Private Git server  </description>
+    </item>
+    
+  </channel>
+</rss>
