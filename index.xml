@@ -11,6 +11,18 @@
     
     
     <item>
+      <title>Add a cookie warning notice to a Hugo powered site.</title>
+      <link>https://bas-man.github.io/post/add-cookie-warning/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/post/add-cookie-warning/</guid>
+      <description>The Challenge How to add a cookie warning notice to a hugo powered website. But also avoid using a third party service.
+The Solution Build your own. Well, find someone who built one and shared it on youtube and github.
+Disclaimer: This does not constitute any form of legal advice. Use at your own risk.
+Of course if anyone has a better, more complete solution. I would really like hear from you.</description>
+    </item>
+    
+    <item>
       <title>Modules</title>
       <link>https://bas-man.github.io/python/modules/</link>
       <pubDate>Fri, 10 Jul 2020 22:22:41 +0900</pubDate>

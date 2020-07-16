@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Bas-Man&#39;s Ponderings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 16 May 2020 12:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2020 00:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://bas-man.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cookies</title>
+      <link>https://bas-man.github.io/tags/cookies/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/cookies/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CSS</title>
+      <link>https://bas-man.github.io/tags/css/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>HTML</title>
+      <link>https://bas-man.github.io/tags/html/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>https://bas-man.github.io/tags/hugo/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>https://bas-man.github.io/tags/javascript/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/tags/javascript/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Automation</title>
