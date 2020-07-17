@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on Bas-Man's Ponderings</title><link>https://bas-man.github.io/tags/hugo/</link><description>Recent content in Hugo on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Jul 2020 00:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>Add a cookie warning notice to a Hugo powered site.</title><link>https://bas-man.github.io/post/add-cookie-warning/</link><pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/add-cookie-warning/</guid><description>The Challenge How to add a cookie warning notice to a hugo powered website. But also avoid using a third party service.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on Bas-Man&#39;s Ponderings</title>
+    <link>https://bas-man.github.io/tags/hugo/</link>
+    <description>Recent content in Hugo on Bas-Man&#39;s Ponderings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Jul 2020 00:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://bas-man.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Add a cookie warning notice to a Hugo powered site.</title>
+      <link>https://bas-man.github.io/post/add-cookie-warning/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate>
+      
+      <guid>https://bas-man.github.io/post/add-cookie-warning/</guid>
+      <description>The Challenge How to add a cookie warning notice to a hugo powered website. But also avoid using a third party service.
 The Solution Build your own. Well, find someone who built one and shared it on youtube and github.
 Disclaimer: This does not constitute any form of legal advice. Use at your own risk.
-Of course if anyone has a better, more complete solution. I would really like hear from you.</description></item></channel></rss>
+Of course if anyone has a better, more complete solution. I would really like hear from you.</description>
+    </item>
+    
+  </channel>
+</rss>
