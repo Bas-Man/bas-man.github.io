@@ -2,4 +2,4 @@
 Source
 Required imports:
 pip install pillow pip install qrcode Code Sample:
-import qrcode # Link for website input_data = &amp;#34;https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127&amp;#34; #Creating an instance of qrcode qr = qrcode.QRCode( version=1, box_size=10, border=5) qr.add_data(input_data) qr.make(fit=True) img = qr.make_image(fill=&amp;#39;black&amp;#39;, back_color=&amp;#39;white&amp;#39;) img.save(&amp;#39;qrcode001.png&amp;#39;)</description></item></channel></rss>
+import qrcode # Link for website input_data = &amp;#34;https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127&amp;#34; # Creating an instance of qrcode qr = qrcode.QRCode( version=1, box_size=10, border=5) qr.add_data(input_data) qr.make(fit=True) img = qr.make_image(fill=&amp;#39;black&amp;#39;, back_color=&amp;#39;white&amp;#39;) img.save(&amp;#39;qrcode001.png&amp;#39;)</description></item></channel></rss>
