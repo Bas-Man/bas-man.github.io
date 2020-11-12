@@ -25,7 +25,7 @@ apt install pi-bluetooth
 sudo apt-key add mosquitto-repo.gpg.key
 </code></pre></div><p>If you are running Sketch</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
 </code></pre></div><p>If you are running Buster</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wget http://repo.mosquitto.org/debian/mosquitto-buster.list
-</code></pre></div><p>then</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt-get updated
+</code></pre></div><p>then</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt-get update
 </code></pre></div><p>If you have any issues. Take a look at <strong>The Level 1 Way</strong> guide listed below. You may need to install some additional packages.</p><h5 id=setup-monitor>Setup Monitor</h5><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>pi@raspberrypi:~ $ git clone https://github.com/andrewjfreyer/monitor.git
 pi@raspberrypi:~ $ cd monitor/
 pi@raspberrypi:~/monitor $ chmod +x ./monitor.sh
