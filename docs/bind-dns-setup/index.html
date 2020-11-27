@@ -1,0 +1,300 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Bind DNS Setup | Bas-Man's Ponderings</title><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=generator content="Hugo 0.78.2"><meta name=ROBOTS content="INDEX, FOLLOW"><link href=/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css rel=stylesheet><link rel=stylesheet href=/css/custom.css><link rel=stylesheet href=/css/cookie.css><link rel="shortcut icon" href=/images/favicons/favico.ico type=image/x-icon><meta property="og:title" content="Bind DNS Setup"><meta property="og:description" content="A guide on setting up a caching and authoritative name server."><meta property="og:type" content="article"><meta property="og:url" content="https://bas-man.github.io/docs/bind-dns-setup/"><meta property="article:published_time" content="2020-11-27T17:30:00+09:00"><meta property="article:modified_time" content="2020-11-27T17:30:00+09:00"><meta itemprop=name content="Bind DNS Setup"><meta itemprop=description content="A guide on setting up a caching and authoritative name server."><meta itemprop=datePublished content="2020-11-27T17:30:00+09:00"><meta itemprop=dateModified content="2020-11-27T17:30:00+09:00"><meta itemprop=wordCount content="3169"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Bind DNS Setup"><meta name=twitter:description content="A guide on setting up a caching and authoritative name server."><script type=application/javascript>var dnt=(navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack);var doNotTrack=(dnt=="1"||dnt=="yes");if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;if(window.sessionStorage){var GA_SESSION_STORAGE_KEY='ga:clientId';ga('create','UA-166598762-1',{'storage':'none','clientId':sessionStorage.getItem(GA_SESSION_STORAGE_KEY)});ga(function(tracker){sessionStorage.setItem(GA_SESSION_STORAGE_KEY,tracker.get('clientId'));});}
+ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body class="ma0 avenir bg-near-white"><header><div class=bg-black><nav class="pv3 ph3 ph4-ns" role=navigation><div class="flex-l justify-between items-center center"><a href=/ class="f3 fw2 hover-white no-underline white-90 dib">Bas-Man's Ponderings</a><div class="flex-l items-center"><ul class="pl0 mr3"><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/ title="Home page">Home</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/post/ title="Blog page">Blog</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/projects/ title="Projects page">Projects</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/cheatsheets/ title="Cheat Sheets page">Cheat Sheets</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/docs/ title="Documentation page">Documentation</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/about/ title="About page">About</a></li></ul><a href=https://www.github.com/Bas-Man target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel=noopener aria-label="follow on Github——Opens in a new window"><svg height="32" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M256 32C132.3 32 32 134.8 32 261.7c0 101.5 64.2 187.5 153.2 217.9 11.2 2.1 15.3-5 15.3-11.1.0-5.5-.2-19.9-.3-39.1-62.3 13.9-75.5-30.8-75.5-30.8-10.2-26.5-24.9-33.6-24.9-33.6-20.3-14.3 1.5-14 1.5-14 22.5 1.6 34.3 23.7 34.3 23.7 20 35.1 52.4 25 65.2 19.1 2-14.8 7.8-25 14.2-30.7-49.7-5.8-102-25.5-102-113.5.0-25.1 8.7-45.6 23-61.6-2.3-5.8-10-29.2 2.2-60.8.0.0 18.8-6.2 61.6 23.5 17.9-5.1 37-7.6 56.1-7.7 19 .1 38.2 2.6 56.1 7.7 42.8-29.7 61.5-23.5 61.5-23.5 12.2 31.6 4.5 55 2.2 60.8 14.3 16.1 23 36.6 23 61.6.0 88.2-52.4 107.6-102.3 113.3 8 7.1 15.2 21.1 15.2 42.5.0 30.7-.3 55.5-.3 63 0 6.1 4 13.3 15.4 11C415.9 449.1 480 363.1 480 261.7 480 134.8 379.7 32 256 32z"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a><a href=https://dev.to/basman target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Dev-To link" rel=noopener aria-label="follow on Dev.to——Opens in a new window"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 24 24" style="-ms-transform:rotate(360deg);-webkit-transform:rotate(360deg);transform:rotate(360deg)"><path d="M7.73 11.93c0 1.72-.02 1.83-.23 2.07-.19.17-.38.23-.76.23l-.51.01-.03-2.27-.02-2.27h.52c.35.0.6.07.77.21.24.21.26.25.26 2.02M22 7.5v9c0 1.11-.89 2-2 2H4c-1.11.0-2-.89-2-2v-9c0-1.11.89-2 2-2h16c1.11.0 2 .89 2 2M8.93 11.73c-.03-1.84-.05-1.99-.29-2.39-.4-.68-.85-.84-2.36-.84H5v7h1.21c1.33.0 1.89-.17 2.29-.71.41-.53.5-.98.43-3.06m4.19-3.23h-1.48c-1.49.0-1.5.0-1.71.28S9.7 9.21 9.7 12v2.96l.27.27c.25.27.31.27 1.71.27h1.44v-1.19l-1.09-.04-1.1-.03V12.6l.68-.03.66-.04v-1.19h-1.39V9.7h2.24V8.5m5.88.06c0-.06-.3-.06-.66-.06l-.68.06-.59 2.35c-.38 1.48-.62 2.27-.67 2.13-.08-.27-1.14-4.44-1.14-4.49.0-.05-.31-.05-.68-.05h-.69l.41 1.55c.2.87.59 2.28.81 3.15.34 1.35.46 1.65.75 1.94.2.22.45.36.61.36.33.0.76-.34.9-.73C17.5 14.5 19 8.69 19 8.56z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a><a href="https://flipboard.com/@baspann/coding-kq8v8rh8z?from=share" target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Flipboard link" rel=noopener aria-label="follow on Dev.to——Opens in a new window"><!doctype html><svg height="32" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="_x31_31-flipboard"><g><g><path d="M26.002 26.001v459.998h459.996V26.001H26.002zm367.997 184H302V302h-92v92.001h-92V118.002h275.999V210.001z" style="fill:#f22c31"/></g></g></g><g id="Layer_1"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a></div></div></nav></div></header><main class=pb7 role=main><article class="flex-l flex-wrap justify-between mw8 center ph3"><header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked">DOCUMENTATION</aside><div id=sharing class=mt3><a href="https://www.facebook.com/sharer.php?u=https://bas-man.github.io/docs/bind-dns-setup/" class="facebook no-underline" aria-label="share on Facebook"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765 50.32h6.744V33.998h4.499l.596-5.624h-5.095l.007-2.816c0-1.466.14-2.253 2.244-2.253h2.812V17.68h-4.5c-5.405.0-7.307 2.729-7.307 7.317v3.377h-3.369v5.625h3.369V50.32zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd"/></svg></a><a href="https://twitter.com/share?url=https://bas-man.github.io/docs/bind-dns-setup/&text=Bind%20DNS%20Setup" class="twitter no-underline" aria-label="share on Twitter"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167 22.283c-2.619.953-4.274 3.411-4.086 6.101l.063 1.038-1.048-.127c-3.813-.487-7.145-2.139-9.974-4.915l-1.383-1.377-.356 1.017c-.754 2.267-.272 4.661 1.299 6.271.838.89.649 1.017-.796.487-.503-.169-.943-.296-.985-.233-.146.149.356 2.076.754 2.839.545 1.06 1.655 2.097 2.871 2.712l1.027.487-1.215.021c-1.173.0-1.215.021-1.089.467.419 1.377 2.074 2.839 3.918 3.475l1.299.444-1.131.678c-1.676.976-3.646 1.526-5.616 1.568C19.775 43.256 19 43.341 19 43.405c0 .211 2.557 1.397 4.044 1.864 4.463 1.377 9.765.783 13.746-1.568 2.829-1.673 5.657-5 6.978-8.221.713-1.716 1.425-4.851 1.425-6.354.0-.975.063-1.102 1.236-2.267.692-.678 1.341-1.419 1.467-1.631.21-.403.188-.403-.88-.043-1.781.636-2.033.551-1.152-.402.649-.678 1.425-1.907 1.425-2.267.0-.063-.314.042-.671.233-.377.212-1.215.53-1.844.72l-1.131.361-1.027-.7c-.566-.381-1.361-.805-1.781-.932C39.766 21.902 38.131 21.944 37.167 22.283zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bas-man.github.io/docs/bind-dns-setup/&title=Bind%20DNS%20Setup" class="linkedin no-underline" aria-label="share on LinkedIn"><svg height="32" style="enable-background:new 0 0 65 65" viewBox="0 0 65 65" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M50.837 48.137V36.425c0-6.275-3.35-9.195-7.816-9.195-3.604.0-5.219 1.983-6.119 3.374V27.71h-6.79c.09 1.917.0 20.427.0 20.427h6.79V36.729c0-.609.044-1.219.224-1.655.49-1.22 1.607-2.483 3.482-2.483 2.458.0 3.44 1.873 3.44 4.618v10.929H50.837zM22.959 24.922c2.367.0 3.842-1.57 3.842-3.531-.044-2.003-1.475-3.528-3.797-3.528s-3.841 1.524-3.841 3.528c0 1.961 1.474 3.531 3.753 3.531H22.959zM34 64C17.432 64 4 50.568 4 34 4 17.431 17.432 4 34 4s30 13.431 30 30C64 50.568 50.568 64 34 64zM26.354 48.137V27.71h-6.789v20.427H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a></div><h1 class="f1 athelas mt3 mb1">Bind DNS Setup</h1><time class="f6 mv4 dib tracked" datetime=2020-11-27T17:30:00+09:00>&nbsp;November 27, 2020<br></time></header><div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=warning>Warning!</h2><p>This guide is only intended for those that plan to use these servers within their own networks running behind a NAT router. Or with the service only available on the internal interfaces. This configure is not intended on WAN (Wide Area Network) interfaces.
+This is written for myself. And if you are looking for a DNS guide. You might consider looking at the guides I list in the references section.</p><h3 id=installation>Installation:</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>  apt update <span style=color:#f92672>&amp;&amp;</span> apt upgrade
+  apt install bind9 dnsutils
+</code></pre></div><p>This will update the the server so that we have the latest patched modules and libraries and then install Bind9.</p><h3 id=configuration>Configuration.</h3><h4 id=some-assumptions>Some Assumptions.</h4><p>Whilst assumptions are the mother of all hiccups. I will make a few.</p><ul><li>You have not set up Bind previously.</li><li>Your network address space is 192.168.11.0/24</li><li>You have chosen two servers for your DNS services.<ul><li>192.168.11.10 (Primary)</li><li>192.168.11.20 (Secondary)</li></ul></li><li>Please change these in your setting to match your own network.</li></ul><h4 id=toolscommands-that-we-will-be-using>Tools/commands that we will be using:</h4><ul><li>dig</li><li>nslookup (alternative to dig)</li><li>named-checkconf</li><li>named-checkzone</li><li>systemd-resolve &ndash;status</li></ul><h4 id=important-files>Important files</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>  /etc/default/bind9
+  /etc/bind/*
+</code></pre></div><p><strong>/etc/default/bind9</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># run resolvconf?</span>
+RESOLVCONF<span style=color:#f92672>=</span>no
+
+<span style=color:#75715e># startup options for the server</span>
+OPTIONS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;-u bind&#34;</span>
+
+</code></pre></div><p>This file is where we can set additional options which are passed to bind on startup. We can specify if our network is IP4 only and if we want to run the service chrooted. I will not go into that here. I am assuming that the DNS server will only be used internally behind a NAT router and not exposed to the internet. Thus additional security is not required.</p><h4 id=etcbind>/etc/bind/</h4><p><strong>named.conf</strong>
+This is the main configuration file. We can break this into multiple files which can be included in <strong>named.conf</strong> by using the <strong>include</strong> directive.</p><p>Let&rsquo;s start by creating a file that will contain our ACLs (Access Control List) and add the following contents.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>vi named.conf.acl
+</code></pre></div><p>Then add the following contents. This will be used to allow DNS to make external lookups for the address ranges specified. This is very important if your DNS server is exposed on the internet. Not really needed if it is not exposed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>acl <span style=color:#e6db74>&#34;internal&#34;</span> <span style=color:#f92672>{</span>
+	192.168.11.0/24; <span style=color:#75715e># Local Area Network.</span>
+	127.0.0.1; <span style=color:#75715e># Localhost</span>
+<span style=color:#f92672>}</span>;
+
+</code></pre></div><p>Next we want to add this to our <strong>named.conf</strong> file.
+Let&rsquo;s add this to the top of the file.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>include <span style=color:#e6db74>&#34;/etc/bind/named.conf.acl&#34;</span>;
+</code></pre></div><p><strong>named.conf</strong> will now load this information as part of its configuration.</p><p>The <strong>named.conf</strong> file should now look something like this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>// This is the primary configuration file <span style=color:#66d9ef>for</span> the BIND DNS server named.
+//
+// Please read /usr/share/doc/bind9/README.Debian.gz <span style=color:#66d9ef>for</span> information on the
+// structure of BIND configuration files in Debian, *BEFORE* you customize
+// this configuration file.
+//
+// If you are just adding zones, please <span style=color:#66d9ef>do</span> that in /etc/bind/named.conf.local
+
+include <span style=color:#e6db74>&#34;/etc/bind/named.conf.acl&#34;</span>;
+
+include <span style=color:#e6db74>&#34;/etc/bind/named.conf.options&#34;</span>;
+include <span style=color:#e6db74>&#34;/etc/bind/named.conf.local&#34;</span>;
+include <span style=color:#e6db74>&#34;/etc/bind/named.conf.default-zones&#34;</span>;
+</code></pre></div><p>There is no more work to be done with the <strong>named.conf</strong> file. So we will not be looking at it again. You can and probably should check that the configuration file has not problems by using this command.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>named-checkconf
+</code></pre></div><p>This will report errors and their line number.</p><p><strong>named.conf.options</strong></p><p>Let&rsquo;s turn to the options file.
+The default version will look something like this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>options <span style=color:#f92672>{</span>
+	directory <span style=color:#e6db74>&#34;/var/cache/bind&#34;</span>;
+
+	// If there is a firewall between you and nameservers you want
+	// to talk to, you may need to fix the firewall to allow multiple
+	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+	// If your ISP provided one or more IP addresses <span style=color:#66d9ef>for</span> stable
+	// nameservers, you probably want to use them as forwarders.
+	// Uncomment the following block, and insert the addresses replacing
+	// the all-0s placeholder.
+
+	// forwarders <span style=color:#f92672>{</span>
+	// 	0.0.0.0;
+	// <span style=color:#f92672>}</span>;
+...
+...
+<span style=color:#f92672>}</span>;
+</code></pre></div><p>Lets add some options just below the <strong>directory</strong> option:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>    recursion yes;
+    allow-recursion <span style=color:#f92672>{</span> internal; <span style=color:#f92672>}</span>;
+    listen-on <span style=color:#f92672>{</span> 127.0.0.1; 192.168.11.10; <span style=color:#f92672>}</span>;
+    allow-transfer <span style=color:#f92672>{</span> none; <span style=color:#f92672>}</span>;
+</code></pre></div><h4 id=what-do-these-options-mean>What do these options mean?</h4><ol><li>Enable recursion so that the server can make lookups for us.</li><li>Limit the addresses that can do recursive lookups to the addresses we specified using the <strong>internal</strong> ACL.</li><li>Listen for and answer DNS queries that come in. Limited to the internal loopback address and the main interface address. If you do not want to restrict the listen-on interfaces, use a value of <strong>any;</strong></li><li>Don&rsquo;t allow zone transfers to secondary DNS servers. This can and will be adjust on a zone by zone basis later if you configure a secondary name server for your network.</li></ol><p>Next look at the <strong>forwarder</strong> portion. This is were we can tell the DNS server who it should go and ask to make lookups on its behalf if it doesn&rsquo;t already know the answer. Either because it is not the authoritative server or does not have a cache record. This would generally be your ISP&rsquo;s name servers. But you are free to use others. Such as <strong>8.8.8.8</strong> and other public DNS servers. Though using a name server that is not local or part of your normal service is generally frowned upon and could also result in slow lookups.</p><p>The primary benefit of using forwarders is that hopefully someone else has already made the same DNS lookup using that server. The server will probably therefore already have a cached answer. This results in a faster lookup. Though it is not required for operations as the name server is able to query the root servers. Though this is going the long way around when a cached answer is probably only a single server away.</p><p>Let&rsquo;s remove the // characters which are comment markers and add some addresses.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>    forwarders <span style=color:#f92672>{</span>
+      8.8.8.8;
+      x.x.x.x;
+    <span style=color:#f92672>}</span>;
+
+</code></pre></div><p>Save the file and again use the <strong>named-checkconf</strong> command to make sure no errors have been introduced.</p><p><strong>Warning:</strong>
+You might hit an issue during testing. You might find that lookup work without any forwarders set, but fail with them set.</p><p>If you want to use forwarders. The work around here is as follows:</p><p><strong>Reference:</strong> <a href=https://serverfault.com/questions/429757/bind9-forwarders-are-not-working>ServerFault Link</a></p><p>Update the <strong>dnssec-validation</strong> line.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>    //dnssec-validation auto;
+    dnssec-validation no;
+</code></pre></div><p>The other option is to not use forwarders and let your server query the root name servers as needed.</p><p>At this point you basically have a caching server configuration. It might be a good idea to test that it&rsquo;s working. Let&rsquo;s start bind.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl enable bind9
+systemctl start bind9
+</code></pre></div><p>At the moment the server itself doesn&rsquo;t know to use the newly configured bind service. But we can cheat here. And actually this is useful trick when you are testing DNS related issues.
+We can use the <strong>dig</strong> command.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>dig www.google.com @localhost
+
+</code></pre></div><p>The <strong>@localhost</strong> is saying we want to specifically sent our DNS query to the localhost without using the <strong>/etc/resolv.conf</strong> file.</p><p>Which should give you output similar to the text below. This will be different</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>; &lt;&lt;&gt;&gt; DiG 9.10.3-P4-Raspbian &lt;&lt;&gt;&gt; www.google.com @localhost
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER<span style=color:#e6db74>&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style=color:#ae81ff>18246</span>
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 13, ADDITIONAL: <span style=color:#ae81ff>27</span>
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: <span style=color:#ae81ff>4096</span>
+;; QUESTION SECTION:
+;www.google.com.			IN	A
+
+;; ANSWER SECTION:
+www.google.com.		86	IN	A	172.217.24.132
+
+;; AUTHORITY SECTION:
+.			411182	IN	NS	b.root-servers.net.
+.			411182	IN	NS	h.root-servers.net.
+.			411182	IN	NS	g.root-servers.net.
+.			411182	IN	NS	l.root-servers.net.
+.			411182	IN	NS	j.root-servers.net.
+.			411182	IN	NS	f.root-servers.net.
+.			411182	IN	NS	e.root-servers.net.
+.			411182	IN	NS	k.root-servers.net.
+.			411182	IN	NS	a.root-servers.net.
+.			411182	IN	NS	i.root-servers.net.
+.			411182	IN	NS	d.root-servers.net.
+.			411182	IN	NS	m.root-servers.net.
+.			411182	IN	NS	c.root-servers.net.
+
+;; ADDITIONAL SECTION:
+a.root-servers.net.	335582	IN	A	198.41.0.4
+a.root-servers.net.	335424	IN	AAAA	2001:503:ba3e::2:30
+b.root-servers.net.	336203	IN	A	199.9.14.201
+b.root-servers.net.	335567	IN	AAAA	2001:500:200::b
+c.root-servers.net.	335601	IN	A	192.33.4.12
+c.root-servers.net.	335299	IN	AAAA	2001:500:2::c
+d.root-servers.net.	343081	IN	A	199.7.91.13
+d.root-servers.net.	343973	IN	AAAA	2001:500:2d::d
+e.root-servers.net.	336987	IN	A	192.203.230.10
+e.root-servers.net.	336987	IN	AAAA	2001:500:a8::e
+f.root-servers.net.	335460	IN	A	192.5.5.241
+f.root-servers.net.	335895	IN	AAAA	2001:500:2f::f
+g.root-servers.net.	336203	IN	A	192.112.36.4
+g.root-servers.net.	335863	IN	AAAA	2001:500:12::d0d
+h.root-servers.net.	335567	IN	A	198.97.190.53
+h.root-servers.net.	335785	IN	AAAA	2001:500:1::53
+i.root-servers.net.	335363	IN	A	192.36.148.17
+i.root-servers.net.	335424	IN	AAAA	2001:7fe::53
+j.root-servers.net.	335298	IN	A	192.58.128.30
+j.root-servers.net.	335785	IN	AAAA	2001:503:c27::2:30
+k.root-servers.net.	335460	IN	A	193.0.14.129
+k.root-servers.net.	335567	IN	AAAA	2001:7fd::1
+l.root-servers.net.	335601	IN	A	199.7.83.42
+l.root-servers.net.	335443	IN	AAAA	2001:500:9f::42
+m.root-servers.net.	343973	IN	A	202.12.27.33
+m.root-servers.net.	343835	IN	AAAA	2001:dc3::35
+
+;; Query time: <span style=color:#ae81ff>33</span> msec
+;; SERVER: ::1#53<span style=color:#f92672>(</span>::1<span style=color:#f92672>)</span>
+;; WHEN: Sat Nov <span style=color:#ae81ff>21</span> 23:37:26 JST <span style=color:#ae81ff>2020</span>
+;; MSG SIZE  rcvd: <span style=color:#ae81ff>842</span>
+</code></pre></div><p>Now we have a working caching name server. Time to make the server use it for its own DNS lookups.</p><h3 id=modifying-etcresolvconf>Modifying /etc/resolv.conf</h3><p>There seems to be a few ways to do this.</p><ol><li>Edit the file manually. An acceptable option if you are setting your network statically.
+2.Change the name server information at the source. The DHCP server that provides it.</li><li>Modify <strong>/etc/dhcpcd.conf</strong> if you are assigning host addresses and name servers using dhcp.</li><li>Using <strong>netplan</strong>. Unfortunately this is new to me and I have not had a chance to look into it.</li></ol><p>If you do not have a <strong>/etc/dhcpcd.conf</strong> you can install and configure it using:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt install dhcpcd
+systemctl enable dhcpcd
+systemctl start dhcpcd
+</code></pre></div><p>*<strong>/etc/dhcpcd.conf</strong>
+You should find something like this. But it will be different based on your own network address space and other details.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># Example static IP configuration:</span>
+<span style=color:#75715e>#interface eth0</span>
+<span style=color:#75715e>#static ip_address=192.168.0.10/24</span>
+<span style=color:#75715e>#static ip6_address=fd51:42f8:caae:d92e::ff/64</span>
+<span style=color:#75715e>#static routers=192.168.0.1</span>
+<span style=color:#75715e>#static domain_name_servers=192.168.0.1 8.8.8.8 fd51:42f8:caae:d92e::1</span>
+</code></pre></div><p>The new information should look similar to this.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># Example static IP configuration:</span>
+interface eth0
+<span style=color:#75715e>#static ip_address=192.168.0.10/24</span>
+<span style=color:#75715e>#static ip6_address=fd51:42f8:caae:d92e::ff/64</span>
+<span style=color:#75715e>#static routers=192.168.0.1</span>
+<span style=color:#75715e>#static domain_name_servers=192.168.0.1 8.8.8.8 fd51:42f8:caae:d92e::1</span>
+static domain_name_servers<span style=color:#f92672>=</span>192.168.11.10 192.168.11.20
+static domain_search<span style=color:#f92672>=</span>example.com
+</code></pre></div><ul><li>Uncomment your <strong>interface</strong> line</li><li>Uncomment your <strong>static domain_name_servers</strong> and list the IP Addresses of your name servers.</li><li>Optionally add your <strong>domain_search</strong>. This will allow you to access machines using the single host name.</li></ul><h3 id=the-secondary-name-server>The secondary name server.</h3><p>This server should have the order of the <strong>domain_name_servers</strong> reversed so that it does its lookup locally by default. Otherwise it will always query the primary name server.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>static domain_name_servers<span style=color:#f92672>=</span>192.168.11.20 192.168.11.10
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh host1
+</code></pre></div><p>will be the same as:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh host1.example.com
+</code></pre></div><p>in the case where domain_search=example.com</p><p>Restart the dhcpcd service:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl restart dhcpcd
+</code></pre></div><p>Your <strong>/etc/resolv.conf</strong> should now reflect these changes but retain some of its original settings.
+This will need to be done to all machines in your network so that they know to use your new DNS server. Alternatively you could change your DHCP server&rsquo;s setting to provide your internal name server addresses.
+This is generally going to be done on your router.</p><p>You now should have a functioning caching name server.</p><h2 id=time-to-get-authoritative>Time to get Authoritative!</h2><p>Having a caching name server is nice. But it&rsquo;s not really that useful. The real benefit comes from controlling your own domain within your network. As well as being able to provide reverse DNS entries.</p><h3 id=what-are-reverse-dns-entries>What are reverse DNS entries?</h3><p>We have all probably watched a police drama where they use a reverse lookup on a phone number to get a name or address. Its basically the same.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>dig -x 192.168.11.1
+</code></pre></div><p>Response:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>...
+...
+;; ANSWER SECTION:
+1.11.168.192.in-addr.arpa. <span style=color:#ae81ff>86400</span> IN	PTR	router.example.com.
+..
+..
+</code></pre></div><p>Have you ever noticed that sometimes initial connections to hosts can be slow? This is often caused by a failed reverse DNS lookup.</p><p>The other benefit, is that reverse DNS is another way to document your network. Sure a spreadsheet is useful.
+But sometimes a simple <strong>dig -x</strong> will give you the information you need provided you keep your zone files up to date.</p><h3 id=setting-a-reverse-zone-file>Setting a Reverse Zone file.</h3><p>Let&rsquo;s copy the db.empty to a new file called db.192.168.11</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cp db.empty db.192.168.11
+</code></pre></div><p>Original file:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>; BIND reverse data file <span style=color:#66d9ef>for</span> empty rfc1918 zone
+;
+; DO NOT EDIT THIS FILE - it is used <span style=color:#66d9ef>for</span> multiple zones.
+; Instead, copy it, edit named.conf, and use that copy.
+;
+$TTL	<span style=color:#ae81ff>86400</span>
+@	IN	SOA	localhost. root.localhost. <span style=color:#f92672>(</span>
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  <span style=color:#ae81ff>86400</span> <span style=color:#f92672>)</span>	; Negative Cache TTL
+;
+@	IN	NS	localhost.
+</code></pre></div><p>Let&rsquo;s delete the first 5 lines. We don&rsquo;t need these comments.
+Next we are going to edit the <strong>&ldquo;localhost. root.localhost."</strong> portion
+replace <strong>localhost.</strong> with <strong>ns1.example.com.</strong> and <strong>root.localhost.</strong> with <strong>root.example.com.</strong></p><p>The line should now look like:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>@	IN	SOA	ns1.example.com. root.example.com. <span style=color:#f92672>(</span>
+
+</code></pre></div><h3 id=what-does-this-mean>What does this mean?</h3><p>We are saying that ns1.example.com is the Start Of Authority for this zone record. And the contact email address for this zone is <a href=mailto:root@example.com>root@example.com</a></p><p>An important point here. <strong>Always</strong> update the serial number when you edit any zone files. If you forget to do this. The zone data will not propagate to the name servers correctly. The general format that has been used for the serial number is in the form of: <strong>&lsquo;YEARMONTHDATESEQUENCE&rsquo;</strong>. Assume todays date was <em>20201122</em> the Serial would be <strong>2020112201</strong>. If you edit the zone file on that date. If you edit it a second time on the same day, then increment the sequence. The serial would now be <strong>2020112202</strong>.</p><p>Now that we know this. Edit the serial to match your actual date. Try and keep everything nicely lined up. Note that the file uses tab spacing.</p><p>After editing you want to have someting that looks like the following:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$TTL	<span style=color:#ae81ff>86400</span>
+@	IN	SOA	ns1.example.com. root.example.com. <span style=color:#f92672>(</span>
+	                 2020112201		; Serial
+			             604800		; Refresh
+			              86400		; Retry
+			            2419200		; Expire
+                          <span style=color:#ae81ff>86400</span> <span style=color:#f92672>)</span>  	; Negative Cache TTL
+;
+; Name servers
+	 IN	NS	  ns1.example.com.
+	 IN	NS	  ns2.example.com.
+
+1	IN	PTR	 router.example.com.
+..
+..
+<span style=color:#ae81ff>35</span>   IN     PTR     hassio.example.com.
+<span style=color:#ae81ff>40</span>   IN     PTR     printer.example.com.
+</code></pre></div><p><strong>Note:</strong><br>These lines end with a <strong>.</strong>(period / full stop). This tells DNS not to append to the record.</p><p>Add any other records that you want to have in your reverse DNS records.</p><p>Next lets make DNS aware of this this <strong>db.192.168.11</strong> file.</p><p>For simplicity edit the <strong>zones.rfc1918</strong> file and add these lines:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>zone <span style=color:#e6db74>&#34;11.168.192.in-addr.arpa&#34;</span> <span style=color:#f92672>{</span>
+  type master;
+  file <span style=color:#e6db74>&#34;/etc/bind/db.192.168.11&#34;</span>;
+<span style=color:#f92672>}</span>;
+</code></pre></div><p>just above the line shown here.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>zone <span style=color:#e6db74>&#34;168.192.in-addr.arpa&#34;</span> <span style=color:#f92672>{</span> type master; file <span style=color:#e6db74>&#34;/etc/bind/db.empty&#34;</span>; <span style=color:#f92672>}</span>;
+</code></pre></div><p>Next we want to add our more standard forward lookups.</p><p>Again copy the db.empty to a file called <strong>db.example.com</strong>. Make the same basic edits for the SOA line and ; serial. Then add your host records.</p><p>Here is the example.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$TTL	<span style=color:#ae81ff>604800</span>
+@	IN	SOA	ns1.example.com. root.example.com. <span style=color:#f92672>(</span>
+		                    2020112201		; Serial
+			                    604800		; Refresh
+			                     86400		; Retry
+			                   2419200		; Expire
+			                    <span style=color:#ae81ff>604800</span> <span style=color:#f92672>)</span>  	; Negative Cache TTL
+
+
+	IN     NS	ns1.example.com.
+	IN     NS	ns2.example.com.
+
+ns1.example.com.		IN	A	192.168.11.10
+ns2.example.com.		IN	A	192.168.11.20
+
+hassio.example.com.	IN	A	192.168.11.35
+printer.example.com.   IN    A    192.168.11.40
+
+; External Servers/Services
+blog.example.com.      IN    CNAME ghs.google.com.
+bogus.example.com.     IN    A    203.X.X.X
+</code></pre></div><h3 id=the-big-gotcha-that-follows>The big gotcha that follows.</h3><p>The pickle in this pie is going to be if you use the same domain for your internal network and anything that you have hosted outside on the internet. You need to duplicate these entries in your new zone file.</p><p>Let&rsquo;s say you are using Google&rsquo;s Blogger to host a site.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>https://blog.example.com
+</code></pre></div><p>This resolves to:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>;; ANSWER SECTION:
+blog.example.com.	3599	IN	CNAME	ghs.google.com.
+ghs.google.com.		299	IN	A	172.217.175.83
+</code></pre></div><p>We need to duplicate this sort of entry in our new zone file.
+If you were looking carefully you might have noticed the entry above under <strong>External Servers/Services</strong></p><h3 id=adding-the-zone-file-to-the-dns-server>Adding the zone file to the DNS Server.</h3><p>Add this db file to <strong>named.conf.local</strong> just below:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>//
+// Do any local configuration here
+//
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>zone <span style=color:#e6db74>&#34;example.com&#34;</span> <span style=color:#f92672>{</span>
+	type master;
+	file <span style=color:#e6db74>&#34;/etc/bind/db.example.com&#34;</span>;
+	//allow-transfer <span style=color:#f92672>{</span> 192.168.11.20; <span style=color:#f92672>}</span>;
+<span style=color:#f92672>}</span>;
+</code></pre></div><p>Since there is no secondary DNS server yet. We can leave the <strong>allow-transfer</strong> as a comment. Uncomment this after you have a secondary server configured.</p><p>You can again use <strong>named-checkconf</strong> to check for issues. Then restart the bind9 with <strong>systemctl reload bind9</strong></p><p>You should now be able to use <strong>dig</strong> or <strong>nslooup</strong> to find hosts on your network.</p><p>You now have a fully functioning primary cache and authoritative DNS server.</p><p>The next step would be to set up your secondary DNS server to provide redundancy. You could also setup a third or fourth.</p><p>Do keep in mind this is only accessible from within your home network. And does not work when you are connected to external networks. So it does not affect any of your existing externally hosted services.</p><h2 id=adding-a-secondary-name-server>Adding a Secondary Name Server.</h2><p>This will involve using the same steps to set up a caching server that we did when setting up NS1.
+So I will list these commands in quick succession.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt update <span style=color:#f92672>&amp;&amp;</span> apt upgrade
+apt install bind9 dnsutils
+</code></pre></div><p>Create the <strong>named.conf.acl</strong> file in <strong>/etc/bind/</strong> and add your acl data</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>acl <span style=color:#e6db74>&#34;internal&#34;</span> <span style=color:#f92672>{</span>
+	192.168.11.0/24;
+	127.0.0.1;
+	::1;
+<span style=color:#f92672>}</span>;
+</code></pre></div><p>Get the <strong>named.conf.acl</strong> included into <strong>named.conf</strong> by adding the following to <strong>named.conf</strong> near the top.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>include <span style=color:#e6db74>&#34;/etc/bind/named.conf.acl&#34;</span>;
+</code></pre></div><p>Edit <strong>named.conf.options</strong> as we did previously. But replace .10 with .20 to match the servers IP address.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>options <span style=color:#f92672>{</span>
+	directory <span style=color:#e6db74>&#34;/var/cache/bind&#34;</span>;
+
+	recursion yes;
+	allow-recursion <span style=color:#f92672>{</span> internal; <span style=color:#f92672>}</span>;
+	listen-on <span style=color:#f92672>{</span> 127.0.0.1; 192.168.11.20; <span style=color:#f92672>}</span>;
+	allow-transfer <span style=color:#f92672>{</span> none; <span style=color:#f92672>}</span>;
+
+</code></pre></div><p>Updated your forwarders</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>forwarders <span style=color:#f92672>{</span>
+  8.8.8.8;
+  xx.xx.xx.xx;
+<span style=color:#f92672>}</span>;
+</code></pre></div><p>And add the following if you are using forwarders.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>//dnssec-validation auto;
+dnssec-validation no;
+</code></pre></div><p>Edit the <em>named.conf.local</em>* to include **zones.rfc1918**</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>// Consider adding the <span style=color:#ae81ff>1918</span> zones here, <span style=color:#66d9ef>if</span> they are not used in your
+// organization
+include <span style=color:#e6db74>&#34;/etc/bind/zones.rfc1918&#34;</span>;
+
+</code></pre></div><p>But dont do anything more at this stage. This should result in a working cache server.</p><p>Enable and start Bind9</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl enable bind9
+systemctl start bind9
+</code></pre></div><p>Feel free to test using:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nslookup @localhost www.google.com
+</code></pre></div><h2 id=time-to-tell-the-primary-server-to-share-its-zone-data-with-the-secondary-and-to-tell-the-secondary-to-expect-zones-from-the-primary>Time to tell the primary server to share its zone data with the secondary. And to tell the secondary to expect zones from the primary.</h2><p>On your primary server let&rsquo;s edit the <strong>named.conf.options</strong> file and add the following:</p><pre><code>notify yes;
+also-notify { 192.168.11.20; };
+</code></pre><p>This means that when ever we edit our zone files on the primary name server, the secondary will be notified and will pull the updated zone information without waiting for the zones TTL (Time To Live) to expire.</p><p>Previously you would have setup your zone files. We will now edit them to add zone transfer ability.</p><p>Edit <strong>zones.rfc1918</strong> and add the <strong>allow-transfer</strong> line.</p><pre><code>zone &quot;11.168.192.in-addr.arpa&quot; {
+  type master;
+  file &quot;/etc/bind/db.192.168.11&quot;;
+  allow-transfer { 192.168.11.20; };
+};
+</code></pre><p>Add the same <strong>allow-transer</strong> line to any other zone files you have created.</p><p>Check the configuration and reload.
+Reload bind9</p><pre><code>systemctl reload bind9
+</code></pre><p>We can now turn our attention to the secondary name server and configure it to get zone data from the primary which it make it authoritative for our zones.</p><p>In this case we just need to update the <strong>named.conf.local</strong> file so that the server knows about the zones. Add the following configuration.</p><pre><code>//
+// Do any local configuration here
+//
+zone &quot;example.com&quot; {
+    type slave;
+    file &quot;db..example.com&quot;;
+    masters { 192.168.11.10; };
+};
+
+zone &quot;11.168.192.in-addr.arpa&quot; {
+    type slave;
+    file &quot;db.192.168.11&quot;;
+    masters { 192.168.11.10; };
+};
+</code></pre><p>This basically says that for the zone file we are a secondary (slave) and that the source of all truth is our primary server.</p><p>You can reload bind9</p><pre><code>systemctl reload bind9
+</code></pre><p>or</p><pre><code>rndc reload
+</code></pre><p>To finish up we need to get our <strong>/etc/resolv.conf</strong> updated using the method you used before. Just remember to list your secondary ip address before the primary so that it uses itself first.</p><p>That should conclude getting the name servers up and running and answering queries.</p><p>You still need to configure your network equipment to use these new servers.</p><h2 id=references>References:</h2><ul><li><a href=https://jensd.be/160/linux/split-horizon-dns-masterslave-with-bind>Split Horizon Master/Slave</a></li><li><a href=https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-debian-9>Digital Ocean DNS Configuration</a></li></ul><ul class=pa0></ul><div class="mt6 instapaper_ignoref"></div></div><aside class="w-30-l mt6-l"></aside></article></main><footer class="bg-black bottom-0 w-100 pa3" role=contentinfo><div class="flex justify-between"><a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://bas-man.github.io/>&copy; Bas-Man's Ponderings 2020</a>
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://bas-man.github.io//privacy>Privacy</a><div><a href=https://www.github.com/Bas-Man target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel=noopener aria-label="follow on Github——Opens in a new window"><svg height="32" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M256 32C132.3 32 32 134.8 32 261.7c0 101.5 64.2 187.5 153.2 217.9 11.2 2.1 15.3-5 15.3-11.1.0-5.5-.2-19.9-.3-39.1-62.3 13.9-75.5-30.8-75.5-30.8-10.2-26.5-24.9-33.6-24.9-33.6-20.3-14.3 1.5-14 1.5-14 22.5 1.6 34.3 23.7 34.3 23.7 20 35.1 52.4 25 65.2 19.1 2-14.8 7.8-25 14.2-30.7-49.7-5.8-102-25.5-102-113.5.0-25.1 8.7-45.6 23-61.6-2.3-5.8-10-29.2 2.2-60.8.0.0 18.8-6.2 61.6 23.5 17.9-5.1 37-7.6 56.1-7.7 19 .1 38.2 2.6 56.1 7.7 42.8-29.7 61.5-23.5 61.5-23.5 12.2 31.6 4.5 55 2.2 60.8 14.3 16.1 23 36.6 23 61.6.0 88.2-52.4 107.6-102.3 113.3 8 7.1 15.2 21.1 15.2 42.5.0 30.7-.3 55.5-.3 63 0 6.1 4 13.3 15.4 11C415.9 449.1 480 363.1 480 261.7 480 134.8 379.7 32 256 32z"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a><a href=https://dev.to/basman target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Dev-To link" rel=noopener aria-label="follow on Dev.to——Opens in a new window"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 24 24" style="-ms-transform:rotate(360deg);-webkit-transform:rotate(360deg);transform:rotate(360deg)"><path d="M7.73 11.93c0 1.72-.02 1.83-.23 2.07-.19.17-.38.23-.76.23l-.51.01-.03-2.27-.02-2.27h.52c.35.0.6.07.77.21.24.21.26.25.26 2.02M22 7.5v9c0 1.11-.89 2-2 2H4c-1.11.0-2-.89-2-2v-9c0-1.11.89-2 2-2h16c1.11.0 2 .89 2 2M8.93 11.73c-.03-1.84-.05-1.99-.29-2.39-.4-.68-.85-.84-2.36-.84H5v7h1.21c1.33.0 1.89-.17 2.29-.71.41-.53.5-.98.43-3.06m4.19-3.23h-1.48c-1.49.0-1.5.0-1.71.28S9.7 9.21 9.7 12v2.96l.27.27c.25.27.31.27 1.71.27h1.44v-1.19l-1.09-.04-1.1-.03V12.6l.68-.03.66-.04v-1.19h-1.39V9.7h2.24V8.5m5.88.06c0-.06-.3-.06-.66-.06l-.68.06-.59 2.35c-.38 1.48-.62 2.27-.67 2.13-.08-.27-1.14-4.44-1.14-4.49.0-.05-.31-.05-.68-.05h-.69l.41 1.55c.2.87.59 2.28.81 3.15.34 1.35.46 1.65.75 1.94.2.22.45.36.61.36.33.0.76-.34.9-.73C17.5 14.5 19 8.69 19 8.56z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a><a href="https://flipboard.com/@baspann/coding-kq8v8rh8z?from=share" target=_blank class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Flipboard link" rel=noopener aria-label="follow on Dev.to——Opens in a new window"><!doctype html><svg height="32" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="_x31_31-flipboard"><g><g><path d="M26.002 26.001v459.998h459.996V26.001H26.002zm367.997 184H302V302h-92v92.001h-92V118.002h275.999V210.001z" style="fill:#f22c31"/></g></g></g><g id="Layer_1"/></svg><span class=new-window><svg height="8" style="enable-background:new 0 0 1000 1000" viewBox="0 0 1e3 1e3" width="8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M598 128h298v298h-86V274L392 692l-60-60 418-418H598v-86zM810 810V512h86v298c0 46-40 86-86 86H214c-48 0-86-40-86-86V214c0-46 38-86 86-86h298v86H214v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></span></a></div></div></footer><script src=/dist/js/app.3fc0f988d21662902933.js></script><div class=cookie-container><p>By using this site, you agree to our use of cookies.
+We use cookies on this website to give you the best experience on our
+site. To find out more, read our <a href=/privacy/>privacy policy.</p><button class=cookie-btn>
+Okay</button></div><script src=/my_js/cookie.js></script></body></html>
