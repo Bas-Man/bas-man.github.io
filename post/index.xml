@@ -1,32 +1,796 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Articles on Bas-Man's Ponderings</title><link>https://bas-man.github.io/post/</link><description>Recent content in Articles on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 05 Jan 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Working with double-byte regex expressions with Python3</title><link>https://bas-man.github.io/post/regex-double-byte-python3/</link><pubDate>Tue, 05 Jan 2021 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/regex-double-byte-python3/</guid><description>As part of my project Self Hosted Zapier Alternative; I am having to deal with doing regex searches against the three Japanese written forms, Kanji, Hiragana and Katakana.
-Fortunately this is a common problem. So I have found some references for this. Also one of my favourite tools for developing regex expressions, Regex101, also offers support in this area.
-I found this useful Github Gist.
-note:
-You should also check the gist directly as there are some follow up comments and additions.</description></item><item><title>Project: Self Hosted Zapier Alternative</title><link>https://bas-man.github.io/post/self-hosted-zapier-alternative/</link><pubDate>Sat, 02 Jan 2021 23:00:39 +0900</pubDate><guid>https://bas-man.github.io/post/self-hosted-zapier-alternative/</guid><description>I am currently in the process of working out how I might replace some of my Zapier services. Why would I want to do this?
-I use the free tier. (The process only runs once every 15 minutes. It used to be once every 5 mins.) Which means it has become a bit slow in sending the notifications. I want to learn how to use Docker Once I get a bit further along I will hopefully publish the python code to GitHub and document some of the issues and successes as I move along.</description></item><item><title>Send a notification through LINE with AppDaemon with Home Assistant</title><link>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</link><pubDate>Thu, 17 Dec 2020 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</guid><description>The challenge Living in Japan we generally default to using LINE for our messaging needs. At the time of this writing there is no integration for LINE within Home Assistant. Currently I use PushOver for some of my Home Assistant notifications. I also use Zapier with email to trigger notifications to my family LINE group. You can see how I did this here and here.
-I also track some Tile devices to know when family members are home.</description></item><item><title>Detect the OS Perl Code is Running Under</title><link>https://bas-man.github.io/post/detect-os-perl-code-running-under/</link><pubDate>Mon, 14 Dec 2020 13:19:33 +0900</pubDate><guid>https://bas-man.github.io/post/detect-os-perl-code-running-under/</guid><description>I was looking into updating a couple of my perl modules because rt.cpan.org is being sunset early in 2021. As part of this I thought it was time to stop cpan testers from testing my module under Windows since it is currently not really supported.
-I was not sure how to go about doing this, so I reached out the good people in the &amp;ldquo;Perl Programmers&amp;rdquo; group on FaceBook. I got some great links and suggestions.</description></item><item><title>Raspberry Pi Stretch to Buster Missing Steps</title><link>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</link><pubDate>Fri, 11 Dec 2020 13:00:30 +0900</pubDate><guid>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</guid><description>I recently went through the process of upgrading my raspberry Pis from Stretch to Buster. I had previously done this moving from Jessie.
-Whilst I had no real issues with task following the guides that I found. I did discover one thing that concerned me, and was missing from the guides.
-After upgrading to Buster, my /boot had less than 200kb of free storage.
-I did some reading and found that Buster seems to need a lot more space in /boot than for previous releases.</description></item><item><title>Presence Detection with BLE using monitor.sh &amp; Home Assistant</title><link>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</link><pubDate>Thu, 12 Nov 2020 10:35:00 +0900</pubDate><guid>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</guid><description>I have been running Home Assistant for a while. Things are going well. But I have had some issues with presence detection using the standard device_tracker component. Though I live in a small place, being in Tokyo, Home Assistant sometimes stops detecting phones if they are in an area of the apartment a little away from the Home Assistant server. This I suspect is due to the position of the Raspberry Pi and the building material.</description></item><item><title>Use launchd instead of crontab on your Mac</title><link>https://bas-man.github.io/post/launchd-instead-of-cron/</link><pubDate>Tue, 18 Aug 2020 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/launchd-instead-of-cron/</guid><description>As of Mac OS 10.4 crontab has been depreciated but not ended. So its a good idea to know how to use its replacement under Mac OS. Welcome to Launchd.
-This will be a short guide on how to use launchd in a simple form to replace a crontab job. In my case I am automating the backup of my Plex server. You can see my previous article here
-Launchd has a lot of other features.</description></item><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>The Challenge I wanted to be able to publish a new post that has already been written at a future date, without needing to manually publish the article.
-The Solution Github Actions.
-I already push updates to my site using github actions. So I thought why not have articles published in the future after they are written.
-A little background. I do all my edits in a private GitHub repo. When I push to master in this repo.</description></item><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>I was researching ways of moving to Hugo for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.
-You can find the action here
-I use the basic example config with minor changes to match my GitHub details.</description></item><item><title>CI on Github for Python</title><link>https://bas-man.github.io/post/github-python-action/</link><pubDate>Tue, 04 Aug 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/github-python-action/</guid><description>So I finally thought it was time to start doing some continuous intergration testing as well as testing with multiple versions of Python.
-I had been looking at using things such as CircleCI or Travis-ci. But I finally decided I would try to use Github&amp;rsquo;s workflow actions.
-I did some searching and found some guides. As part of that I evenutally came a cross this link on Github&amp;rsquo;s own docs.</description></item><item><title>Add a cookie warning notice to a Hugo powered site</title><link>https://bas-man.github.io/post/add-cookie-warning/</link><pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/add-cookie-warning/</guid><description>The Challenge How to add a cookie warning notice to a Hugo powered website. But also avoid using a third party service.
-The Solution Build your own. Well, find someone who built one and shared it on youtube and github.
-Disclaimer: This does not constitute any form of legal advice. Use at your own risk.
-Of course if anyone has a better, more complete solution. I would really like hear from you.</description></item><item><title>Back up your Plex Media Server on Mac OS</title><link>https://bas-man.github.io/post/plex-macos-backup/</link><pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/plex-macos-backup/</guid><description>The Challenge How to automate the backing up of my Plex Media Server
-Solution A Bash Script
-I wanted to automate this process. If I didn&amp;rsquo;t, it probably wouldn&amp;rsquo;t get done.
-This script was adapted from another GitHub Gist that I found here.
-You will probably need to modify the following variables.
-plexDatabase plexPlistFile backupDirectory Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not complete if your machine can go to sleep.</description></item><item><title>Delay Services launch until external drive mount is complete</title><link>https://bas-man.github.io/post/startup-apple-script/</link><pubDate>Thu, 14 May 2020 14:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/startup-apple-script/</guid><description>The Challenge How to give Drobo time to mount before processes that need access to it begin and hence block it&amp;rsquo;s mounting by having the mount point in use.
-Solution AppleScript
-Why was this an issue for me. Well I have a Drobo drive which is over 75% full. As a result it can take a while to mount and be detected by my old Mac Mini. This would mean that processes that use files from the Drobo would start before it was mounted.</description></item><item><title>Site Launch</title><link>https://bas-man.github.io/post/site-launched/</link><pubDate>Mon, 11 May 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/site-launched/</guid><description>Well. Finally got around to putting this site together. Actually this is attempt number two.
-I will try to post some of my small personal projects and thoughts here. I will also probably create a cheat sheet for myself.
-Anyway, I shall see how it goes.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Articles on Bas-Man's Musings</title><link>https://bas-man.github.io/post/</link><description>Recent content in Articles on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Tue, 05 Jan 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Working with double-byte regex expressions with Python3</title><link>https://bas-man.github.io/post/regex-double-byte-python3/</link><pubDate>Tue, 05 Jan 2021 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/regex-double-byte-python3/</guid><description>
+&lt;p>As part of my project &lt;a href="https://bas-man.github.io/post/self-hosted-zapier-alternative/">Self Hosted Zapier Alternative&lt;/a>; I am having to deal with doing regex searches against the three Japanese written forms, Kanji, Hiragana and Katakana.&lt;/p>
+&lt;p>Fortunately this is a common problem. So I have found some references for this.
+Also one of my favourite tools for developing regex expressions, &lt;a href="https://regex101.com">Regex101&lt;/a>, also offers support in this area.&lt;/p>
+&lt;p>I found this useful &lt;a href="https://github.com">Github&lt;/a> Gist.&lt;br>
+&lt;strong>note:&lt;/strong>&lt;br>
+You should also check the gist directly as there are some follow up comments and
+additions. See &lt;a href="https://gist.github.com/terrancesnyder/1345094">here&lt;/a>&lt;/p>
+&lt;script type="application/javascript" src="https://gist.github.com/terrancesnyder/1345094.js">&lt;/script>
+&lt;p>Using Regex101 I was able to come up with the following expression.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-Python3" data-lang="Python3">&lt;span class="ln">1&lt;/span>&lt;span class="sa">r&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="o">^&lt;/span>&lt;span class="err">「&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="err">?&lt;/span>&lt;span class="n">P&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">busname&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">一&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">龯&lt;/span>&lt;span class="p">]&lt;/span>\&lt;span class="n">d&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">})&lt;/span>\&lt;span class="n">s&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="err">?&lt;/span>&lt;span class="n">P&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">destination&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">一&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">龯&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">行き&lt;/span>&lt;span class="err">・&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="err">?&lt;/span>&lt;span class="n">P&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">boardedat&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">一&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">龯&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="err">」&lt;/span>
+&lt;span class="ln">5&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will successfully match a string such as:&lt;br>
+&lt;code>「渋11 渋谷駅行き・駒沢大学駅前」でタッチしました。&lt;/code>
+ &lt;br>
+Resulting in the following three groups.&lt;br>
+&lt;em>busname&lt;/em> = 渋11&lt;br>
+&lt;em>destination&lt;/em> = 渋谷駅&lt;br>
+&lt;em>boardedat&lt;/em> = 駒沢大学駅&lt;/p>
+&lt;p>If you are working in PHP you can also use the following:&lt;br>
+&lt;code>\p{Han}&lt;/code> (Using Chinese to match Kanji)&lt;br>
+&lt;code>\p{Hiragana}&lt;/code>&lt;br>
+&lt;code>\p{Katakana}&lt;/code>&lt;/p>
+&lt;p>You can also checkout my Regex Experiments:&lt;br>
+&lt;a href="https://regex101.com/r/YkltWH/1">v1&lt;/a> PHP&lt;br>
+&lt;a href="https://regex101.com/r/YkltWH/2">v2&lt;/a> Python3&lt;/p></description></item><item><title>Project: Self Hosted Zapier Alternative</title><link>https://bas-man.github.io/post/self-hosted-zapier-alternative/</link><pubDate>Sat, 02 Jan 2021 23:00:39 +0900</pubDate><guid>https://bas-man.github.io/post/self-hosted-zapier-alternative/</guid><description>
+&lt;p>I am currently in the process of working out how I might replace some of my Zapier services. Why would I want to do this?&lt;/p>
+&lt;ol>
+&lt;li>I use the free tier. (The process only runs once every 15 minutes. It used to be once every 5 mins.) Which means it has become a bit slow in sending the notifications.&lt;/li>
+&lt;li>I want to learn how to use &lt;a href="https://www.docker.com">Docker&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>Once I get a bit further along I will hopefully publish the python code to &lt;a href="https://github.com">GitHub&lt;/a> and document some of the issues and successes as I move along. Check the [Projects page]({{ ref &amp;quot;/projects/&amp;quot; }}) section if you are interested.&lt;/p></description></item><item><title>Send a notification through LINE with AppDaemon with Home Assistant</title><link>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</link><pubDate>Thu, 17 Dec 2020 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</guid><description>
+&lt;h1 id="the-challenge">The challenge&lt;/h1>
+&lt;p>Living in Japan we generally default to using &lt;a href="https://mobile.line.me">LINE&lt;/a> for our messaging needs. At the time of this writing there is no integration for LINE within &lt;a href="https://www.home-assistant.io">Home Assistant&lt;/a>. Currently I use &lt;a href="https://pushover.net">PushOver&lt;/a> for some of my Home Assistant notifications. I also use &lt;a href="https://zapier.com">Zapier&lt;/a> with email to trigger notifications to my family LINE group. You can see how I did this &lt;a href="https://dev.to/basman/integrating-line-message-and-zapier-58e6">here&lt;/a> and &lt;a href="https://gmailzapierlinenotify.readthedocs.io/en/latest/">here&lt;/a>.&lt;/p>
+&lt;p>I also track some &lt;a href="https://www.thetileapp.com/">Tile&lt;/a> devices to know when family members are home. And of course I want to keep an eye on the younger members. Know when they leave home, get home and such. I want my wife and myself to get these notifications.&lt;/p>
+&lt;p>Since we already have a LINE group for other notifications. I thought it would be good to just add these to the existing group, and avoid paying for, and installing additional software on to my wife's phone.&lt;/p>
+&lt;p>I have previously used &lt;a href="https://pypi.org/project/line_notify/">line_notify&lt;/a> from &lt;a href="https://pypi.org/">pypyi.org&lt;/a> to send some notifications using Python.&lt;/p>
+&lt;p>But getting this Python module directly connected with Home Assistant is not possible.&lt;/p>
+&lt;h1 id="the-solution">The solution&lt;/h1>
+&lt;ul>
+&lt;li>&lt;a href="https://appdaemon.readthedocs.io/en/latest/">AppDaemon&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pypi.org/project/line_notify/">line_notify&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Following some research I found AppDaemon might meet my needs. AppDaemon is a sandboxed python environment that can be integrated with Home Assistant and has access to entity state and can monitor events within Home Assistant. It also allows you to import external Python modules. Yay. I can use line_notify.&lt;/p>
+&lt;h2 id="how-i-got-it-done">How I got it done&lt;/h2>
+&lt;ol>
+&lt;li>Install AppDaemon. This will vary based on your setup. There is plenty of documentation on this.&lt;/li>
+&lt;li>Add line_notify to the Python modules list in AppDaemon's configuration pane.
+&lt;figure>
+&lt;img src="https://bas-man.github.io/images/PythonPackages.png"/>
+&lt;/figure>
+&lt;/li>
+&lt;li>Generate your Line Bot Token. See my previous &lt;a href="https://dev.to/basman/integrating-line-message-and-zapier-58e6">article&lt;/a> or &lt;a href="https://gmailzapierlinenotify.readthedocs.io/en/latest/">Read the Docs&lt;/a>. Remember to store it somewhere safe.&lt;/li>
+&lt;li>Create your new AppDaemon app.&lt;/li>
+&lt;/ol>
+&lt;h3 id="creating-the-app">Creating the App&lt;/h3>
+&lt;p>The coding will be done in your Home Assistant's &lt;strong>appdaemon&lt;/strong> folder located under your &lt;strong>config&lt;/strong> folder. If you need a visual guide. I would direct you to the YouTube link below.&lt;/p>
+&lt;p>First let's make sure you have your timezone and location information setup correctly. Locate and open your &lt;strong>appdaemon.yaml&lt;/strong> file. In my case my timezone is &lt;em>Asia/Tokyo&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">secrets&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/config/secrets.yaml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">appdaemon&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">latitude&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">XX&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">longitude&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YY&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">elevation&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">time_zone&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Asia/Tokyo&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">plugins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">HASS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">hass&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ha_url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http://192.168.X.X:8123&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">token&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>!&lt;span class="l">secret appdaemon&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app_init_delay&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">20&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http://127.0.0.1:5050&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">admin&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">api&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">hadashboard&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong>
+Latitude and Longitude could be referenced from your &lt;strong>secrets.yaml&lt;/strong> file and actually, they should be.
+Having an incorrect timezone setting may result in unexpected behaviour.&lt;/p>
+&lt;p>Next open &lt;strong>apps.yaml&lt;/strong> in the &lt;strong>apps&lt;/strong> folder.
+Assuming this a fresh setup, there should just be the hello_world app. So we will be adding a new app below it.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">hello_world&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">module&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">hello&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">class&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HelloWorld&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">line_notify&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">module&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">line_message&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">class&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">LineMessage&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol>
+&lt;li>line_notify -&amp;gt; App Name&lt;/li>
+&lt;li>line_message -&amp;gt; module name. file will be named &lt;em>line_message.py&lt;/em>&lt;/li>
+&lt;li>LineMessage -&amp;gt; Class name used within &lt;em>line_message.py&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p>Next copy hello.py to make a new file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>cp hello.py line_message.py
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Open the new file and add the following code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-Python" data-lang="Python">&lt;span class="ln"> 1&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">appdaemon.plugins.hass.hassapi&lt;/span> &lt;span class="kn">as&lt;/span> &lt;span class="nn">hass&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">line_notify&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">LineNotify&lt;/span>
+&lt;span class="ln"> 3&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="n">LINE_TOKEN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;LINE BOT TOKEN GENERATED PREVIOUSLY&amp;#34;&lt;/span>
+&lt;span class="ln"> 5&lt;/span>
+&lt;span class="ln"> 6&lt;/span>&lt;span class="k">class&lt;/span> &lt;span class="nc">LineMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hass&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Hass&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 7&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">initialize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Starting Line Message Service.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_state&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">person1_home_send&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;device_tracker.person1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;home&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_state&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">person1_away_send&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;device_tracker.person1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;not_home&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">person1_home_send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">entity&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">attribute&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">kwargs&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now_is_between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;07:50:00&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;21:00:00&amp;#34;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Person1 has arrived Home.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">person1_away_send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">entity&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">attribute&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">kwargs&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now_is_between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;07:50:00&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;20:00:00&amp;#34;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Person1 has left Home.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">19&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Sending message {message}&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="n">notify&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">LineNotify&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">LINE_TOKEN&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="n">notify&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Finished sending message&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="what-does-this-code-do">What does this code do?&lt;/h3>
+&lt;ul>
+&lt;li>Unfortunately the Token needs to be hardcoded. From my reading there is currently no way around this.&lt;/li>
+&lt;li>initialize.
+&lt;ul>
+&lt;li>This method is &lt;strong>required&lt;/strong>. If is missing nothing will happen. In this case we are saying the following.&lt;/li>
+&lt;/ul>
+&lt;ol>
+&lt;li>When device_tracker.person1 changes to &lt;em>home&lt;/em> call the method named &lt;em>person1_home_send&lt;/em>&lt;/li>
+&lt;li>When device_tracker.person1 changes to &lt;em>not_home&lt;/em> call the method named &lt;em>person1_away_send&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>person1_home_send
+&lt;ul>
+&lt;li>If this event takes place between 7:50am and 9pm call the &lt;em>send_message&lt;/em> method with the argument provided.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>person1_away_send
+&lt;ul>
+&lt;li>If this event takes place between 7:50am and 8pm call the &lt;em>send_message&lt;/em> method with the argument provided.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>send_message
+&lt;ul>
+&lt;li>This takes the message string as input. Creates the notify object needed to send the message to LINE and then sends it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>This completes the coding of the app. Go back to Home Assistant and restart the AppDaemon.&lt;/p>
+&lt;p>This code can easily be expanded for more use cases.&lt;/p>
+&lt;h1 id="references">References&lt;/h1>
+&lt;ul>
+&lt;li>YouTube: &lt;a href="https://www.youtube.com/watch?v=GVIS7GtqLpo">here&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://notify-bot.line.me/en/">Line Notify Bot&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://notify-bot.line.me/doc/en/">Line Notify Bot Documentation&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Detect the OS Perl Code is Running Under</title><link>https://bas-man.github.io/post/detect-os-perl-code-running-under/</link><pubDate>Mon, 14 Dec 2020 13:19:33 +0900</pubDate><guid>https://bas-man.github.io/post/detect-os-perl-code-running-under/</guid><description>
+&lt;p>I was looking into updating a couple of my perl modules because rt.cpan.org is being sunset early in 2021. As part of this I thought it was time to stop cpan testers from testing my module under Windows since it is currently not really supported.&lt;/p>
+&lt;p>I was not sure how to go about doing this, so I reached out the good people in the &amp;quot;Perl Programmers&amp;quot; group on FaceBook. I got some great links and suggestions. In order to make this easy for me to find. I am documenting some of them here.&lt;/p>
+&lt;ol>
+&lt;li>Top of Makefile.PL&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>die &amp;#39;kaput&amp;#39; if ($^O eq &amp;#39;MSWin32&amp;#39;);
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>
+&lt;p>stackoverflow
+&lt;a href="https://stackoverflow.com/questions/334686/how-can-i-detect-the-operating-system-in-perl?fbclid=IwAR3VcUcuYIaA6QzN42Z679nZMWr7rDUudfv42WmSBJ7VCn-x6AJgt2iaAaU">https://stackoverflow.com/questions/334686/how-can-i-detect-the-operating-system-in-perl?fbclid=IwAR3VcUcuYIaA6QzN42Z679nZMWr7rDUudfv42WmSBJ7VCn-x6AJgt2iaAaU&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Sample for Skipping Mac OS
+&lt;a href="https://metacpan.org/source/LNATION/Mac-OSA-Dialog-Tiny-1.00/Makefile.PL?fbclid=IwAR0up4BQlL5iNU1cyF9dZ_eggLSxu2g5IJLfLN2-2HtOD9X-5MCpvsKuxHk#L7">https://metacpan.org/source/LNATION/Mac-OSA-Dialog-Tiny-1.00/Makefile.PL?fbclid=IwAR0up4BQlL5iNU1cyF9dZ_eggLSxu2g5IJLfLN2-2HtOD9X-5MCpvsKuxHk#L7&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Some links from Erki
+&lt;a href="https://github.com/RexOps/Rex/blob/master/dist.ini?fbclid=IwAR3a1QSMCVCB3l33bX9ohvCDPdmkD6A65KGVzdQEEcUJyPiLKfLbmRws8aE#L23-L25">https://github.com/RexOps/Rex/blob/master/dist.ini?fbclid=IwAR3a1QSMCVCB3l33bX9ohvCDPdmkD6A65KGVzdQEEcUJyPiLKfLbmRws8aE#L23-L25&lt;/a>
+&lt;a href="https://github.com/RexOps/Rex/blob/master/misc/check_supported_OS.pl?fbclid=IwAR0Xocwz2ghPs_FLaUNCUuDqeSbzdkwuUD-92BScTeTTb6JTk5cn58ZFK-w">https://github.com/RexOps/Rex/blob/master/misc/check_supported_OS.pl?fbclid=IwAR0Xocwz2ghPs_FLaUNCUuDqeSbzdkwuUD-92BScTeTTb6JTk5cn58ZFK-w&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>Raspberry Pi Stretch to Buster Missing Steps</title><link>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</link><pubDate>Fri, 11 Dec 2020 13:00:30 +0900</pubDate><guid>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</guid><description>
+&lt;p>I recently went through the process of upgrading my raspberry Pis from Stretch to Buster. I had previously done this moving from Jessie.&lt;/p>
+&lt;p>Whilst I had no real issues with task following the guides that I found. I did discover one thing that concerned me, and was missing from the guides.&lt;/p>
+&lt;p>After upgrading to Buster, my &lt;code>/boot&lt;/code> had less than 200kb of free storage.&lt;/p>
+&lt;p>I did some reading and found that Buster seems to need a lot more space in &lt;code>/boot&lt;/code> than for previous releases. Buster itself now defaults to 256M of space for &lt;code>/boot&lt;/code>&lt;/p>
+&lt;p>So I went about solving this issue.&lt;/p>
+&lt;p>I would suggest that you do these steps before upgrading just to avoid any possible problems.&lt;/p>
+&lt;h2 id="warning">Warning!&lt;/h2>
+&lt;p>This action does have the potential to cause data loss. You should backup your data onto another device. Use a tool such as &lt;a href="https://www.balena.io/etcher/">etcher&lt;/a> to make a block copy of your disk.&lt;/p>
+&lt;h3 id="what-you-will-need">What you will need&lt;/h3>
+&lt;ul>
+&lt;li>A spare Linux machine with gui interface.
+&lt;ul>
+&lt;li>Alternatively, if you have a spare SD card, you can install Buster or Stretch on to that and boot from it. Then use the original hardware to update the previously exiting card.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>USB card reader.&lt;/li>
+&lt;li>monitor, keyboard and mouse&lt;/li>
+&lt;li>&lt;code>gparted&lt;/code> installed.&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-steps">The steps&lt;/h3>
+&lt;p>These are the basic steps that will need to be followed.&lt;/p>
+&lt;ol>
+&lt;li>Shrink the rootfs and run check&lt;/li>
+&lt;li>Move rootfs to the right using the mouse to drag it to the right, and run check (this will take some time)&lt;/li>
+&lt;li>Expand /boot partition to 256M and run check&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>There could be issues with this last step. We will cover them later.&lt;/li>
+&lt;/ul>
+&lt;h4 id="getting-situated">Getting situated&lt;/h4>
+&lt;p>If you have spare linux machine. Set it up and getting it running with the SD card reader attached.&lt;/p>
+&lt;p>If you don't have a spare machine, but have a spare SD card. Install your preferred linux distro. Shutdown the existing server and then swap out the old SD card for the new and get it running with all the required attached devices.&lt;/p>
+&lt;p>If it does not boot up into x-windows by default, login and then issue the command &lt;code>startx&lt;/code>. If you have issues, then use &lt;code>sudo&lt;/code> to execute as root.
+Launch &lt;code>gparted&lt;/code> either using a terminal or through the drop down menu system. If gparted is not installed. Open a terminal and issue the following commands.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>apt update
+&lt;span class="ln">2&lt;/span>apt install gparted
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Insert the old SD card in to the reader and give gparted a few moments to scan the devices.
+&lt;strong>Be careful here. We want to make sure that we are working with the correct device and not the SD card we are booting from. So make sure to select the correct&lt;/strong> &lt;em>/dev&lt;/em> &lt;strong>device.&lt;/strong> It should be mounted on the system as &lt;em>/media/XXX&lt;/em>&lt;/p>
+&lt;p>Rather than rewrite something that has been covered on other sites. I would direct you to the sites below.&lt;/p>
+&lt;p>&lt;a href="https://learn.adafruit.com/resizing-raspberry-pi-boot-partition/edit-partitions">https://learn.adafruit.com/resizing-raspberry-pi-boot-partition/edit-partitions&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://bugzilla.gnome.org/show_bug.cgi?id=649324">https://bugzilla.gnome.org/show_bug.cgi?id=649324&lt;/a>&lt;/p></description></item><item><title>Presence Detection with BLE using monitor.sh &amp; Home Assistant</title><link>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</link><pubDate>Thu, 12 Nov 2020 10:35:00 +0900</pubDate><guid>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</guid><description>
+&lt;p>I have been running &lt;a href="https://www.home-assistant.io/hassio/">Home Assistant&lt;/a> for a while. Things are going well. But I have had some issues with presence detection using the standard &lt;em>device_tracker&lt;/em> component. Though I live in a small place, being in Tokyo, Home Assistant sometimes stops detecting phones if they are in an area of the apartment a little away from the Home Assistant server. This I suspect is due to the position of the Raspberry Pi and the building material.&lt;/p>
+&lt;p>Doing some research I came across a possible solution using multiple BLE devices. I have opted to use &lt;a href="https://github.com/andrewjfreyer/monitor">Monitor&lt;/a> a bash script solution.&lt;/p>
+&lt;p>This is a guide mostly for myself. I need to remember how it was setup. My approach has been to try and avoid rewriting my configuration and use most of my existing &lt;em>tracker_device&lt;/em> automations.&lt;/p>
+&lt;h3 id="setup-mosquitto-mqtt-on-your-home-assistant">Setup Mosquitto (MQTT) on your Home Assistant&lt;/h3>
+&lt;p>I configured MQTT to use a username and password. This is all that is really needed to get things started.
+If MQTT is already setup. Skip this step.&lt;/p>
+&lt;h3 id="hardware">Hardware&lt;/h3>
+&lt;p>In addition to my Home Assistant server. I have:&lt;/p>
+&lt;ul>
+&lt;li>Raspberry Pi Zero WH&lt;/li>
+&lt;li>Raspberry Pi 2 + Bluetooth dongle&lt;/li>
+&lt;/ul>
+&lt;p> &lt;/p>
+&lt;h3 id="installation">Installation&lt;/h3>
+&lt;h4 id="os">OS&lt;/h4>
+&lt;p>For the most part I followed the guide at Level1Techs.&lt;/p>
+&lt;h4 id="setup-your-raspberry-pi-zero-wh">Setup your Raspberry Pi Zero W(H)&lt;/h4>
+&lt;ol>
+&lt;li>Download Raspbian&lt;/li>
+&lt;li>Image Raspbian&lt;/li>
+&lt;li>Mount the Boot Partition&lt;/li>
+&lt;li>Create wpa_supplicant.conf with this config:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="nv">country&lt;/span>&lt;span class="o">=&lt;/span>US
+&lt;span class="ln"> 2&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="nv">ctrl_interface&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">DIR&lt;/span>&lt;span class="o">=&lt;/span>/var/run/wpa_supplicant &lt;span class="nv">GROUP&lt;/span>&lt;span class="o">=&lt;/span>netdev
+&lt;span class="ln"> 4&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="nv">update_config&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;span class="ln"> 6&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="nv">network&lt;/span>&lt;span class="o">={&lt;/span>
+&lt;span class="ln"> 8&lt;/span>
+&lt;span class="ln"> 9&lt;/span>&lt;span class="nv">ssid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Wireless Network Name&amp;#34;&lt;/span>
+&lt;span class="ln">10&lt;/span>
+&lt;span class="ln">11&lt;/span>&lt;span class="nv">psk&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Wireless Network Password&amp;#34;&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span>&lt;span class="nv">key_mgmt&lt;/span>&lt;span class="o">=&lt;/span>WPA-PSK
+&lt;span class="ln">14&lt;/span>
+&lt;span class="ln">15&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;li>touch ssh&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span> touch ssh
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Step 5 will enable ssh to your device.&lt;/p>
+&lt;h4 id="finding-your-new-pi-on-the-network">Finding your new Pi on the network&lt;/h4>
+&lt;p>If your network is small you can simply run:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>arp -a
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will give you a list of devices currently connected to your network. So run this once before you power up the new Pi.&lt;/p>
+&lt;p>After you power up the Pi. Run the &lt;em>arp&lt;/em> command again and see which new address appears in your list.&lt;/p>
+&lt;p>ssh into the new Pi using the standard username and password. Don't forget to change the password just as a matter of good security practice.&lt;/p>
+&lt;h4 id="packages--monitor">Packages / monitor&lt;/h4>
+&lt;h5 id="update-system-and-packages">Update system and packages&lt;/h5>
+&lt;p>Issue the follow commands&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>apt update &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apt upgrade
+&lt;span class="ln">2&lt;/span>apt dist-upgrade
+&lt;span class="ln">3&lt;/span>apt install pi-bluetooth
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Next reboot the device and login again once it's up.&lt;/p>
+&lt;h5 id="install-git-and-mosquitto">Install git and Mosquitto&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+&lt;span class="ln">2&lt;/span>sudo apt-key add mosquitto-repo.gpg.key
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are running Sketch&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are running Buster&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-buster.list
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>then&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>apt-get update
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you have any issues. Take a look at &lt;strong>The Level 1 Way&lt;/strong> guide listed below. You may need to install some additional packages.&lt;/p>
+&lt;h5 id="setup-monitor">Setup Monitor&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>pi@raspberrypi:~ $ git clone https://github.com/andrewjfreyer/monitor.git
+&lt;span class="ln">2&lt;/span>pi@raspberrypi:~ $ &lt;span class="nb">cd&lt;/span> monitor/
+&lt;span class="ln">3&lt;/span>pi@raspberrypi:~/monitor $ chmod +x ./monitor.sh
+&lt;span class="ln">4&lt;/span>pi@raspberrypi:~/monitor $ ./monitor.sh
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I suggest running the command a few times to learn how monitor.sh works. Also this needs to be done to create the initial setup files that we will be editing. You might need to run the command with sudo if you are not logged in as root. When you are satisfied check that &lt;strong>monitor&lt;/strong> is running with:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>systemctl status monitor
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If not:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>systemctl &lt;span class="nb">enable&lt;/span> monitor
+&lt;span class="ln">2&lt;/span>systemctl start monitor
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I will not document how I edited the &lt;strong>/etc/systemd/system/monitor.services&lt;/strong> file. You will find information on options that others have used in the links below.&lt;/p>
+&lt;p>Next add any BT MAC addresses that you know to the &lt;strong>known_static_addresses&lt;/strong> file.&lt;/p>
+&lt;p>One thing to note. The &lt;em>alias&lt;/em> will be the name of the device in MQTT. If there is no alias, the MAC address will be used. More on this later.&lt;/p>
+&lt;p>&lt;strong>Updated 2020/Nov/12&lt;/strong>&lt;/p>
+&lt;p>If you are monitoring a &lt;em>Tile Device&lt;/em> do not place it in the &lt;strong>known_static_addresses&lt;/strong>. This will make monitor see the device twice. Once with confidence 100% and again with 0%. The work a round that I have seen it to not place its MAC address in the file. You will need to use the MAC address instead of an alias in the sensor configuration.&lt;/p>
+&lt;p>&lt;strong>References&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/bluetooth-le-tracker-issues/97705/33">1. Home Assistant Community - Bluetooth-le-Tracking-Issues&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection/68505/1416">2. Home Assistant Community - monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/andrewjfreyer/monitor/issues/183">3. GitHub - Active scanner + overrule HA 'consider_home' #183&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="c1"># STATIC MAC ADDRESS LIST&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln">5&lt;/span>&lt;span class="c1"># 00:00:00:00:00:00 Alias #comment&lt;/span>
+&lt;span class="ln">6&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln">7&lt;/span> 00:00:00:00:00:00 person1_Phone
+&lt;span class="ln">8&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Configure &lt;strong>mqtt_preferences&lt;/strong> so that we can connect and publish to our MQTT topics. &lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="c1"># MOSQUITTO PREFERENCES&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln"> 6&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="c1"># IP ADDRESS OR HOSTNAME OF MQTT BROKER&lt;/span>
+&lt;span class="ln"> 8&lt;/span>&lt;span class="nv">mqtt_address&lt;/span>&lt;span class="o">=&lt;/span>192.168.X.X
+&lt;span class="ln"> 9&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="c1"># MQTT BROKER USERNAME&lt;/span>
+&lt;span class="ln">11&lt;/span>&lt;span class="nv">mqtt_user&lt;/span>&lt;span class="o">=&lt;/span>mqtt_username &lt;span class="c1"># This is what was configured on the MQTT Server.&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span>&lt;span class="c1"># MQTT BROKER PASSWORD&lt;/span>
+&lt;span class="ln">14&lt;/span>&lt;span class="nv">mqtt_password&lt;/span>&lt;span class="o">=&lt;/span>password &lt;span class="c1">#Same case as username.&lt;/span>
+&lt;span class="ln">15&lt;/span>
+&lt;span class="ln">16&lt;/span>&lt;span class="c1"># MQTT PUBLISH TOPIC ROOT&lt;/span>
+&lt;span class="ln">17&lt;/span>&lt;span class="nv">mqtt_topicpath&lt;/span>&lt;span class="o">=&lt;/span>monitor &lt;span class="c1"># &amp;lt;- most configs use this.&lt;/span>
+&lt;span class="ln">18&lt;/span>
+&lt;span class="ln">19&lt;/span>&lt;span class="c1"># PUBLISHER IDENTITY&lt;/span>
+&lt;span class="ln">20&lt;/span>&lt;span class="nv">mqtt_publisher_identity&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;livingarea&amp;#39;&lt;/span> &lt;span class="c1">#&amp;lt;- ID for one of the Pi servers eg. Pi Zero W&lt;/span>
+&lt;span class="ln">21&lt;/span>
+&lt;span class="ln">22&lt;/span>&lt;span class="c1"># MQTT PORT&lt;/span>
+&lt;span class="ln">23&lt;/span>&lt;span class="nv">mqtt_port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;1883&amp;#39;&lt;/span>
+&lt;span class="ln">24&lt;/span>
+&lt;span class="ln">25&lt;/span>&lt;span class="c1"># MQTT CERTIFICATE FILE&lt;/span>
+&lt;span class="ln">26&lt;/span>&lt;span class="nv">mqtt_certificate_path&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;span class="ln">27&lt;/span>
+&lt;span class="ln">28&lt;/span>&lt;span class="c1">#MQTT VERSION (EXAMPLE: &amp;#39;mqttv311&amp;#39;)&lt;/span>
+&lt;span class="ln">29&lt;/span>&lt;span class="nv">mqtt_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="note">Note:&lt;/h4>
+&lt;p>&lt;strong>mqtt_topicpath&lt;/strong> should be the same on each of your monitoring servers.&lt;/p>
+&lt;p>&lt;strong>mqtt_publisher_identity&lt;/strong> must be unique for each server that will be sending MQTT messages to the HA server.&lt;/p>
+&lt;p>Test that MQTT server is getting the new notifications from your Pi devices.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>mosquitto_sub -h 192.168.X.X -u username -P passwd -t monitor/#
+&lt;span class="ln">2&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="c1"># Output&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="o">{&lt;/span>&lt;span class="s2">&amp;#34;id&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;00:00:00:00:00:00&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;confidence&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;100&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;person1_Phone&amp;#34;&lt;/span>,
+&lt;span class="ln">5&lt;/span> &lt;span class="s2">&amp;#34;manufacturer&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;Apple Inc&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;type&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;KNOWN_MAC&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;retained&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;true&amp;#34;&lt;/span>,
+&lt;span class="ln">6&lt;/span> &lt;span class="s2">&amp;#34;timestamp&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;.....&amp;#34;&lt;/span>
+&lt;span class="ln">7&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we can see that devices are being seen and their &lt;em>confidence level&lt;/em> from the &lt;em>monitor.sh&lt;/em> is being reported.&lt;/p>
+&lt;p>At this point, after setting up all of the monitoring devices, it is time to move onto setting up HA.&lt;/p>
+&lt;h3 id="home-assistant-configuration">Home Assistant Configuration.&lt;/h3>
+&lt;h4 id="setup-the-sensor-part-of-the-configuration">Setup the sensor part of the configuration.&lt;/h4>
+&lt;p>We need to collect the MQTT messages into HA&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/front/person1_phone&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Front&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/livingarea/person1_phone&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Living Area&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="added-2020nov12">Added 2020/Nov/12&lt;/h4>
+&lt;h5 id="tile-device-example">Tile Device Example&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/front/XX::XX:XX:XX:XX:XX&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Front&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/livingarea/XX::XX:XX:XX:XX:XX&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Living Area&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>I have two entries as I have two devices running &lt;strong>monitor&lt;/strong> in two locations in my home.&lt;/li>
+&lt;li>The topic is &lt;em>person1_phone&lt;/em> which matches the alias used in the &lt;strong>known_static_addresses&lt;/strong> file. If there was not an alias. These would be the actual MAC Addresses.&lt;/li>
+&lt;/ol>
+&lt;p>The next part is still a work in progress. This is still in the sensor.yaml file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">min_max&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 Phone Home Confidence&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mean&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">round_digits&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_ids&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">sensor.person1_phone_front&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">sensor.person1_phone_living_area&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This combines these two sensors and return the mean of their two values. In my case this often returns 50% since only one monitor server can detect the phone based on where it is.&lt;/p>
+&lt;p>Next we create a sensor that will return a 'True' or 'False' state. As mentioned my min_max generally returns 50%. So I want to have 'True' if the value is &amp;gt; 45% for safety.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">template&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sensors&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">is_person1_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">friendly_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Is Person1 Home?&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ state_attr(&amp;#34;sensor.person1_home_confidence&amp;#34;,&amp;#34;mean&amp;#34;) | float &amp;gt; 45 }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;strong>value_template&lt;/strong> could probably be changed to
+&lt;em>states('sensor.person1_home_confidence')&lt;/em>.&lt;/p>
+&lt;p>At this point we have a sensor that returns true or false if it can see the bluetooth device we are looking for. But it's not actually connected to any HA automations.&lt;/p>
+&lt;p>In my existing configuration I am using&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">bluetooth_le_tracker&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">bluetooth_tracker&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which auto populates the &lt;strong>known_devices&lt;/strong> file.
+These devices are then used as triggers for my automations. I want to avoid making larges changes. So we are going to make some virtual device_trackers. These will replace the ones created using the provided bluetooth trackers.&lt;/p>
+&lt;p>In the &lt;strong>devices_tracker&lt;/strong> configuration file we will add something like:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">source_type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;bluetooth&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">devices&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">person1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;location/person1&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We are basically saying that we are want an MQTT Topic called location/person1. We will be publishing state to this with some scripts later.&lt;/p>
+&lt;p>This is where I actually got stuck and it wasn't until I found &lt;a href="https://community.home-assistant.io/t/combining-multiple-device-trackers-into-one-using-mqtt/45324">this bit of wisdom&lt;/a> that things fell into place.&lt;/p>
+&lt;p>We need to manaully add entries to the &lt;strong>known_devices&lt;/strong> file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">person1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">hide_if_away&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">icon&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">mac&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">picture&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">vendor&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">track&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Test Person&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We now have a &lt;strong>device_tracker.person1&lt;/strong> which will have its state taken from &lt;strong>MQTT:location/person1&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>Note:&lt;/strong>&lt;/p>
+&lt;p>If you test this state you will get a &lt;strong>source: null&lt;/strong>. This will not be set until we first publish to MQTT.&lt;/p>
+&lt;h4 id="moving-on-to-the-scripts">Moving on to the scripts&lt;/h4>
+&lt;p>Now we need to start being able to update the &lt;strong>MQTT:location/person1&lt;/strong> so that &lt;strong>device_tracker.person1&lt;/strong> will have either a &lt;strong>'home'&lt;/strong> or &lt;strong>'not_home'&lt;/strong> state.&lt;/p>
+&lt;p>We will edit our script configuration files.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">&amp;#39;person1_home&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 Home&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">location/person1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">&amp;#39;person1_away&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 away&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">location/person1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;not_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>These two scripts will update the device_tracker so that we can use their state. We will need an automation so that the state is updated.&lt;/p>
+&lt;p>But I will add a bonus script here as well. This will trigger a bluetooth rescan. This can be triggered on a restart of HA with an automation.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">&amp;#39;bt_rescan&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Issue BT Rescan&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">monitor/scan/restart&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Add the following configuration to automations.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set Person home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sensor.is_person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;sensor.is_person1_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;True&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set Person1 away&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sensor.is_person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;sensor.is_person1_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;False&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.person1_away&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is where we link everything together. We also have the automations trigger when HA starts up. So we get some initial state.&lt;/p>
+&lt;p>I personally also opted to have a BT scan triggered when ever HA restarts.&lt;/p>
+&lt;p>I added this configuration to automations.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;HA Started&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.bt_rescan&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The final step is the replace all the previous device_tracker references with the new manaully created ones listed in &lt;strong>known_devices.yaml&lt;/strong>&lt;/p>
+&lt;h3 id="final-thoughts">Final Thoughts&lt;/h3>
+&lt;p>This is not yet an Ideal setup. I am still working on it. But if you look at the blog links below you might get some more ideas. I am still reading through them and improving things.&lt;/p>
+&lt;p>As I stated at the start. This is mostly for me so that I have some documentation for myself.&lt;/p>
+&lt;p>But I hope others might find it useful. Since I had to work through it and piece it together.&lt;/p>
+&lt;p>Thanks to those who posted the work online. It was invaluable. The main part I found missing was the &lt;strong>known_devices.yaml&lt;/strong>&lt;/p>
+&lt;hr/>
+&lt;h3 id="references">References&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://forum.level1techs.com/t/bluetooth-presence-detection-for-home-automation-the-level1-way/148516">Bluetooth Presence Detection for Home Automation – The Level1 Way&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection/68505">[monitor] Reliable, Multi-User, Distributed Bluetooth Occupancy/Presence Detection&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="these-are-links-to-a-single-ha-user-the-config-is-far-beyond-what-i-need-but-its-a-great-resource">These are links to a single HA user. The config is far beyond what I need. But it's a great resource&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.ceard.tech/2019/03/presence-detection-are-we-nearly-there.html">Presence detection - are we nearly there yet?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.ceard.tech/2019/10/presence-detection-final-countdown.html">Presence detection, the final countdown?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.ceard.tech/2018/09/a-while-back-i-covered-how-i-was-doing.html">Presence detection updated&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/DubhAd/Home-AssistantConfig">GitHub Repo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="some-missing-magic">Some missing Magic&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/combining-multiple-device-trackers-into-one-using-mqtt/45324">The missing magic to make MQTT State usable as a device_tracker&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="software">Software&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/andrewjfreyer/monitor">Monitor&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Use launchd instead of crontab on your Mac</title><link>https://bas-man.github.io/post/launchd-instead-of-cron/</link><pubDate>Tue, 18 Aug 2020 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/launchd-instead-of-cron/</guid><description>
+&lt;p>As of &lt;code>Mac OS 10.4&lt;/code> &lt;strong>crontab&lt;/strong> has been depreciated but not ended. So its a good idea to know how to use its replacement under Mac OS. Welcome to &lt;code>Launchd&lt;/code>.&lt;/p>
+&lt;p>This will be a short guide on how to use launchd in a simple form to replace a crontab job. In my case I am automating the backup of my Plex server.
+You can see my previous article &lt;a href="https://bas-man.github.io/post/plex-macos-backup/">here&lt;/a>&lt;/p>
+&lt;p>Launchd has a lot of other features. I will not look at them here.&lt;/p>
+&lt;p>You can checkout these other resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.launchd.info">launchd.info&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html#//apple_ref/doc/uid/10000172i-SW7-BCIEDDBJ">The offical Apple page.&lt;/a>&lt;/li>
+&lt;li>command line: &lt;code>man launchd.plist&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>A basic example of a &lt;code>plist&lt;/code> file for &lt;code>launchd&lt;/code>. In this case we will use &lt;code>plexback.plist&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="ln"> 1&lt;/span>&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="cp">&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34;
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="cp"> &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="nt">&amp;lt;plist&lt;/span> &lt;span class="na">version=&lt;/span>&lt;span class="s">&amp;#34;1.0&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="nt">&amp;lt;dict&amp;gt;&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Label&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln"> 7&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>my.example.backupplex&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>ProgramArguments&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="nt">&amp;lt;array&amp;gt;&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>/usr/bin/caffeinate&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>/User/ACCOUNT/bin/plexbackup.sh&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;span class="ln">12&lt;/span> &lt;span class="nt">&amp;lt;/array&amp;gt;&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>StartCalendarInterval&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="nt">&amp;lt;dict&amp;gt;&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Hour&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>6&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Minute&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>2&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
+&lt;span class="ln">19&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Weekday&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>0&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="nt">&amp;lt;/dict&amp;gt;&lt;/span>
+&lt;span class="ln">22&lt;/span>&lt;span class="nt">&amp;lt;/dict&amp;gt;&lt;/span>
+&lt;span class="ln">23&lt;/span>&lt;span class="nt">&amp;lt;/plist&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note:
+Replace &lt;code>ACCOUNT&lt;/code> with your login username.&lt;/p>
+&lt;p>You will need to create this file under your ~/Library/LaunchAgents/&lt;/p>
+&lt;p>If your system is always running and never shuts down. You will need to issue the command:&lt;br>
+&lt;code>launchctl load -w ~/Library/LaunchAgents/plexback.plist&lt;/code>&lt;br>
+This will register your task with the scheduler that is used with launchd.&lt;/p></description></item><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>I wanted to be able to publish a new post that has already been written at a future date, without needing to manually publish the article.&lt;/p>
+&lt;h2 id="the-solution">The Solution&lt;/h2>
+&lt;p>Github Actions.&lt;/p>
+&lt;p>I already push updates to my site using github actions. So I thought why not have articles published in the future after they are written.&lt;/p>
+&lt;p>A little background. I do all my edits in a private GitHub repo. When I push to master in this repo. A workflow action is triggered that causes my live site to be updated. The automatic merge that this system creates, results in my live site being updated without my taking further actions. See my previous &lt;a href="https://bas-man.github.io/post/hugo-private-to-public-github/">post&lt;/a>.&lt;/p>
+&lt;p>How I implemented this:
+I added the file &lt;code>publish.yml&lt;/code> to my &lt;code>.github/workflows&lt;/code> folder.&lt;/p>
+&lt;p>Note:
+cron runs based on UTC time. So you will need to take that into account when you define your cron job's time.&lt;/p>
+&lt;p>If you need some help understanding the crontab format. I would refer you to &lt;a href="https://crontab.guru">crontab.guru&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Publish Future Article&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">schedule&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">cron&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;30 0 8 8 *&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Publish at 00:30 on August 8th UTC time.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">createPullRequest&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/checkout@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ref&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">site-update&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Required to make this commit ahead of the actual push&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Make changes to pull request&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">date +%s &amp;gt; lastAutoUpdate.txt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Create Pull Request&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">peter-evans/create-pull-request@v3.1.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">token&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ secrets.GITHUB_TOKEN }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">commit-message&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ready to publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">committer&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub &amp;lt;noreply@github.com&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">author&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ github.actor }} &amp;lt;${{ github.actor }}@users.noreply.github.com&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">signoff&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">base&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">master&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">28&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">branch&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PublishArticle&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">29&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;PublishNewArticle&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">30&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">31&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Testing to publish a new article.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">32&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">labels&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">33&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">automerge&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">34&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This published my new article at 00:30 on August 8th UTC.&lt;/p>
+&lt;p>Note:&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>ref: site-update&lt;/code> tells the action which branch to copy to generate the pull request.&lt;/li>
+&lt;li>&lt;code>base: master&lt;/code> tells the action which branch the pull request should be merged into.&lt;/li>
+&lt;li>&lt;code>branch: PublishArticle&lt;/code> the new temporary branch that the pull request will create. It will be deleted by the auto merge action listed below.&lt;/li>
+&lt;li>The &lt;code>automerge&lt;/code> label is needed to trigger the next action script that follows.&lt;/li>
+&lt;/ol>
+&lt;p>The next thing to do is to create an action that will actually merge this new pull request.&lt;/p>
+&lt;p>I created a file again in the &lt;code>.github/workflows&lt;/code> called &lt;code>automerge.yml&lt;/code>.&lt;/p>
+&lt;p>This file contains:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">automerge&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">pull_request&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">types&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">opened&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">status&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>{}&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">automerge&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Merge pull requests&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">pascalgn/automerge-action@v0.9.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">env&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">GITHUB_TOKEN&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;${{ secrets.GITHUB_TOKEN }}&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">MERGE_DELETE_BRANCH&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I think this whole workflow could be improved to add more useful information to the generated pull_request. Something to consider.&lt;/p>
+&lt;p>In order to use these actions in the current form. You will need to edit the &lt;code>cron:&lt;/code> time each time you want to have an article published in the future. Also note that cron does not support year. So if you leave this cron in place. It will run at the same time each year.&lt;/p>
+&lt;p>I should also point out that the merge actually triggers a push to master. This results in the live site being updated from this private repo.&lt;/p></description></item><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>
+&lt;p>I was researching ways of moving to &lt;a href="https://gohugo.io">Hugo&lt;/a> for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.&lt;/p>
+&lt;p>You can find the action &lt;a href="https://github.com/marketplace/actions/deploy-hugo-to-remote">here&lt;/a>&lt;/p>
+&lt;p>I use the basic example config with minor changes to match my GitHub details.&lt;/p>
+&lt;h2 id="the-basic-setup-is-as-follows">The basic setup is as follows&lt;/h2>
+&lt;ol>
+&lt;li>Create a private repo. This can be anything except site name used in step 2.&lt;/li>
+&lt;li>Create a public repo named &lt;code>username.github.io&lt;/code> where username is your actual GitHub username.&lt;/li>
+&lt;/ol>
+&lt;h2 id="my-workflow">My workflow&lt;/h2>
+&lt;p>Basically I edit my content locally in seperate branch from master. When I am finished and want to publish my content. I merge my changes in to the master branch. I then push my commits to my private repo. This in turn triggers the workflow. The workflow then builds the site in a virtual machine provided by github. It then clears out the public hosting repo and copies over the new contents.&lt;/p>
+&lt;p>Things to note:&lt;/p>
+&lt;ul>
+&lt;li>You will need to configure a &lt;code>Personal Access Token&lt;/code>.
+The workflow I use has a simple guide on this.&lt;/li>
+&lt;/ul></description></item><item><title>CI on Github for Python</title><link>https://bas-man.github.io/post/github-python-action/</link><pubDate>Tue, 04 Aug 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/github-python-action/</guid><description>
+&lt;p>So I finally thought it was time to start doing some continuous intergration testing as well as testing with multiple versions of Python.&lt;/p>
+&lt;p>I had been looking at using things such as &lt;a href="https://circleci.com">CircleCI&lt;/a> or &lt;a href="https://travis-ci.org">Travis-ci&lt;/a>. But I finally decided I would try to use Github's workflow actions.&lt;/p>
+&lt;p>I did some searching and found some guides. As part of that I evenutally came a cross &lt;a href="https://docs.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions">this link&lt;/a> on Github's own docs.&lt;/p>
+&lt;p>Based on these examples. I started working on my own workflow. This is a very lightly modified version of one found on Github. So it's not at all original.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Python package&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">push&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">branches&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">development ]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">build&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">strategy&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">matrix&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">python-version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="m">3.5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.6&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.8&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/checkout@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set up Python ${{ matrix.python-version }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/setup-python@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">python-version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ matrix.python-version }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Install dependencies&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="sd"> python -m pip install --upgrade pip
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="sd"> # Add modules required for testing.
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="sd"> pip install pytest pyscaffold==3.2.3 coverage pytest-cov
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="sd"> # Add modules required for functionality.
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="sd"> if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+&lt;/span>&lt;span class="ln">28&lt;/span>&lt;span class="sd"> pip install -e .&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">29&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Test with pytest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">30&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">31&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">pytest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">32&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Basically this will test the module running under several virtual machines running the four versions of python listed. Note that I am not running the code through a linter at this stage. You can see examples of that in the Github guide.&lt;/p></description></item><item><title>Add a cookie warning notice to a Hugo powered site</title><link>https://bas-man.github.io/post/add-cookie-warning/</link><pubDate>Thu, 16 Jul 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/add-cookie-warning/</guid><description>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>How to add a cookie warning notice to a Hugo powered website. But also avoid using a third party service.&lt;/p>
+&lt;h2 id="the-solution">The Solution&lt;/h2>
+&lt;p>Build your own. Well, find someone who built one and shared it on youtube and github.&lt;/p>
+&lt;p>&lt;strong>Disclaimer: This does not constitute any form of legal advice. Use at your own risk.&lt;/strong>&lt;/p>
+&lt;p>Of course if anyone has a better, more complete solution. I would really like hear from you. So drop me a message through &lt;a href="https://github.com/Bas-Man">GitHub&lt;/a>.&lt;/p>
+&lt;p>So many thanks to the original author: Godson Thomas.
+You can find the references below:&lt;/p>
+&lt;p>YouTube:
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/R_-oGJBg3nw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;/p>
+&lt;p>Code located: &lt;a href="https://github.com/Godsont/Cookie-Consent-Banner">GitHub&lt;/a>&lt;/p>
+&lt;h2 id="how-i-worked-this-code-into-my-hugo-site">How I worked this code into my Hugo site.&lt;/h2>
+&lt;p>I created three files under the content folder.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>layouts/partials/cookie-notice.html (using the key component needed for the notice.)
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/d3ebf6d4415aee3e8dba0af2a4d019a9.js">&lt;/script>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>static/my_css/cookie.css (This was directly lifted from the github repo.)
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/8d98a059ac06d2c2860be63c7a736184.js">&lt;/script>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>static/my_js/cookie.js (Again lifted directly from the github repo.)
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/c39ff684e1f8e2051b083a2e4507881f.js">&lt;/script>
+&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The next step was to get this code included in the site build.&lt;/p>
+&lt;p>In my case I am using the &lt;a href="https://themes.gohugo.io/gohugo-theme-ananke/">ananke&lt;/a> theme.&lt;/p>
+&lt;p>This theme has a head-additions.html file with the path of:
+themes/ananke/layouts/partials/&lt;/p>
+&lt;p>So I duplicated this file into my own layouts/partials/ directory and added the following code snippet.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-HTML" data-lang="HTML">&lt;span class="ln">1&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">link&lt;/span> &lt;span class="na">rel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;stylesheet&amp;#34;&lt;/span> &lt;span class="na">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;/my_css/cookie.css&amp;#34;&lt;/span> &lt;span class="p">/&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I then did the same with baseof.html located in:
+themes/ananke/layouts/_defaults/&lt;/p>
+&lt;p>I added the following code just above the closing &amp;lt;/body&amp;gt; tag.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="ln">1&lt;/span>&lt;span class="c">&amp;lt;!--- Only enable cookies for production BAS 2020-07-15 ---&amp;gt;&lt;/span>
+&lt;span class="ln">2&lt;/span>{{ if hugo.IsProduction }}
+&lt;span class="ln">3&lt;/span>{{ partial &amp;#34;cookie-notice.html&amp;#34; }}
+&lt;span class="ln">4&lt;/span>{{ end }}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>With these steps I was able to add a simple cookie notification.&lt;/p></description></item><item><title>Back up your Plex Media Server on Mac OS</title><link>https://bas-man.github.io/post/plex-macos-backup/</link><pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/plex-macos-backup/</guid><description>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>How to automate the backing up of my &lt;a href="https://www.plex.tv">Plex Media Server&lt;/a>&lt;/p>
+&lt;h2 id="solution">Solution&lt;/h2>
+&lt;p>A Bash Script&lt;/p>
+&lt;p>I wanted to automate this process. If I didn't, it probably wouldn't get done.&lt;/p>
+&lt;p>This script was adapted from another GitHub Gist that I found &lt;a href="https://gist.github.com/shnhrrsn/7f22abe085a07e250c851d53db55bae2">here&lt;/a>.&lt;/p>
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/1e86a002ef5c09644567f496553737e9.js">&lt;/script>
+&lt;p>You will probably need to modify the following variables.&lt;/p>
+&lt;ul>
+&lt;li>plexDatabase&lt;/li>
+&lt;li>plexPlistFile&lt;/li>
+&lt;li>backupDirectory&lt;/li>
+&lt;/ul>
+&lt;p>Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not
+complete if your machine can go to sleep. As it suggests use the 'caffeinate' command to prevent
+your machine from sleeping during backup. It will be able to sleep after the script completes.&lt;/p>
+&lt;p>Don't forget to give the script execution permission using 'chmod +x scriptname'&lt;/p>
+&lt;p>Install a cronjob under your user account using:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="ln">1&lt;/span> crontab -e
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The contents of my cronjob&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="ln">1&lt;/span>&lt;span class="nv">SHELL&lt;/span>&lt;span class="o">=&lt;/span>/bin/bash
+&lt;span class="ln">2&lt;/span>&lt;span class="m">06&lt;/span> &lt;span class="m">02&lt;/span> * * Sun /usr/bin/caffeinate &lt;span class="nv">$HOME&lt;/span>/bin/plexbackup.sh
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Notes:&lt;/p>
+&lt;ul>
+&lt;li>You need a SHELL set for the cronjob to run the command.&lt;/li>
+&lt;li>The script runs weekly on Sunday from 6:02am&lt;/li>
+&lt;li>It uses &lt;code>caffeinate&lt;/code> so that the machine does not sleep during backup. I do not have my sleep value set to 0 on this machine.&lt;/li>
+&lt;li>My backup script is located in my home directory under the folder &lt;em>&lt;strong>bin&lt;/strong>&lt;/em>&lt;/li>
+&lt;/ul></description></item><item><title>Delay Services launch until external drive mount is complete</title><link>https://bas-man.github.io/post/startup-apple-script/</link><pubDate>Thu, 14 May 2020 14:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/startup-apple-script/</guid><description>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>How to give Drobo time to mount before processes that need access to it begin and hence block it's mounting by having the mount point in use.&lt;/p>
+&lt;h2 id="solution">Solution&lt;/h2>
+&lt;p>AppleScript&lt;/p>
+&lt;p>Why was this an issue for me. Well I have a Drobo drive which is over 75% full.
+As a result it can take a while to mount and be detected by my old Mac Mini. This would mean that processes that use files from the Drobo would start before it was mounted. And a mount point is use can not be mounted.&lt;/p>
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/1abb5dafe36f0f06f727b00a214e855e.js">&lt;/script>
+&lt;p>So let's break this down a little.&lt;/p>
+&lt;ul>
+&lt;li>line 1 sets a boolean that is false until &amp;quot;Finder&amp;quot; indicates that &amp;quot;Drobo&amp;quot; is seen. Drobo is the name that I have given to my Drobo drive, yes not very original.&lt;/li>
+&lt;li>Lines 2 through to 9 wait for the Drobo to be mounted. Checking every 30 seconds. Once it's been found. The loop condition ends.&lt;/li>
+&lt;li>Lines 12 to 14 then tell each application in turn to launch.&lt;/li>
+&lt;/ul>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;ul>
+&lt;li>Open Apple's Script Editor and export as an Application.&lt;/li>
+&lt;li>Open your &amp;quot;Users and Groups&amp;quot; manager.&lt;/li>
+&lt;li>Select your user account and add the application to your &amp;quot;Login Items&amp;quot;.&lt;/li>
+&lt;li>Remove any applications that you have added to the script from the &amp;quot;Login Items&amp;quot; if they are already present. You should be ok to go next time you reboot your machine.&lt;/li>
+&lt;/ul></description></item><item><title>Site Launch</title><link>https://bas-man.github.io/post/site-launched/</link><pubDate>Mon, 11 May 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/site-launched/</guid><description>
+&lt;p>Well. Finally got around to putting this site together. Actually this is attempt number two.&lt;/p>
+&lt;p>I will try to post some of my small personal projects and thoughts here. I will also probably
+create a cheat sheet for myself.&lt;/p>
+&lt;p>Anyway,
+I shall see how it goes.&lt;/p></description></item></channel></rss>

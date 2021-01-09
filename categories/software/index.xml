@@ -1,5 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>software on Bas-Man's Ponderings</title><link>https://bas-man.github.io/categories/software/</link><description>Recent content in software on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 06 Aug 2020 16:51:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/software/index.xml" rel="self" type="application/rss+xml"/><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>I was researching ways of moving to Hugo for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.
-You can find the action here
-I use the basic example config with minor changes to match my GitHub details.</description></item><item><title>CI on Github for Python</title><link>https://bas-man.github.io/post/github-python-action/</link><pubDate>Tue, 04 Aug 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/github-python-action/</guid><description>So I finally thought it was time to start doing some continuous intergration testing as well as testing with multiple versions of Python.
-I had been looking at using things such as CircleCI or Travis-ci. But I finally decided I would try to use Github&amp;rsquo;s workflow actions.
-I did some searching and found some guides. As part of that I evenutally came a cross this link on Github&amp;rsquo;s own docs.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>software on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/software/</link><description>Recent content in software on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Thu, 06 Aug 2020 16:51:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/software/index.xml" rel="self" type="application/rss+xml"/><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>
+&lt;p>I was researching ways of moving to &lt;a href="https://gohugo.io">Hugo&lt;/a> for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.&lt;/p>
+&lt;p>You can find the action &lt;a href="https://github.com/marketplace/actions/deploy-hugo-to-remote">here&lt;/a>&lt;/p>
+&lt;p>I use the basic example config with minor changes to match my GitHub details.&lt;/p>
+&lt;h2 id="the-basic-setup-is-as-follows">The basic setup is as follows&lt;/h2>
+&lt;ol>
+&lt;li>Create a private repo. This can be anything except site name used in step 2.&lt;/li>
+&lt;li>Create a public repo named &lt;code>username.github.io&lt;/code> where username is your actual GitHub username.&lt;/li>
+&lt;/ol>
+&lt;h2 id="my-workflow">My workflow&lt;/h2>
+&lt;p>Basically I edit my content locally in seperate branch from master. When I am finished and want to publish my content. I merge my changes in to the master branch. I then push my commits to my private repo. This in turn triggers the workflow. The workflow then builds the site in a virtual machine provided by github. It then clears out the public hosting repo and copies over the new contents.&lt;/p>
+&lt;p>Things to note:&lt;/p>
+&lt;ul>
+&lt;li>You will need to configure a &lt;code>Personal Access Token&lt;/code>.
+The workflow I use has a simple guide on this.&lt;/li>
+&lt;/ul></description></item><item><title>CI on Github for Python</title><link>https://bas-man.github.io/post/github-python-action/</link><pubDate>Tue, 04 Aug 2020 00:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/github-python-action/</guid><description>
+&lt;p>So I finally thought it was time to start doing some continuous intergration testing as well as testing with multiple versions of Python.&lt;/p>
+&lt;p>I had been looking at using things such as &lt;a href="https://circleci.com">CircleCI&lt;/a> or &lt;a href="https://travis-ci.org">Travis-ci&lt;/a>. But I finally decided I would try to use Github's workflow actions.&lt;/p>
+&lt;p>I did some searching and found some guides. As part of that I evenutally came a cross &lt;a href="https://docs.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions">this link&lt;/a> on Github's own docs.&lt;/p>
+&lt;p>Based on these examples. I started working on my own workflow. This is a very lightly modified version of one found on Github. So it's not at all original.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Python package&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">push&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">branches&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">development ]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">build&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">strategy&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">matrix&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">python-version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="m">3.5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.6&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3.8&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/checkout@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set up Python ${{ matrix.python-version }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/setup-python@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">python-version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ matrix.python-version }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Install dependencies&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="sd"> python -m pip install --upgrade pip
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="sd"> # Add modules required for testing.
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="sd"> pip install pytest pyscaffold==3.2.3 coverage pytest-cov
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="sd"> # Add modules required for functionality.
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="sd"> if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+&lt;/span>&lt;span class="ln">28&lt;/span>&lt;span class="sd"> pip install -e .&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">29&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Test with pytest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">30&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">31&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">pytest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">32&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Basically this will test the module running under several virtual machines running the four versions of python listed. Note that I am not running the code through a linter at this stage. You can see examples of that in the Github guide.&lt;/p></description></item></channel></rss>

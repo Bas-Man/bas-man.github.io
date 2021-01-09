@@ -1,6 +1,91 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>blog on Bas-Man's Ponderings</title><link>https://bas-man.github.io/tags/blog/</link><description>Recent content in blog on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 08 Aug 2020 08:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>The Challenge I wanted to be able to publish a new post that has already been written at a future date, without needing to manually publish the article.
-The Solution Github Actions.
-I already push updates to my site using github actions. So I thought why not have articles published in the future after they are written.
-A little background. I do all my edits in a private GitHub repo. When I push to master in this repo.</description></item><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>I was researching ways of moving to Hugo for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.
-You can find the action here
-I use the basic example config with minor changes to match my GitHub details.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>blog on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/blog/</link><description>Recent content in blog on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Sat, 08 Aug 2020 08:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>I wanted to be able to publish a new post that has already been written at a future date, without needing to manually publish the article.&lt;/p>
+&lt;h2 id="the-solution">The Solution&lt;/h2>
+&lt;p>Github Actions.&lt;/p>
+&lt;p>I already push updates to my site using github actions. So I thought why not have articles published in the future after they are written.&lt;/p>
+&lt;p>A little background. I do all my edits in a private GitHub repo. When I push to master in this repo. A workflow action is triggered that causes my live site to be updated. The automatic merge that this system creates, results in my live site being updated without my taking further actions. See my previous &lt;a href="https://bas-man.github.io/post/hugo-private-to-public-github/">post&lt;/a>.&lt;/p>
+&lt;p>How I implemented this:
+I added the file &lt;code>publish.yml&lt;/code> to my &lt;code>.github/workflows&lt;/code> folder.&lt;/p>
+&lt;p>Note:
+cron runs based on UTC time. So you will need to take that into account when you define your cron job's time.&lt;/p>
+&lt;p>If you need some help understanding the crontab format. I would refer you to &lt;a href="https://crontab.guru">crontab.guru&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Publish Future Article&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">schedule&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">cron&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;30 0 8 8 *&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Publish at 00:30 on August 8th UTC time.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">createPullRequest&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">actions/checkout@v2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ref&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">site-update&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Required to make this commit ahead of the actual push&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Make changes to pull request&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">date +%s &amp;gt; lastAutoUpdate.txt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Create Pull Request&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">peter-evans/create-pull-request@v3.1.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">with&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">token&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ secrets.GITHUB_TOKEN }}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">commit-message&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ready to publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">committer&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub &amp;lt;noreply@github.com&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">author&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">${{ github.actor }} &amp;lt;${{ github.actor }}@users.noreply.github.com&amp;gt;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">signoff&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">base&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">master&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">28&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">branch&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PublishArticle&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">29&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;PublishNewArticle&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">30&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">31&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Testing to publish a new article.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">32&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">labels&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;span class="ln">33&lt;/span>&lt;span class="sd"> &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">automerge&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">34&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This published my new article at 00:30 on August 8th UTC.&lt;/p>
+&lt;p>Note:&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>ref: site-update&lt;/code> tells the action which branch to copy to generate the pull request.&lt;/li>
+&lt;li>&lt;code>base: master&lt;/code> tells the action which branch the pull request should be merged into.&lt;/li>
+&lt;li>&lt;code>branch: PublishArticle&lt;/code> the new temporary branch that the pull request will create. It will be deleted by the auto merge action listed below.&lt;/li>
+&lt;li>The &lt;code>automerge&lt;/code> label is needed to trigger the next action script that follows.&lt;/li>
+&lt;/ol>
+&lt;p>The next thing to do is to create an action that will actually merge this new pull request.&lt;/p>
+&lt;p>I created a file again in the &lt;code>.github/workflows&lt;/code> called &lt;code>automerge.yml&lt;/code>.&lt;/p>
+&lt;p>This file contains:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yml" data-lang="yml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">automerge&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">pull_request&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">types&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">opened&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">status&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>{}&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">automerge&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">runs-on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ubuntu-latest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Merge pull requests&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">uses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">pascalgn/automerge-action@v0.9.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">env&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">GITHUB_TOKEN&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;${{ secrets.GITHUB_TOKEN }}&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">MERGE_DELETE_BRANCH&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I think this whole workflow could be improved to add more useful information to the generated pull_request. Something to consider.&lt;/p>
+&lt;p>In order to use these actions in the current form. You will need to edit the &lt;code>cron:&lt;/code> time each time you want to have an article published in the future. Also note that cron does not support year. So if you leave this cron in place. It will run at the same time each year.&lt;/p>
+&lt;p>I should also point out that the merge actually triggers a push to master. This results in the live site being updated from this private repo.&lt;/p></description></item><item><title>Private Hugo Repo to Public on Github</title><link>https://bas-man.github.io/post/hugo-private-to-public-github/</link><pubDate>Thu, 06 Aug 2020 16:51:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-private-to-public-github/</guid><description>
+&lt;p>I was researching ways of moving to &lt;a href="https://gohugo.io">Hugo&lt;/a> for my site generator. I looked at a few options and as part of this I came a cross a workflow in github that allows me to store my site in a private repo and then publish the site to a public repo without too much fuss.&lt;/p>
+&lt;p>You can find the action &lt;a href="https://github.com/marketplace/actions/deploy-hugo-to-remote">here&lt;/a>&lt;/p>
+&lt;p>I use the basic example config with minor changes to match my GitHub details.&lt;/p>
+&lt;h2 id="the-basic-setup-is-as-follows">The basic setup is as follows&lt;/h2>
+&lt;ol>
+&lt;li>Create a private repo. This can be anything except site name used in step 2.&lt;/li>
+&lt;li>Create a public repo named &lt;code>username.github.io&lt;/code> where username is your actual GitHub username.&lt;/li>
+&lt;/ol>
+&lt;h2 id="my-workflow">My workflow&lt;/h2>
+&lt;p>Basically I edit my content locally in seperate branch from master. When I am finished and want to publish my content. I merge my changes in to the master branch. I then push my commits to my private repo. This in turn triggers the workflow. The workflow then builds the site in a virtual machine provided by github. It then clears out the public hosting repo and copies over the new contents.&lt;/p>
+&lt;p>Things to note:&lt;/p>
+&lt;ul>
+&lt;li>You will need to configure a &lt;code>Personal Access Token&lt;/code>.
+The workflow I use has a simple guide on this.&lt;/li>
+&lt;/ul></description></item></channel></rss>

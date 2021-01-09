@@ -1,2 +1,432 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Home Assistant on Bas-Man's Ponderings</title><link>https://bas-man.github.io/categories/home-assistant/</link><description>Recent content in Home Assistant on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 17 Dec 2020 23:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/home-assistant/index.xml" rel="self" type="application/rss+xml"/><item><title>Send a notification through LINE with AppDaemon with Home Assistant</title><link>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</link><pubDate>Thu, 17 Dec 2020 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</guid><description>The challenge Living in Japan we generally default to using LINE for our messaging needs. At the time of this writing there is no integration for LINE within Home Assistant. Currently I use PushOver for some of my Home Assistant notifications. I also use Zapier with email to trigger notifications to my family LINE group. You can see how I did this here and here.
-I also track some Tile devices to know when family members are home.</description></item><item><title>Presence Detection with BLE using monitor.sh &amp; Home Assistant</title><link>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</link><pubDate>Thu, 12 Nov 2020 10:35:00 +0900</pubDate><guid>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</guid><description>I have been running Home Assistant for a while. Things are going well. But I have had some issues with presence detection using the standard device_tracker component. Though I live in a small place, being in Tokyo, Home Assistant sometimes stops detecting phones if they are in an area of the apartment a little away from the Home Assistant server. This I suspect is due to the position of the Raspberry Pi and the building material.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Home Assistant on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/home-assistant/</link><description>Recent content in Home Assistant on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Thu, 17 Dec 2020 23:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/home-assistant/index.xml" rel="self" type="application/rss+xml"/><item><title>Send a notification through LINE with AppDaemon with Home Assistant</title><link>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</link><pubDate>Thu, 17 Dec 2020 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/home-assistant-adddaemon-line-notification/</guid><description>
+&lt;h1 id="the-challenge">The challenge&lt;/h1>
+&lt;p>Living in Japan we generally default to using &lt;a href="https://mobile.line.me">LINE&lt;/a> for our messaging needs. At the time of this writing there is no integration for LINE within &lt;a href="https://www.home-assistant.io">Home Assistant&lt;/a>. Currently I use &lt;a href="https://pushover.net">PushOver&lt;/a> for some of my Home Assistant notifications. I also use &lt;a href="https://zapier.com">Zapier&lt;/a> with email to trigger notifications to my family LINE group. You can see how I did this &lt;a href="https://dev.to/basman/integrating-line-message-and-zapier-58e6">here&lt;/a> and &lt;a href="https://gmailzapierlinenotify.readthedocs.io/en/latest/">here&lt;/a>.&lt;/p>
+&lt;p>I also track some &lt;a href="https://www.thetileapp.com/">Tile&lt;/a> devices to know when family members are home. And of course I want to keep an eye on the younger members. Know when they leave home, get home and such. I want my wife and myself to get these notifications.&lt;/p>
+&lt;p>Since we already have a LINE group for other notifications. I thought it would be good to just add these to the existing group, and avoid paying for, and installing additional software on to my wife's phone.&lt;/p>
+&lt;p>I have previously used &lt;a href="https://pypi.org/project/line_notify/">line_notify&lt;/a> from &lt;a href="https://pypi.org/">pypyi.org&lt;/a> to send some notifications using Python.&lt;/p>
+&lt;p>But getting this Python module directly connected with Home Assistant is not possible.&lt;/p>
+&lt;h1 id="the-solution">The solution&lt;/h1>
+&lt;ul>
+&lt;li>&lt;a href="https://appdaemon.readthedocs.io/en/latest/">AppDaemon&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pypi.org/project/line_notify/">line_notify&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Following some research I found AppDaemon might meet my needs. AppDaemon is a sandboxed python environment that can be integrated with Home Assistant and has access to entity state and can monitor events within Home Assistant. It also allows you to import external Python modules. Yay. I can use line_notify.&lt;/p>
+&lt;h2 id="how-i-got-it-done">How I got it done&lt;/h2>
+&lt;ol>
+&lt;li>Install AppDaemon. This will vary based on your setup. There is plenty of documentation on this.&lt;/li>
+&lt;li>Add line_notify to the Python modules list in AppDaemon's configuration pane.
+&lt;figure>
+&lt;img src="https://bas-man.github.io/images/PythonPackages.png"/>
+&lt;/figure>
+&lt;/li>
+&lt;li>Generate your Line Bot Token. See my previous &lt;a href="https://dev.to/basman/integrating-line-message-and-zapier-58e6">article&lt;/a> or &lt;a href="https://gmailzapierlinenotify.readthedocs.io/en/latest/">Read the Docs&lt;/a>. Remember to store it somewhere safe.&lt;/li>
+&lt;li>Create your new AppDaemon app.&lt;/li>
+&lt;/ol>
+&lt;h3 id="creating-the-app">Creating the App&lt;/h3>
+&lt;p>The coding will be done in your Home Assistant's &lt;strong>appdaemon&lt;/strong> folder located under your &lt;strong>config&lt;/strong> folder. If you need a visual guide. I would direct you to the YouTube link below.&lt;/p>
+&lt;p>First let's make sure you have your timezone and location information setup correctly. Locate and open your &lt;strong>appdaemon.yaml&lt;/strong> file. In my case my timezone is &lt;em>Asia/Tokyo&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">secrets&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/config/secrets.yaml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">appdaemon&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">latitude&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">XX&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">longitude&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">YY&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">elevation&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">time_zone&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Asia/Tokyo&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">plugins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">HASS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">hass&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ha_url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http://192.168.X.X:8123&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">token&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>!&lt;span class="l">secret appdaemon&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app_init_delay&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">20&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http://127.0.0.1:5050&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">admin&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">api&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">hadashboard&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong>
+Latitude and Longitude could be referenced from your &lt;strong>secrets.yaml&lt;/strong> file and actually, they should be.
+Having an incorrect timezone setting may result in unexpected behaviour.&lt;/p>
+&lt;p>Next open &lt;strong>apps.yaml&lt;/strong> in the &lt;strong>apps&lt;/strong> folder.
+Assuming this a fresh setup, there should just be the hello_world app. So we will be adding a new app below it.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">hello_world&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">module&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">hello&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">class&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HelloWorld&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">line_notify&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">module&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">line_message&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">class&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">LineMessage&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol>
+&lt;li>line_notify -&amp;gt; App Name&lt;/li>
+&lt;li>line_message -&amp;gt; module name. file will be named &lt;em>line_message.py&lt;/em>&lt;/li>
+&lt;li>LineMessage -&amp;gt; Class name used within &lt;em>line_message.py&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p>Next copy hello.py to make a new file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>cp hello.py line_message.py
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Open the new file and add the following code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-Python" data-lang="Python">&lt;span class="ln"> 1&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">appdaemon.plugins.hass.hassapi&lt;/span> &lt;span class="kn">as&lt;/span> &lt;span class="nn">hass&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">line_notify&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">LineNotify&lt;/span>
+&lt;span class="ln"> 3&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="n">LINE_TOKEN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;LINE BOT TOKEN GENERATED PREVIOUSLY&amp;#34;&lt;/span>
+&lt;span class="ln"> 5&lt;/span>
+&lt;span class="ln"> 6&lt;/span>&lt;span class="k">class&lt;/span> &lt;span class="nc">LineMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hass&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Hass&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 7&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">initialize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Starting Line Message Service.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_state&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">person1_home_send&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;device_tracker.person1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;home&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_state&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">person1_away_send&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;device_tracker.person1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;not_home&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">person1_home_send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">entity&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">attribute&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">kwargs&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now_is_between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;07:50:00&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;21:00:00&amp;#34;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Person1 has arrived Home.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">person1_away_send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">entity&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">attribute&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">kwargs&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now_is_between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;07:50:00&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;20:00:00&amp;#34;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Person1 has left Home.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">19&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="k">def&lt;/span> &lt;span class="nf">send_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Sending message {message}&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="n">notify&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">LineNotify&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">LINE_TOKEN&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="n">notify&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Finished sending message&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="what-does-this-code-do">What does this code do?&lt;/h3>
+&lt;ul>
+&lt;li>Unfortunately the Token needs to be hardcoded. From my reading there is currently no way around this.&lt;/li>
+&lt;li>initialize.
+&lt;ul>
+&lt;li>This method is &lt;strong>required&lt;/strong>. If is missing nothing will happen. In this case we are saying the following.&lt;/li>
+&lt;/ul>
+&lt;ol>
+&lt;li>When device_tracker.person1 changes to &lt;em>home&lt;/em> call the method named &lt;em>person1_home_send&lt;/em>&lt;/li>
+&lt;li>When device_tracker.person1 changes to &lt;em>not_home&lt;/em> call the method named &lt;em>person1_away_send&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>person1_home_send
+&lt;ul>
+&lt;li>If this event takes place between 7:50am and 9pm call the &lt;em>send_message&lt;/em> method with the argument provided.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>person1_away_send
+&lt;ul>
+&lt;li>If this event takes place between 7:50am and 8pm call the &lt;em>send_message&lt;/em> method with the argument provided.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>send_message
+&lt;ul>
+&lt;li>This takes the message string as input. Creates the notify object needed to send the message to LINE and then sends it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>This completes the coding of the app. Go back to Home Assistant and restart the AppDaemon.&lt;/p>
+&lt;p>This code can easily be expanded for more use cases.&lt;/p>
+&lt;h1 id="references">References&lt;/h1>
+&lt;ul>
+&lt;li>YouTube: &lt;a href="https://www.youtube.com/watch?v=GVIS7GtqLpo">here&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://notify-bot.line.me/en/">Line Notify Bot&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://notify-bot.line.me/doc/en/">Line Notify Bot Documentation&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Presence Detection with BLE using monitor.sh &amp; Home Assistant</title><link>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</link><pubDate>Thu, 12 Nov 2020 10:35:00 +0900</pubDate><guid>https://bas-man.github.io/post/ble-presence-detection-home-assistant/</guid><description>
+&lt;p>I have been running &lt;a href="https://www.home-assistant.io/hassio/">Home Assistant&lt;/a> for a while. Things are going well. But I have had some issues with presence detection using the standard &lt;em>device_tracker&lt;/em> component. Though I live in a small place, being in Tokyo, Home Assistant sometimes stops detecting phones if they are in an area of the apartment a little away from the Home Assistant server. This I suspect is due to the position of the Raspberry Pi and the building material.&lt;/p>
+&lt;p>Doing some research I came across a possible solution using multiple BLE devices. I have opted to use &lt;a href="https://github.com/andrewjfreyer/monitor">Monitor&lt;/a> a bash script solution.&lt;/p>
+&lt;p>This is a guide mostly for myself. I need to remember how it was setup. My approach has been to try and avoid rewriting my configuration and use most of my existing &lt;em>tracker_device&lt;/em> automations.&lt;/p>
+&lt;h3 id="setup-mosquitto-mqtt-on-your-home-assistant">Setup Mosquitto (MQTT) on your Home Assistant&lt;/h3>
+&lt;p>I configured MQTT to use a username and password. This is all that is really needed to get things started.
+If MQTT is already setup. Skip this step.&lt;/p>
+&lt;h3 id="hardware">Hardware&lt;/h3>
+&lt;p>In addition to my Home Assistant server. I have:&lt;/p>
+&lt;ul>
+&lt;li>Raspberry Pi Zero WH&lt;/li>
+&lt;li>Raspberry Pi 2 + Bluetooth dongle&lt;/li>
+&lt;/ul>
+&lt;p> &lt;/p>
+&lt;h3 id="installation">Installation&lt;/h3>
+&lt;h4 id="os">OS&lt;/h4>
+&lt;p>For the most part I followed the guide at Level1Techs.&lt;/p>
+&lt;h4 id="setup-your-raspberry-pi-zero-wh">Setup your Raspberry Pi Zero W(H)&lt;/h4>
+&lt;ol>
+&lt;li>Download Raspbian&lt;/li>
+&lt;li>Image Raspbian&lt;/li>
+&lt;li>Mount the Boot Partition&lt;/li>
+&lt;li>Create wpa_supplicant.conf with this config:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="nv">country&lt;/span>&lt;span class="o">=&lt;/span>US
+&lt;span class="ln"> 2&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="nv">ctrl_interface&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nv">DIR&lt;/span>&lt;span class="o">=&lt;/span>/var/run/wpa_supplicant &lt;span class="nv">GROUP&lt;/span>&lt;span class="o">=&lt;/span>netdev
+&lt;span class="ln"> 4&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="nv">update_config&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;span class="ln"> 6&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="nv">network&lt;/span>&lt;span class="o">={&lt;/span>
+&lt;span class="ln"> 8&lt;/span>
+&lt;span class="ln"> 9&lt;/span>&lt;span class="nv">ssid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Wireless Network Name&amp;#34;&lt;/span>
+&lt;span class="ln">10&lt;/span>
+&lt;span class="ln">11&lt;/span>&lt;span class="nv">psk&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Wireless Network Password&amp;#34;&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span>&lt;span class="nv">key_mgmt&lt;/span>&lt;span class="o">=&lt;/span>WPA-PSK
+&lt;span class="ln">14&lt;/span>
+&lt;span class="ln">15&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;li>touch ssh&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span> touch ssh
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Step 5 will enable ssh to your device.&lt;/p>
+&lt;h4 id="finding-your-new-pi-on-the-network">Finding your new Pi on the network&lt;/h4>
+&lt;p>If your network is small you can simply run:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>arp -a
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will give you a list of devices currently connected to your network. So run this once before you power up the new Pi.&lt;/p>
+&lt;p>After you power up the Pi. Run the &lt;em>arp&lt;/em> command again and see which new address appears in your list.&lt;/p>
+&lt;p>ssh into the new Pi using the standard username and password. Don't forget to change the password just as a matter of good security practice.&lt;/p>
+&lt;h4 id="packages--monitor">Packages / monitor&lt;/h4>
+&lt;h5 id="update-system-and-packages">Update system and packages&lt;/h5>
+&lt;p>Issue the follow commands&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>apt update &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apt upgrade
+&lt;span class="ln">2&lt;/span>apt dist-upgrade
+&lt;span class="ln">3&lt;/span>apt install pi-bluetooth
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Next reboot the device and login again once it's up.&lt;/p>
+&lt;h5 id="install-git-and-mosquitto">Install git and Mosquitto&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+&lt;span class="ln">2&lt;/span>sudo apt-key add mosquitto-repo.gpg.key
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are running Sketch&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are running Buster&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>wget http://repo.mosquitto.org/debian/mosquitto-buster.list
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>then&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>apt-get update
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you have any issues. Take a look at &lt;strong>The Level 1 Way&lt;/strong> guide listed below. You may need to install some additional packages.&lt;/p>
+&lt;h5 id="setup-monitor">Setup Monitor&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>pi@raspberrypi:~ $ git clone https://github.com/andrewjfreyer/monitor.git
+&lt;span class="ln">2&lt;/span>pi@raspberrypi:~ $ &lt;span class="nb">cd&lt;/span> monitor/
+&lt;span class="ln">3&lt;/span>pi@raspberrypi:~/monitor $ chmod +x ./monitor.sh
+&lt;span class="ln">4&lt;/span>pi@raspberrypi:~/monitor $ ./monitor.sh
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I suggest running the command a few times to learn how monitor.sh works. Also this needs to be done to create the initial setup files that we will be editing. You might need to run the command with sudo if you are not logged in as root. When you are satisfied check that &lt;strong>monitor&lt;/strong> is running with:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>systemctl status monitor
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If not:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>systemctl &lt;span class="nb">enable&lt;/span> monitor
+&lt;span class="ln">2&lt;/span>systemctl start monitor
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I will not document how I edited the &lt;strong>/etc/systemd/system/monitor.services&lt;/strong> file. You will find information on options that others have used in the links below.&lt;/p>
+&lt;p>Next add any BT MAC addresses that you know to the &lt;strong>known_static_addresses&lt;/strong> file.&lt;/p>
+&lt;p>One thing to note. The &lt;em>alias&lt;/em> will be the name of the device in MQTT. If there is no alias, the MAC address will be used. More on this later.&lt;/p>
+&lt;p>&lt;strong>Updated 2020/Nov/12&lt;/strong>&lt;/p>
+&lt;p>If you are monitoring a &lt;em>Tile Device&lt;/em> do not place it in the &lt;strong>known_static_addresses&lt;/strong>. This will make monitor see the device twice. Once with confidence 100% and again with 0%. The work a round that I have seen it to not place its MAC address in the file. You will need to use the MAC address instead of an alias in the sensor configuration.&lt;/p>
+&lt;p>&lt;strong>References&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/bluetooth-le-tracker-issues/97705/33">1. Home Assistant Community - Bluetooth-le-Tracking-Issues&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection/68505/1416">2. Home Assistant Community - monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/andrewjfreyer/monitor/issues/183">3. GitHub - Active scanner + overrule HA 'consider_home' #183&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="c1"># STATIC MAC ADDRESS LIST&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln">5&lt;/span>&lt;span class="c1"># 00:00:00:00:00:00 Alias #comment&lt;/span>
+&lt;span class="ln">6&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln">7&lt;/span> 00:00:00:00:00:00 person1_Phone
+&lt;span class="ln">8&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Configure &lt;strong>mqtt_preferences&lt;/strong> so that we can connect and publish to our MQTT topics. &lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="c1"># MOSQUITTO PREFERENCES&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="c1">#&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="c1"># ---------------------------&lt;/span>
+&lt;span class="ln"> 6&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="c1"># IP ADDRESS OR HOSTNAME OF MQTT BROKER&lt;/span>
+&lt;span class="ln"> 8&lt;/span>&lt;span class="nv">mqtt_address&lt;/span>&lt;span class="o">=&lt;/span>192.168.X.X
+&lt;span class="ln"> 9&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="c1"># MQTT BROKER USERNAME&lt;/span>
+&lt;span class="ln">11&lt;/span>&lt;span class="nv">mqtt_user&lt;/span>&lt;span class="o">=&lt;/span>mqtt_username &lt;span class="c1"># This is what was configured on the MQTT Server.&lt;/span>
+&lt;span class="ln">12&lt;/span>
+&lt;span class="ln">13&lt;/span>&lt;span class="c1"># MQTT BROKER PASSWORD&lt;/span>
+&lt;span class="ln">14&lt;/span>&lt;span class="nv">mqtt_password&lt;/span>&lt;span class="o">=&lt;/span>password &lt;span class="c1">#Same case as username.&lt;/span>
+&lt;span class="ln">15&lt;/span>
+&lt;span class="ln">16&lt;/span>&lt;span class="c1"># MQTT PUBLISH TOPIC ROOT&lt;/span>
+&lt;span class="ln">17&lt;/span>&lt;span class="nv">mqtt_topicpath&lt;/span>&lt;span class="o">=&lt;/span>monitor &lt;span class="c1"># &amp;lt;- most configs use this.&lt;/span>
+&lt;span class="ln">18&lt;/span>
+&lt;span class="ln">19&lt;/span>&lt;span class="c1"># PUBLISHER IDENTITY&lt;/span>
+&lt;span class="ln">20&lt;/span>&lt;span class="nv">mqtt_publisher_identity&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;livingarea&amp;#39;&lt;/span> &lt;span class="c1">#&amp;lt;- ID for one of the Pi servers eg. Pi Zero W&lt;/span>
+&lt;span class="ln">21&lt;/span>
+&lt;span class="ln">22&lt;/span>&lt;span class="c1"># MQTT PORT&lt;/span>
+&lt;span class="ln">23&lt;/span>&lt;span class="nv">mqtt_port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;1883&amp;#39;&lt;/span>
+&lt;span class="ln">24&lt;/span>
+&lt;span class="ln">25&lt;/span>&lt;span class="c1"># MQTT CERTIFICATE FILE&lt;/span>
+&lt;span class="ln">26&lt;/span>&lt;span class="nv">mqtt_certificate_path&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;span class="ln">27&lt;/span>
+&lt;span class="ln">28&lt;/span>&lt;span class="c1">#MQTT VERSION (EXAMPLE: &amp;#39;mqttv311&amp;#39;)&lt;/span>
+&lt;span class="ln">29&lt;/span>&lt;span class="nv">mqtt_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="note">Note:&lt;/h4>
+&lt;p>&lt;strong>mqtt_topicpath&lt;/strong> should be the same on each of your monitoring servers.&lt;/p>
+&lt;p>&lt;strong>mqtt_publisher_identity&lt;/strong> must be unique for each server that will be sending MQTT messages to the HA server.&lt;/p>
+&lt;p>Test that MQTT server is getting the new notifications from your Pi devices.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>mosquitto_sub -h 192.168.X.X -u username -P passwd -t monitor/#
+&lt;span class="ln">2&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="c1"># Output&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="o">{&lt;/span>&lt;span class="s2">&amp;#34;id&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;00:00:00:00:00:00&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;confidence&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;100&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;person1_Phone&amp;#34;&lt;/span>,
+&lt;span class="ln">5&lt;/span> &lt;span class="s2">&amp;#34;manufacturer&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;Apple Inc&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;type&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;KNOWN_MAC&amp;#34;&lt;/span>,&lt;span class="s2">&amp;#34;retained&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;true&amp;#34;&lt;/span>,
+&lt;span class="ln">6&lt;/span> &lt;span class="s2">&amp;#34;timestamp&amp;#34;&lt;/span>:&lt;span class="s2">&amp;#34;.....&amp;#34;&lt;/span>
+&lt;span class="ln">7&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we can see that devices are being seen and their &lt;em>confidence level&lt;/em> from the &lt;em>monitor.sh&lt;/em> is being reported.&lt;/p>
+&lt;p>At this point, after setting up all of the monitoring devices, it is time to move onto setting up HA.&lt;/p>
+&lt;h3 id="home-assistant-configuration">Home Assistant Configuration.&lt;/h3>
+&lt;h4 id="setup-the-sensor-part-of-the-configuration">Setup the sensor part of the configuration.&lt;/h4>
+&lt;p>We need to collect the MQTT messages into HA&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/front/person1_phone&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Front&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/livingarea/person1_phone&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Living Area&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="added-2020nov12">Added 2020/Nov/12&lt;/h4>
+&lt;h5 id="tile-device-example">Tile Device Example&lt;/h5>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/front/XX::XX:XX:XX:XX:XX&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Front&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state_topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;monitor/livingarea/XX::XX:XX:XX:XX:XX&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ value_json.confidence }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">unit_of_measurement&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Person1 Phone Living Area&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>I have two entries as I have two devices running &lt;strong>monitor&lt;/strong> in two locations in my home.&lt;/li>
+&lt;li>The topic is &lt;em>person1_phone&lt;/em> which matches the alias used in the &lt;strong>known_static_addresses&lt;/strong> file. If there was not an alias. These would be the actual MAC Addresses.&lt;/li>
+&lt;/ol>
+&lt;p>The next part is still a work in progress. This is still in the sensor.yaml file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">min_max&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 Phone Home Confidence&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mean&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">round_digits&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_ids&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">sensor.person1_phone_front&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="l">sensor.person1_phone_living_area&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This combines these two sensors and return the mean of their two values. In my case this often returns 50% since only one monitor server can detect the phone based on where it is.&lt;/p>
+&lt;p>Next we create a sensor that will return a 'True' or 'False' state. As mentioned my min_max generally returns 50%. So I want to have 'True' if the value is &amp;gt; 45% for safety.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">template&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sensors&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">is_person1_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">friendly_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Is Person1 Home?&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">value_template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;{{ state_attr(&amp;#34;sensor.person1_home_confidence&amp;#34;,&amp;#34;mean&amp;#34;) | float &amp;gt; 45 }}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;strong>value_template&lt;/strong> could probably be changed to
+&lt;em>states('sensor.person1_home_confidence')&lt;/em>.&lt;/p>
+&lt;p>At this point we have a sensor that returns true or false if it can see the bluetooth device we are looking for. But it's not actually connected to any HA automations.&lt;/p>
+&lt;p>In my existing configuration I am using&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">bluetooth_le_tracker&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">bluetooth_tracker&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which auto populates the &lt;strong>known_devices&lt;/strong> file.
+These devices are then used as triggers for my automations. I want to avoid making larges changes. So we are going to make some virtual device_trackers. These will replace the ones created using the provided bluetooth trackers.&lt;/p>
+&lt;p>In the &lt;strong>devices_tracker&lt;/strong> configuration file we will add something like:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">source_type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;bluetooth&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">devices&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">person1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;location/person1&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We are basically saying that we are want an MQTT Topic called location/person1. We will be publishing state to this with some scripts later.&lt;/p>
+&lt;p>This is where I actually got stuck and it wasn't until I found &lt;a href="https://community.home-assistant.io/t/combining-multiple-device-trackers-into-one-using-mqtt/45324">this bit of wisdom&lt;/a> that things fell into place.&lt;/p>
+&lt;p>We need to manaully add entries to the &lt;strong>known_devices&lt;/strong> file.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">person1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">hide_if_away&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">icon&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">mac&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">picture&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">vendor&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">track&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Test Person&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We now have a &lt;strong>device_tracker.person1&lt;/strong> which will have its state taken from &lt;strong>MQTT:location/person1&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>Note:&lt;/strong>&lt;/p>
+&lt;p>If you test this state you will get a &lt;strong>source: null&lt;/strong>. This will not be set until we first publish to MQTT.&lt;/p>
+&lt;h4 id="moving-on-to-the-scripts">Moving on to the scripts&lt;/h4>
+&lt;p>Now we need to start being able to update the &lt;strong>MQTT:location/person1&lt;/strong> so that &lt;strong>device_tracker.person1&lt;/strong> will have either a &lt;strong>'home'&lt;/strong> or &lt;strong>'not_home'&lt;/strong> state.&lt;/p>
+&lt;p>We will edit our script configuration files.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>&lt;span class="nt">&amp;#39;person1_home&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 Home&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">location/person1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">&amp;#39;person1_away&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Person1 away&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">location/person1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;not_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>These two scripts will update the device_tracker so that we can use their state. We will need an automation so that the state is updated.&lt;/p>
+&lt;p>But I will add a bonus script here as well. This will trigger a bluetooth rescan. This can be triggered on a restart of HA with an automation.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">&amp;#39;bt_rescan&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Issue BT Rescan&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">sequence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mqtt.publish&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">topic&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">monitor/scan/restart&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">payload&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Add the following configuration to automations.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln"> 1&lt;/span>- &lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set Person home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sensor.is_person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;sensor.is_person1_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;True&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Set Person1 away&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sensor.is_person1_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">state&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">entity_id&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;sensor.is_person1_home&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">25&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;False&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">26&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">27&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.person1_away&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is where we link everything together. We also have the automations trigger when HA starts up. So we get some initial state.&lt;/p>
+&lt;p>I personally also opted to have a BT scan triggered when ever HA restarts.&lt;/p>
+&lt;p>I added this configuration to automations.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="ln">1&lt;/span>&lt;span class="nt">alias&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;HA Started&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">initial_state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;on&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">platform&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">homeassistant&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">event&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">start&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">action&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">script.bt_rescan&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The final step is the replace all the previous device_tracker references with the new manaully created ones listed in &lt;strong>known_devices.yaml&lt;/strong>&lt;/p>
+&lt;h3 id="final-thoughts">Final Thoughts&lt;/h3>
+&lt;p>This is not yet an Ideal setup. I am still working on it. But if you look at the blog links below you might get some more ideas. I am still reading through them and improving things.&lt;/p>
+&lt;p>As I stated at the start. This is mostly for me so that I have some documentation for myself.&lt;/p>
+&lt;p>But I hope others might find it useful. Since I had to work through it and piece it together.&lt;/p>
+&lt;p>Thanks to those who posted the work online. It was invaluable. The main part I found missing was the &lt;strong>known_devices.yaml&lt;/strong>&lt;/p>
+&lt;hr/>
+&lt;h3 id="references">References&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://forum.level1techs.com/t/bluetooth-presence-detection-for-home-automation-the-level1-way/148516">Bluetooth Presence Detection for Home Automation – The Level1 Way&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/monitor-reliable-multi-user-distributed-bluetooth-occupancy-presence-detection/68505">[monitor] Reliable, Multi-User, Distributed Bluetooth Occupancy/Presence Detection&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="these-are-links-to-a-single-ha-user-the-config-is-far-beyond-what-i-need-but-its-a-great-resource">These are links to a single HA user. The config is far beyond what I need. But it's a great resource&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.ceard.tech/2019/03/presence-detection-are-we-nearly-there.html">Presence detection - are we nearly there yet?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.ceard.tech/2019/10/presence-detection-final-countdown.html">Presence detection, the final countdown?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.ceard.tech/2018/09/a-while-back-i-covered-how-i-was-doing.html">Presence detection updated&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/DubhAd/Home-AssistantConfig">GitHub Repo&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="some-missing-magic">Some missing Magic&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://community.home-assistant.io/t/combining-multiple-device-trackers-into-one-using-mqtt/45324">The missing magic to make MQTT State usable as a device_tracker&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="software">Software&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/andrewjfreyer/monitor">Monitor&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

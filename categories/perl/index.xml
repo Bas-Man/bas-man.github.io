@@ -1,2 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>perl on Bas-Man's Ponderings</title><link>https://bas-man.github.io/categories/perl/</link><description>Recent content in perl on Bas-Man's Ponderings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 14 Dec 2020 13:19:33 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/perl/index.xml" rel="self" type="application/rss+xml"/><item><title>Detect the OS Perl Code is Running Under</title><link>https://bas-man.github.io/post/detect-os-perl-code-running-under/</link><pubDate>Mon, 14 Dec 2020 13:19:33 +0900</pubDate><guid>https://bas-man.github.io/post/detect-os-perl-code-running-under/</guid><description>I was looking into updating a couple of my perl modules because rt.cpan.org is being sunset early in 2021. As part of this I thought it was time to stop cpan testers from testing my module under Windows since it is currently not really supported.
-I was not sure how to go about doing this, so I reached out the good people in the &amp;ldquo;Perl Programmers&amp;rdquo; group on FaceBook. I got some great links and suggestions.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>perl on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/perl/</link><description>Recent content in perl on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 14 Dec 2020 13:19:33 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/perl/index.xml" rel="self" type="application/rss+xml"/><item><title>Detect the OS Perl Code is Running Under</title><link>https://bas-man.github.io/post/detect-os-perl-code-running-under/</link><pubDate>Mon, 14 Dec 2020 13:19:33 +0900</pubDate><guid>https://bas-man.github.io/post/detect-os-perl-code-running-under/</guid><description>
+&lt;p>I was looking into updating a couple of my perl modules because rt.cpan.org is being sunset early in 2021. As part of this I thought it was time to stop cpan testers from testing my module under Windows since it is currently not really supported.&lt;/p>
+&lt;p>I was not sure how to go about doing this, so I reached out the good people in the &amp;quot;Perl Programmers&amp;quot; group on FaceBook. I got some great links and suggestions. In order to make this easy for me to find. I am documenting some of them here.&lt;/p>
+&lt;ol>
+&lt;li>Top of Makefile.PL&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>die &amp;#39;kaput&amp;#39; if ($^O eq &amp;#39;MSWin32&amp;#39;);
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>
+&lt;p>stackoverflow
+&lt;a href="https://stackoverflow.com/questions/334686/how-can-i-detect-the-operating-system-in-perl?fbclid=IwAR3VcUcuYIaA6QzN42Z679nZMWr7rDUudfv42WmSBJ7VCn-x6AJgt2iaAaU">https://stackoverflow.com/questions/334686/how-can-i-detect-the-operating-system-in-perl?fbclid=IwAR3VcUcuYIaA6QzN42Z679nZMWr7rDUudfv42WmSBJ7VCn-x6AJgt2iaAaU&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Sample for Skipping Mac OS
+&lt;a href="https://metacpan.org/source/LNATION/Mac-OSA-Dialog-Tiny-1.00/Makefile.PL?fbclid=IwAR0up4BQlL5iNU1cyF9dZ_eggLSxu2g5IJLfLN2-2HtOD9X-5MCpvsKuxHk#L7">https://metacpan.org/source/LNATION/Mac-OSA-Dialog-Tiny-1.00/Makefile.PL?fbclid=IwAR0up4BQlL5iNU1cyF9dZ_eggLSxu2g5IJLfLN2-2HtOD9X-5MCpvsKuxHk#L7&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Some links from Erki
+&lt;a href="https://github.com/RexOps/Rex/blob/master/dist.ini?fbclid=IwAR3a1QSMCVCB3l33bX9ohvCDPdmkD6A65KGVzdQEEcUJyPiLKfLbmRws8aE#L23-L25">https://github.com/RexOps/Rex/blob/master/dist.ini?fbclid=IwAR3a1QSMCVCB3l33bX9ohvCDPdmkD6A65KGVzdQEEcUJyPiLKfLbmRws8aE#L23-L25&lt;/a>
+&lt;a href="https://github.com/RexOps/Rex/blob/master/misc/check_supported_OS.pl?fbclid=IwAR0Xocwz2ghPs_FLaUNCUuDqeSbzdkwuUD-92BScTeTTb6JTk5cn58ZFK-w">https://github.com/RexOps/Rex/blob/master/misc/check_supported_OS.pl?fbclid=IwAR0Xocwz2ghPs_FLaUNCUuDqeSbzdkwuUD-92BScTeTTb6JTk5cn58ZFK-w&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>
