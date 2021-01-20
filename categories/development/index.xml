@@ -4,7 +4,7 @@
 &lt;li>I use the free tier. (The process only runs once every 15 minutes. It used to be once every 5 mins.) Which means it has become a bit slow in sending the notifications.&lt;/li>
 &lt;li>I want to learn how to use &lt;a href="https://www.docker.com">Docker&lt;/a>&lt;/li>
 &lt;/ol>
-&lt;p>Once I get a bit further along I will hopefully publish the python code to &lt;a href="https://github.com">GitHub&lt;/a> and document some of the issues and successes as I move along. Check the [Projects page]({{ ref &amp;quot;/projects/&amp;quot; }}) section if you are interested.&lt;/p></description></item><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>
+&lt;p>Once I get a bit further along I will hopefully publish the python code to &lt;a href="https://github.com">GitHub&lt;/a> and document some of the issues and successes as I move along. Check the &lt;a href="https://bas-man.github.io/projects/">Projects page&lt;/a> section if you are interested.&lt;/p></description></item><item><title>Publish your next Hugo blog post automatically using Github Actions</title><link>https://bas-man.github.io/post/hugo-auto-publish/</link><pubDate>Sat, 08 Aug 2020 08:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/hugo-auto-publish/</guid><description>
 &lt;h2 id="the-challenge">The Challenge&lt;/h2>
 &lt;p>I wanted to be able to publish a new post that has already been written at a future date, without needing to manually publish the article.&lt;/p>
 &lt;h2 id="the-solution">The Solution&lt;/h2>
