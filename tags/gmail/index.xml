@@ -1,1 +1,208 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gmail on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/gmail/</link><description>Recent content in Gmail on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Fri, 24 Jul 2020 15:44:35 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/gmail/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gmail on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/gmail/</link><description>Recent content in Gmail on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 14:15:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/gmail/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail Notifications Part 2</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-2/</link><pubDate>Mon, 01 Feb 2021 14:15:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-2/</guid><description>
+&lt;p>Part 2 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;!---| [3. Emails]()
+| [4. Notification]()
+| [5. Systemd / Cron]()
+--->
+&lt;hr>
+&lt;p>Hi again. If you followed the guide I referenced in the previous post. &lt;a href="https://medium.com/better-programming/a-beginners-guide-to-the-google-gmail-api-and-its-documentation-c73495deff08">A Beginner’s Guide to the Gmail API and Its Documentation&lt;/a>. The next section will be somewhat familiar.&lt;/p>
+&lt;p>In this section we will be accessing the labels used within Gmail, creating a new label, and also getting the new label's &lt;strong>id&lt;/strong>. The id is critical because the google API does not use the label's name. It is merely the name displayed in the user interface.&lt;/p>
+&lt;p>I am going to structure some of the code also at this point.&lt;/p>
+&lt;p>This will be the new starting code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">pickle&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nn">os.path&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nn">sys&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">googleapiclient.discovery&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">build&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">google_auth_oauthlib.flow&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">InstalledAppFlow&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">google.auth.transport.requests&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Request&lt;/span>
+&lt;span class="ln"> 5&lt;/span>
+&lt;span class="ln"> 6&lt;/span>&lt;span class="c1"># If modifying these scopes, delete the file token.pickle.&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="n">SCOPES&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;https://www.googleapis.com/auth/gmail.modify&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="s1">&amp;#39;https://www.googleapis.com/auth/gmail.labels&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="ln"> 9&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_service&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&amp;#34;Shows basic usage of the Gmail API.
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="s2"> Lists the user&amp;#39;s Gmail labels.
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="s2"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">None&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="c1"># The file token.pickle stores the user&amp;#39;s access and refresh tokens, and is&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="c1"># created automatically when the authorization flow completes for the first&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="c1"># time.&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">exists&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">19&lt;/span> &lt;span class="k">with&lt;/span> &lt;span class="nb">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;rb&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pickle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="c1"># If there are no (valid) credentials available, let the user log in.&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="ow">or&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">valid&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">expired&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">refresh_token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">refresh&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Request&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;span class="ln">25&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">26&lt;/span> &lt;span class="n">flow&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">InstalledAppFlow&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">from_client_secrets_file&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;span class="ln">27&lt;/span> &lt;span class="s1">&amp;#39;credentials.json&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SCOPES&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">28&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">flow&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run_local_server&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">29&lt;/span> &lt;span class="c1"># Save the credentials for the next run&lt;/span>
+&lt;span class="ln">30&lt;/span> &lt;span class="k">with&lt;/span> &lt;span class="nb">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;wb&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">31&lt;/span> &lt;span class="n">pickle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dump&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">creds&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">32&lt;/span> &lt;span class="c1"># Another option to ignore google cache logging issue&lt;/span>
+&lt;span class="ln">33&lt;/span> &lt;span class="c1"># service = build(&amp;#39;gmail&amp;#39;, &amp;#39;v1&amp;#39;, credentials=creds, cache_discovery=False)&lt;/span>
+&lt;span class="ln">34&lt;/span> &lt;span class="n">service&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">build&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;gmail&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;v1&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">credentials&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">creds&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">35&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">service&lt;/span>
+&lt;span class="ln">36&lt;/span>
+&lt;span class="ln">37&lt;/span>
+&lt;span class="ln">38&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;span class="ln">39&lt;/span> &lt;span class="n">service&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_service&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">40&lt;/span>
+&lt;span class="ln">41&lt;/span>&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;__main__&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">42&lt;/span> &lt;span class="n">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">43&lt;/span>
+&lt;span class="ln">44&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I have moved the code that will connect to the API into its own function call &lt;em>get_service&lt;/em> which returns an object we can use to access the API.
+The keen reader my have noticed that I have updated the SCOPES. I will be modifying emails in a later post in the series and we also need access to the labels to be able to read and modify them.&lt;/p>
+&lt;p>The next set of functions will be added to the file just above: &lt;strong>def main():&lt;/strong>&lt;/p>
+&lt;p>First will will want to be able to get a list of all the labels we have in our Gmail account. This can be done using this code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_labels&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="n">list_of_labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">list_of_labels&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;labels&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>get_labels return a list of json objects. Which are just dictionaries in python.&lt;/p>
+&lt;p>Next we may want to create a new label to use with Gmail. This can be done with following code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">define_label&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mlv&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;show&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">llv&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;labelShow&amp;#34;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="n">label&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">dict&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="n">label&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;messageListVisibility&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mlv&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="n">label&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;labelListVisibility&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">llv&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="n">label&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">name&lt;/span>
+&lt;span class="ln">6&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">label&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is the simplest json form that will create a valid label in Gmail.
+If we call this function:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">define_label&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;test&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>we get the following json string:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="ln">1&lt;/span>{
+&lt;span class="ln">2&lt;/span> &amp;#39;messageListVisibility&amp;#39;: &amp;#39;show&amp;#39;,
+&lt;span class="ln">3&lt;/span> &amp;#39;labelListVisibility&amp;#39;: &amp;#39;labelShow&amp;#39;,
+&lt;span class="ln">4&lt;/span> &amp;#39;name&amp;#39;: &amp;#39;test&amp;#39;
+&lt;span class="ln">5&lt;/span>}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After creating this object we want to actually add it to Gmail. We can do that using the following code.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">add_label_to_gmail&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">label&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="n">created_label&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="n">body&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">label&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">created_label&lt;/span>
+&lt;span class="ln">6&lt;/span> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">7&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What add_label_to_gmail() does is call the API with a body of json containing the information to create a new label within Gmail. If there is a problem, for example, trying to add a new label when one with the name already exists; we will get an exception.&lt;br>
+If everything goes well we will get a new json containing the original json we created, &lt;em>but&lt;/em> it will also now contain the label's &lt;em>id&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>{
+&lt;span class="ln">2&lt;/span> &amp;#39;id&amp;#39;: &amp;#39;Label_30&amp;#39;,
+&lt;span class="ln">3&lt;/span> &amp;#39;name&amp;#39;: &amp;#39;test&amp;#39;,
+&lt;span class="ln">4&lt;/span> &amp;#39;messageListVisibility&amp;#39;: &amp;#39;show&amp;#39;,
+&lt;span class="ln">5&lt;/span> &amp;#39;labelListVisibility&amp;#39;: &amp;#39;labelShow&amp;#39;
+&lt;span class="ln">6&lt;/span>}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can now get that new &lt;em>id&lt;/em> using the next function&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_new_label_id&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">new_label&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">new_label&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;id&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This simply returns label as a string.&lt;/p>
+&lt;p>In practice this means making the following set of calls.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">new_label&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">define_label&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;test&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="n">new_label&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">add_label_to_gmail&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">new_label&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="n">new_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_new_label_id&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">new_label&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But why or how do we use this new &lt;em>id&lt;/em> once its been created and added to Gmail?&lt;br>
+As mentioned at in the first article. I am working on making a system that queries and sends notifications based on some emails. I have a need to query Gmail fairly frequently during certain times of the day, say once every 5 minutes. Gmail's search options only allows me to limit my search conditions to emails that are newer_than:1day. That means, I will see the same emails repeatedly triggering multiple notifications.&lt;/p>
+&lt;p>The fix? Add a label when a message is processed and then use &lt;em>-label:labelname&lt;/em> in the search string. Meaning that once an email is processed. It won't get processed a second time.&lt;/p>
+&lt;p>How do you add a label to a message?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">add_label_to_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg_id&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">label_id&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 2&lt;/span> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 3&lt;/span> &lt;span class="n">msg&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">messages&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">modify&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 4&lt;/span> &lt;span class="nb">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">msg_id&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 5&lt;/span> &lt;span class="n">body&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s1">&amp;#39;removeLabelIds&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[],&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="s1">&amp;#39;addLabelIds&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">label_id&lt;/span>&lt;span class="p">]}&lt;/span>
+&lt;span class="ln"> 7&lt;/span> &lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="c1"># Do something here. print or log&lt;/span>
+&lt;span class="ln">10&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This takes the service, a msg_id, and the label_id we got after creating the new label.&lt;/p>
+&lt;p>Where does the msg_id come from? That is a story for the next post in our series.&lt;/p></description></item><item><title>Google API Gmail Notifications Part 1</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-1/</link><pubDate>Mon, 01 Feb 2021 14:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-1/</guid><description>
+&lt;p>This will be a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;br>
+The goal here is to be able to query gmail for a select set of emails. Process them and then send a notification. This could be altered to work with a Bot of some other service.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>So let's get started. I am going to take a short cut here because I believe that if there is already a good guide; then you shouldn't rehash what has been done before. Unless you are adding to it. So I would suggest following one of the guides below and then move on to step two when you are ready.&lt;/p>
+&lt;p>Getting started with Python and Gmail API. Head over to
+&lt;a href="https://developers.google.com/gmail/api/quickstart/python">Python Quick Start&lt;/a> or my prefered option &lt;a href="https://medium.com/better-programming/a-beginners-guide-to-the-google-gmail-api-and-its-documentation-c73495deff08">A Beginner’s Guide to the Gmail API and Its Documentation&lt;/a> which I found to be well presented and informative.&lt;/p>
+&lt;p>It boils down to, enabling the API, installing the required modules, and copying the provided code. Don't forget to download the &lt;em>credentials file&lt;/em> you will be given by Google.&lt;/p>
+&lt;p>&lt;em>Note: I am going to be using python 3&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Add the folowing code to a file, lets just call it &lt;em>gmail.py&lt;/em>&lt;/p>
+&lt;p>&lt;em>Note: I have removed the following&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>from __future__ import print_function
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Please keep this if you are using Python 2&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">pickle&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">os.path&lt;/span>
+&lt;span class="ln"> 3&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">googleapiclient.discovery&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">build&lt;/span>
+&lt;span class="ln"> 4&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">google_auth_oauthlib.flow&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">InstalledAppFlow&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">google.auth.transport.requests&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Request&lt;/span>
+&lt;span class="ln"> 6&lt;/span>
+&lt;span class="ln"> 7&lt;/span>&lt;span class="c1"># If modifying these scopes, delete the file token.pickle.&lt;/span>
+&lt;span class="ln"> 8&lt;/span>&lt;span class="n">SCOPES&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;https://www.googleapis.com/auth/gmail.readonly&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="ln"> 9&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&amp;#34;Shows basic usage of the Gmail API.
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="s2"> Lists the user&amp;#39;s Gmail labels.
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="s2"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">None&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="c1"># The file token.pickle stores the user&amp;#39;s access and refresh tokens, and is&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="c1"># created automatically when the authorization flow completes for the first&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="c1"># time.&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">exists&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">19&lt;/span> &lt;span class="k">with&lt;/span> &lt;span class="nb">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;rb&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pickle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="c1"># If there are no (valid) credentials available, let the user log in.&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="ow">or&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">valid&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">expired&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">refresh_token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="n">creds&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">refresh&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Request&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;span class="ln">25&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">26&lt;/span> &lt;span class="n">flow&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">InstalledAppFlow&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">from_client_secrets_file&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;span class="ln">27&lt;/span> &lt;span class="s1">&amp;#39;credentials.json&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SCOPES&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">28&lt;/span> &lt;span class="n">creds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">flow&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run_local_server&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">29&lt;/span> &lt;span class="c1"># Save the credentials for the next run&lt;/span>
+&lt;span class="ln">30&lt;/span> &lt;span class="k">with&lt;/span> &lt;span class="nb">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;token.pickle&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;wb&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">31&lt;/span> &lt;span class="n">pickle&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dump&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">creds&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">token&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">32&lt;/span>
+&lt;span class="ln">33&lt;/span> &lt;span class="n">service&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">build&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;gmail&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;v1&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">credentials&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">creds&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">34&lt;/span>
+&lt;span class="ln">35&lt;/span> &lt;span class="c1"># Call the Gmail API&lt;/span>
+&lt;span class="ln">36&lt;/span> &lt;span class="n">results&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">37&lt;/span> &lt;span class="n">labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">results&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;labels&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">[])&lt;/span>
+&lt;span class="ln">38&lt;/span>
+&lt;span class="ln">39&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="n">labels&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">40&lt;/span> &lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;No labels found.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">41&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">42&lt;/span> &lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Labels:&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">43&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">label&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">labels&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">44&lt;/span> &lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">label&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;name&amp;#39;&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;span class="ln">45&lt;/span>
+&lt;span class="ln">46&lt;/span>&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;__main__&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">47&lt;/span> &lt;span class="n">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>A note on the sign in process. This may not work if you are using safari, so use Brave or some other browser if needed. You can copy and paste the link generated in your terminal for this.&lt;/em>&lt;/p>
+&lt;p>When you are done. You can move on to the next article in the series.&lt;/p></description></item></channel></rss>
