@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Guide on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/guide/</link><description>Recent content in Guide on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 14:15:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail Notifications Part 2</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-2/</link><pubDate>Mon, 01 Feb 2021 14:15:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-2/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Guide on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/guide/</link><description>Recent content in Guide on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 14:15:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 2</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-2/</link><pubDate>Mon, 01 Feb 2021 14:15:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-2/</guid><description>
 &lt;p>Part 2 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -131,7 +131,7 @@ As mentioned at in the first article. I am working on making a system that queri
 &lt;span class="ln"> 9&lt;/span> &lt;span class="c1"># Do something here. print or log&lt;/span>
 &lt;span class="ln">10&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>This takes the service, a msg_id, and the label_id we got after creating the new label.&lt;/p>
-&lt;p>Where does the msg_id come from? That is a story for the next post in our series.&lt;/p></description></item><item><title>Google API Gmail Notifications Part 1</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-1/</link><pubDate>Mon, 01 Feb 2021 14:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-1/</guid><description>
+&lt;p>Where does the msg_id come from? That is a story for the next post in our series.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 1</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-1/</link><pubDate>Mon, 01 Feb 2021 14:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-1/</guid><description>
 &lt;p>This will be a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;br>
 The goal here is to be able to query gmail for a select set of emails. Process them and then send a notification. This could be altered to work with a Bot of some other service.&lt;/p>
 &lt;table>
@@ -143,6 +143,9 @@ The goal here is to be able to query gmail for a select set of emails. Process t
 &lt;tbody>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
