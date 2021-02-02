@@ -1,4 +1,169 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Articles on Bas-Man's Musings</title><link>https://bas-man.github.io/post/</link><description>Recent content in Articles on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 14:15:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 2</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-2/</link><pubDate>Mon, 01 Feb 2021 14:15:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-2/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Articles on Bas-Man's Musings</title><link>https://bas-man.github.io/post/</link><description>Recent content in Articles on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 3</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-3/</link><pubDate>Mon, 01 Feb 2021 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-3/</guid><description>
+&lt;p>Part 3 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>Hi. In this article I will be working through how to get a list of message_ids and to get the email associated with an id.&lt;/p>
+&lt;p>I have done quite a bit of work with processing email in a past life. Working in Perl. I worked on a project which I am pretty sure predates mailchimp. So I have a solid understanding of Email and its standards.&lt;/p>
+&lt;p>But this is my first venture into processing emails with Python. So I did some research and found a couple of guides. Neither were particularly great. But they at least pointed me in the right direction. This will be a distilled version of what I gleamed.
+If you want to see one of the sources, then I refer you to &lt;a href="https://www.youtube.com/watch?v=vgk7Yio-GQw&amp;amp;t=108s">this&lt;/a>. The flow is not the best. But he gets there.&lt;/p>
+&lt;p>For my purposes, I need to get a list of emails with the following conditions:&lt;/p>
+&lt;ul>
+&lt;li>Arrived within the last 5 minutes (not possible so need a label)&lt;/li>
+&lt;li>Already labeled using Gmail filters.&lt;/li>
+&lt;/ul>
+&lt;p>I generally label key email with special labels. In my case I have three emails which already have labels applied when they come into my email account, so I will create a search using these labels.&lt;/p>
+&lt;p>This means creating a Gmail search string which does the following.&lt;/p>
+&lt;ol>
+&lt;li>Gets all emails that have the labels I am interested in. Emails only need to have one of these labels.&lt;/li>
+&lt;li>The email must be only 1 day old. (Can not limit search to newer emails)&lt;/li>
+&lt;li>exclude email that have a label that will be added after processing. (Prevent re-processing) Processing once every 5 minutes.&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>(label:labela OR label:labelb OR label:labelc)
+&lt;ul>
+&lt;li>This gives us all emails that have any of these labels attached.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>newer_than:1d
+&lt;ul>
+&lt;li>Limit to email that are only 24 hours older or newer.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>-label:processed
+&lt;ul>
+&lt;li>exclude email with this label&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>The final search string looks like this:&lt;br>
+&lt;code>((label:labela OR label:labelc OR label:labelc) AND -label:processed) AND newer_than:1d&lt;/code>&lt;/p>
+&lt;p>So we want to add this as a CONSTANT that can be referred to later.&lt;br>
+&lt;code>SEARCH_STRING = ((label:labela OR label:labelc OR label:labelc) AND -label:processed) AND newer_than:1d&lt;/code>&lt;/p>
+&lt;p>How do I get a list of emails that match this search condition?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_message_ids&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">search_string&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="n">search&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">messages&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">search_string&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">6&lt;/span> &lt;span class="k">except&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">errors&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">HttpError&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">error&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">7&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">search&lt;/span>
+&lt;span class="ln">8&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This returns a dictionary which contains two keys.&lt;/p>
+&lt;ol>
+&lt;li>messages -&amp;gt; List of dict() with two keys: 'id' and 'threadId'&lt;/li>
+&lt;li>resultSizeEstimate -&amp;gt; number of messages in the response&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="s1">&amp;#39;messages&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="s1">&amp;#39;id&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;1775d10a91ba4249&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;threadId&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;1775c1ffe59cda8f&amp;#39;&lt;/span>&lt;span class="p">},&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="s1">&amp;#39;id&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;1775c1ffe59cda8f&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;threadId&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;1775c1ffe59cda8f&amp;#39;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="p">],&lt;/span>
+&lt;span class="ln">6&lt;/span>&lt;span class="s1">&amp;#39;resultSizeEstimate&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">2&lt;/span>
+&lt;span class="ln">7&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="ln">8&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>id&lt;/code> is the idvidual email &lt;code>id&lt;/code> and &lt;code>threadId&lt;/code> is the email thread the &lt;code>id&lt;/code> belongs to.&lt;/p>
+&lt;p>Calling this using:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">message_ids&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_message_ids&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SEARCH_STRING&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Remember that &lt;code>service&lt;/code> comes from &lt;code>service = get_service()&lt;/code>&lt;/p>
+&lt;p>We can use &lt;code>resultSizeEstimate&lt;/code> to determine if there are no matching messages.
+Keeping in mind that any integer greater than zero is considered &lt;code>True&lt;/code>, we can make this function which will return &lt;code>True&lt;/code> or &lt;code>False&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">found_messages&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message_ids&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nb">bool&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message_ids&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;resultSizeEstimate&amp;#39;&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will return &lt;code>False&lt;/code> when &lt;code>resultSizeEstimate&lt;/code> equals zero, or &lt;code>True&lt;/code> if it is greater than zero.&lt;/p>
+&lt;p>I am not interested in threads. So I am going to get just a list of &lt;code>id&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_only_message_ids&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message_ids&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="n">ids&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">anId&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">message_ids&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;messages&amp;#39;&lt;/span>&lt;span class="p">]:&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="n">ids&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">anId&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;id&amp;#39;&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">ids&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here I am accessing the &lt;code>messages&lt;/code> dictionary to just get each message's &lt;code>id&lt;/code>
+This will give me something like:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="p">[&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="s1">&amp;#39;1775d10a91ba4249&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="s1">&amp;#39;1775c1ffe59cda8f&amp;#39;&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>These are the individual ids for each email that were found with my search string.&lt;/p>
+&lt;p>At some point I will need to loop through these ids to process each message. But these are just the ids. We need to get the actual email referenced using the ids we have.&lt;/p>
+&lt;p>Let's get an actual email.&lt;br>
+At this point we also need to add some more modules to our script.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">base64&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="kn">import&lt;/span> &lt;span class="nn">email&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">email&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">parser&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="nn">email&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">policy&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg_id&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;span class="ln"> 2&lt;/span> &lt;span class="n">msg&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">messages&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 3&lt;/span> &lt;span class="nb">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">msg_id&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 4&lt;/span> &lt;span class="n">format&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;raw&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln"> 5&lt;/span> &lt;span class="n">msg_in_bytes&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">base64&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">urlsafe_b64decode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;raw&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">encode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;ASCII&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="n">email_tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">message_from_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg_in_bytes&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln"> 7&lt;/span> &lt;span class="n">policy&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="n">emailParser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">parser&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Parser&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="n">resulting_email&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">emailParser&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parsestr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_tmp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">as_string&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">resulting_email&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What are we doing here?&lt;/p>
+&lt;ol>
+&lt;li>Getting the message, a dictionary object.&lt;br>
+This gives us:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="o">{&lt;/span> &lt;span class="s1">&amp;#39;id&amp;#39;&lt;/span>: &lt;span class="s1">&amp;#39;1775d10a91ba4249&amp;#39;&lt;/span>,
+&lt;span class="ln"> 2&lt;/span> &lt;span class="s1">&amp;#39;threadId&amp;#39;&lt;/span>: &lt;span class="s1">&amp;#39;1775c1ffe59cda8f&amp;#39;&lt;/span>,
+&lt;span class="ln"> 3&lt;/span> &lt;span class="s1">&amp;#39;labelIds&amp;#39;&lt;/span>: &lt;span class="o">[&lt;/span>
+&lt;span class="ln"> 4&lt;/span> &lt;span class="s1">&amp;#39;Label_18&amp;#39;&lt;/span>,
+&lt;span class="ln"> 5&lt;/span> &lt;span class="s1">&amp;#39;CATEGORY_PERSONAL&amp;#39;&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="o">]&lt;/span>,
+&lt;span class="ln"> 7&lt;/span> &lt;span class="s1">&amp;#39;snippet&amp;#39;&lt;/span>: &lt;span class="s1">&amp;#39;REDACTED REDACTED 様の入退室情報をお知らせします。 【セーフティメール情報】 2021-02-01 19:08:26 に退室しました。 ※なお、このメールに返信することはできませんのでご注意ください。&amp;#39;&lt;/span>,
+&lt;span class="ln"> 8&lt;/span> &lt;span class="s1">&amp;#39;sizeEstimate&amp;#39;&lt;/span>: 3448,
+&lt;span class="ln"> 9&lt;/span> &lt;span class="s1">&amp;#39;raw&amp;#39;&lt;/span>:
+&lt;span class="ln">10&lt;/span> &lt;span class="s1">&amp;#39;RGVsaXZlcmVkLVRvOiBiYXNwYW5uQGdtYWlsLmNvbQ0KUmVjZWl2ZWQ6IGJ5IDIwMDI6YWRm
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="s1"> Ojk1MDY6MDowOjA6MDowIHdpdGggU01UUCBpZCA2Y3NwMzg1MzYyd3JzOw0KICAgICAgICBNb2
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="s1"> ....snip...
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="s1"> 6MDg6MjYgGyRCJEtCYDw8JDckXiQ3JD8hIxsoQg0KDQobJEIiKCRKJCohIiQzJE4lYSE8JWskS
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="s1"> 0pWPy4kOSRrJDMkSCRPJEckLSReJDskcyROJEckNENtMFUkLyRAJDUkJCEjGyhCDQoNCg==&amp;#39;&lt;/span>,
+&lt;span class="ln">15&lt;/span> &lt;span class="s1">&amp;#39;historyId&amp;#39;&lt;/span>: &lt;span class="s1">&amp;#39;3086929&amp;#39;&lt;/span>,
+&lt;span class="ln">16&lt;/span> &lt;span class="s1">&amp;#39;internalDate&amp;#39;&lt;/span>: &lt;span class="s1">&amp;#39;1612174106000&amp;#39;&lt;/span>
+&lt;span class="ln">17&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Not so useful, but we could probably do something with the &lt;code>snippet&lt;/code>, but I have read this is not provided with the api with all languages. Your milage may differ.&lt;/p>
+&lt;ol start="2">
+&lt;li>Then access the &lt;code>raw&lt;/code> key which is base64 encoded. This key gives us the byte string format of the entire email including headers.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>b&lt;span class="s1">&amp;#39;Delivered-To: redact@example.com\r\nReceived: by 2002:adf:9506:0:0:0:0:0
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="s1"> with SMTP id 6csp385362wrs;\r\n Mon, 1 Feb 2021 02:08:29 -0800 (PST)
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="s1"> \r\nX-Googl..snip....
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="s1"> \r\n\r\n\x1b$B&amp;#34;($J$*!&amp;#34;$3$N%a!&amp;lt;%k$KJV?.$9$k$3$H$O$G$-$^$;$s$N$G$4Cm0U$/$@$5$$!#\x1b(B
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="s1"> \r\n\r\n&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is a little more useful, but again in this case it's been encoded due to the character set that was used in the email.&lt;/p>
+&lt;ol start="3">
+&lt;li>Create a Email Parser object to process the byte string email&lt;/li>
+&lt;li>Read this byte string and create an &lt;code>email.message.EmailMessage&lt;/code> object.&lt;/li>
+&lt;/ol>
+&lt;p>The last two steps get us closer. The email is still character encoded. But it's ready for us to use in the next step.&lt;/p>
+&lt;p>&lt;em>Comment&lt;/em>&lt;br>
+It is my understanding that email was developed to only support the ascii character set. As a result, encodings have been added to support other languages. This means that a lot of email are not really human readable by default.&lt;br>
+If you are interested you can take a peek at &lt;a href="https://tools.ietf.org/html/rfc2045">RFC2045&lt;/a>&lt;/p>
+&lt;p>Note:&lt;br>
+I am using:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">email_tmp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">message_from_bytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg_in_bytes&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="n">policy&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">3&lt;/span>&lt;span class="n">emailParser&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">parser&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Parser&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">policy&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>policy.default&lt;/code> is relatively new. Processing email this way means, I don't have to check the encoding of the contents. The parser will handle that for me. I can skip checking if the string is &lt;code>UTF-8&lt;/code> or &lt;code>ISO-2022-JP&lt;/code>. I am doing this because the emails I am dealing with are in Japanese as I live in Tokyo. If you are dealing with only english and emails that are only in ascii encoded, you can simplify the get_message() function.&lt;/p>
+&lt;p>In the next section I will look at processing a single email to get the information I am interested in.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 2</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-2/</link><pubDate>Mon, 01 Feb 2021 14:15:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-2/</guid><description>
 &lt;p>Part 2 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -13,9 +178,12 @@
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
 &lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;!---| [3. Emails]()
+&lt;!---
 | [4. Notification]()
 | [5. Systemd / Cron]()
 --->
@@ -71,7 +239,7 @@
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>I have moved the code that will connect to the API into its own function call &lt;em>get_service&lt;/em> which returns an object we can use to access the API.
 The keen reader my have noticed that I have updated the SCOPES. I will be modifying emails in a later post in the series and we also need access to the labels to be able to read and modify them.&lt;/p>
 &lt;p>The next set of functions will be added to the file just above: &lt;strong>def main():&lt;/strong>&lt;/p>
-&lt;p>First will will want to be able to get a list of all the labels we have in our Gmail account. This can be done using this code.&lt;/p>
+&lt;p>First may want to be able to get a list of all the labels we have in our Gmail account. This can be done using this code.&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">get_labels&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">):&lt;/span>
 &lt;span class="ln">2&lt;/span> &lt;span class="n">list_of_labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">users&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">userId&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;me&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">execute&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;span class="ln">3&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">list_of_labels&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;labels&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
@@ -146,6 +314,9 @@ The goal here is to be able to query gmail for a select set of emails. Process t
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
