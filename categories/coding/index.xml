@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>coding on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/coding/</link><description>Recent content in coding on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 01 Feb 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 3</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-3/</link><pubDate>Mon, 01 Feb 2021 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-3/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>coding on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/coding/</link><description>Recent content in coding on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Wed, 03 Feb 2021 09:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 4</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-4/</link><pubDate>Wed, 03 Feb 2021 09:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-4/</guid><description>
+&lt;p>Part 4 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>Hi. Back again for another instalment.&lt;/p>
+&lt;p>Today I will be working through accessing parts of an email. In part 3 we got to the stage where I had created an &lt;code>email.message.EmailMessage&lt;/code> object. You may not believe that is ready to use. Since if you played with it you might have found that it still contained a lot of non-ascii encoded characters, but thats ok. Once we start using the member methods provided by a &lt;code>email.message.EmailMessage&lt;/code> object. Things will be clear.&lt;/p>
+&lt;p>So a quick review:&lt;br>
+We did our search, got our message ids, boiled it down to just the message ids minus the threadIds&lt;/p>
+&lt;p>We then used &lt;code>get_message(service, msg_id)&lt;/code> to return an &lt;code>email.message.EmailMessage&lt;/code> object.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">single_email&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">some_id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you print this with &lt;code>print(single_email)&lt;/code> you will get the string representation of the entire email. If it is not in ascii you might see subject line that looks like this.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>Subject: &lt;span class="o">=&lt;/span>?ISO-2022-JP?B?GyRCRn5CYDw8Pn//yROJCpDTiRpJDsbKEI&lt;span class="o">=&lt;/span>?&lt;span class="o">=&lt;/span>
+&lt;span class="ln">2&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And have an email body which is just as confusing. But thats ok. We will use the methods provided by &lt;code>email.message.EmailMessage&lt;/code> to get these string returned in a readable form.&lt;/p>
+&lt;p>Here is a list of some the methods we can use:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>single_email.add_alternative&lt;span class="o">()&lt;/span> single_email.get_params&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 2&lt;/span>single_email.add_attachment&lt;span class="o">()&lt;/span> single_email.get_payload&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 3&lt;/span>single_email.add_header&lt;span class="o">()&lt;/span> single_email.get_unixfrom&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 4&lt;/span>single_email.add_related&lt;span class="o">()&lt;/span> single_email.is_attachment&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 5&lt;/span>single_email.as_bytes&lt;span class="o">()&lt;/span> single_email.is_multipart&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 6&lt;/span>single_email.as_string&lt;span class="o">()&lt;/span> single_email.items&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 7&lt;/span>single_email.attach&lt;span class="o">()&lt;/span> single_email.iter_attachments&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 8&lt;/span>single_email.clear&lt;span class="o">()&lt;/span> single_email.iter_parts&lt;span class="o">()&lt;/span>
+&lt;span class="ln"> 9&lt;/span>single_email.clear_content&lt;span class="o">()&lt;/span> single_email.keys&lt;span class="o">()&lt;/span>
+&lt;span class="ln">10&lt;/span>single_email.defects single_email.make_alternative&lt;span class="o">()&lt;/span>
+&lt;span class="ln">11&lt;/span>single_email.del_param&lt;span class="o">()&lt;/span> single_email.make_mixed&lt;span class="o">()&lt;/span>
+&lt;span class="ln">12&lt;/span>single_email.epilogue single_email.make_related&lt;span class="o">()&lt;/span>
+&lt;span class="ln">13&lt;/span>...
+&lt;span class="ln">14&lt;/span>...
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Headers can simply be accessed using &lt;code>single_email.get('headername')&lt;/code>&lt;/p>
+&lt;p>Examples:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="n">subject&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;subject&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To check if an email is multipart; &lt;code>single_email.is_multipart()&lt;/code> will return a &lt;code>True&lt;/code> or &lt;code>False&lt;/code>&lt;br>
+There are lots of methods to use to deconstruct an email. Fortunately for me. The emails I am dealing with are system generated and also very simple plain text non-multipart.&lt;/p>
+&lt;p>Let's look at the subject of the email.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>Subject: &lt;span class="o">=&lt;/span>?ISO-2022-JP?B?GyRCRn5CYDw8Pn//yROJCpDTiRpJDsbKEI&lt;span class="o">=&lt;/span>?&lt;span class="o">=&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Using the &lt;code>get&lt;/code> method:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">sub&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;subject&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">subject&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I get:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>入退室情報のお知らせ
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note that I didn't actually need to know the character encoding. This was due to the way the parser object was setup using the arguments &lt;code>policy=policy.default&lt;/code> in the previous post.&lt;/p>
+&lt;p>So as you can see, getting the header details is pretty easy. How about getting the body of the email? Again this is pretty simple when dealing with a single non-multipart email. I will simply use &lt;code>get_content()&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get_content&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="ln">1&lt;/span>Redacted Redacted
+&lt;span class="ln">2&lt;/span>�=J_] �@O5 �12K^0[0=^ 様の入退室情報をお知らせします。
+&lt;span class="ln">3&lt;/span>
+&lt;span class="ln">4&lt;/span>【セーフティメール情報】
+&lt;span class="ln">5&lt;/span>2021-02-01 19:08:26 に退室しました。
+&lt;span class="ln">6&lt;/span>
+&lt;span class="ln">7&lt;/span>※なお、このメールに返信することはできませんのでご注意ください
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are dealing with an email that is multipart, you will need to use the &lt;code>walk()&lt;/code> method. Combined with &lt;code>get_content_maintype()&lt;/code> and &lt;code>get_content_subtype()&lt;/code> to identify or find things like plain text and HTML or binary attachments.
+There already exists some good Python documentation for this. So I won't go into it here.&lt;/p>
+&lt;p>That's it for this article. Next I will give some information on regex for dealing with Japanese. But you can also take a look at this &lt;a href="https://bas-man.github.io/post/regex-double-byte-python3/">earlier post&lt;/a>.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 3</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-3/</link><pubDate>Mon, 01 Feb 2021 23:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-3/</guid><description>
 &lt;p>Part 3 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -384,82 +459,7 @@ The goal here is to be able to query gmail for a select set of emails. Process t
 &lt;span class="ln">46&lt;/span>&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s1">&amp;#39;__main__&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>
 &lt;span class="ln">47&lt;/span> &lt;span class="n">main&lt;/span>&lt;span class="p">()&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>A note on the sign in process. This may not work if you are using safari, so use Brave or some other browser if needed. You can copy and paste the link generated in your terminal for this.&lt;/em>&lt;/p>
-&lt;p>When you are done. You can move on to the next article in the series.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 4</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-4/</link><pubDate>Tue, 26 Jan 2021 14:16:41 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-4/</guid><description>
-&lt;p>Part 4 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Gmail Python Line Bot&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;p>Hi. Back again for another instalment.&lt;/p>
-&lt;p>Today I will be working through accessing parts of an email. In part 3 we got to the stage where I had created an &lt;code>email.message.EmailMessage&lt;/code> object. You may not believe that is ready to use. Since if you played with it you might have found that it still contained a lot of non-ascii encoded characters, but thats ok. Once we start using the member methods provided by a &lt;code>email.message.EmailMessage&lt;/code> object. Things will be clear.&lt;/p>
-&lt;p>So a quick review:&lt;br>
-We did our search, got our message ids, boiled it down to just the message ids minus the threadIds&lt;/p>
-&lt;p>We then used &lt;code>get_message(service, msg_id)&lt;/code> to return an &lt;code>email.message.EmailMessage&lt;/code> object.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">single_email&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">some_id&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you print this with &lt;code>print(single_email)&lt;/code> you will get the string representation of the entire email. If it is not in ascii you might see subject line that looks like this.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>Subject: &lt;span class="o">=&lt;/span>?ISO-2022-JP?B?GyRCRn5CYDw8Pn//yROJCpDTiRpJDsbKEI&lt;span class="o">=&lt;/span>?&lt;span class="o">=&lt;/span>
-&lt;span class="ln">2&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>And have an email body which is just as confusing. But thats ok. We will use the methods provided by &lt;code>email.message.EmailMessage&lt;/code> to get these string returned in a readable form.&lt;/p>
-&lt;p>Here is a list of some the methods we can use:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>single_email.add_alternative&lt;span class="o">()&lt;/span> single_email.get_params&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 2&lt;/span>single_email.add_attachment&lt;span class="o">()&lt;/span> single_email.get_payload&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 3&lt;/span>single_email.add_header&lt;span class="o">()&lt;/span> single_email.get_unixfrom&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 4&lt;/span>single_email.add_related&lt;span class="o">()&lt;/span> single_email.is_attachment&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 5&lt;/span>single_email.as_bytes&lt;span class="o">()&lt;/span> single_email.is_multipart&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 6&lt;/span>single_email.as_string&lt;span class="o">()&lt;/span> single_email.items&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 7&lt;/span>single_email.attach&lt;span class="o">()&lt;/span> single_email.iter_attachments&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 8&lt;/span>single_email.clear&lt;span class="o">()&lt;/span> single_email.iter_parts&lt;span class="o">()&lt;/span>
-&lt;span class="ln"> 9&lt;/span>single_email.clear_content&lt;span class="o">()&lt;/span> single_email.keys&lt;span class="o">()&lt;/span>
-&lt;span class="ln">10&lt;/span>single_email.defects single_email.make_alternative&lt;span class="o">()&lt;/span>
-&lt;span class="ln">11&lt;/span>single_email.del_param&lt;span class="o">()&lt;/span> single_email.make_mixed&lt;span class="o">()&lt;/span>
-&lt;span class="ln">12&lt;/span>single_email.epilogue single_email.make_related&lt;span class="o">()&lt;/span>
-&lt;span class="ln">13&lt;/span>...
-&lt;span class="ln">14&lt;/span>...
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Headers can simply be accessed using &lt;code>single_email.get('headername')&lt;/code>&lt;/p>
-&lt;p>Examples:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="kn">from&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;span class="ln">2&lt;/span>&lt;span class="n">subject&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;subject&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>To check if an email is multipart; &lt;code>single_email.is_multipart()&lt;/code> will return a &lt;code>True&lt;/code> or &lt;code>False&lt;/code>&lt;br>
-There are lots of methods to use to deconstruct an email. Fortunately for me. The emails I am dealing with are system generated and also very simple plain text non-multipart.&lt;/p>
-&lt;p>Let's look at the subject of the email.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>Subject: &lt;span class="o">=&lt;/span>?ISO-2022-JP?B?GyRCRn5CYDw8Pn//yROJCpDTiRpJDsbKEI&lt;span class="o">=&lt;/span>?&lt;span class="o">=&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Using the &lt;code>get&lt;/code> method:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">sub&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;subject&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;span class="ln">2&lt;/span>&lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">subject&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>I get:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln">1&lt;/span>入退室情報のお知らせ
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note that I didn't actually need to know the character encoding. This was due to the way the parser object was setup using the arguments &lt;code>policy=policy.default&lt;/code> in the previous post.&lt;/p>
-&lt;p>So as you can see, getting the header details is pretty easy. How about getting the body of the email? Again this is pretty simple when dealing with a single non-multipart email. I will simply use &lt;code>get_content()&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get_content&lt;/span>&lt;span class="p">()&lt;/span>
-&lt;span class="ln">2&lt;/span>&lt;span class="k">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="ln">1&lt;/span>Redacted Redacted
-&lt;span class="ln">2&lt;/span>�=J_] �@O5 �12K^0[0=^ 様の入退室情報をお知らせします。
-&lt;span class="ln">3&lt;/span>
-&lt;span class="ln">4&lt;/span>【セーフティメール情報】
-&lt;span class="ln">5&lt;/span>2021-02-01 19:08:26 に退室しました。
-&lt;span class="ln">6&lt;/span>
-&lt;span class="ln">7&lt;/span>※なお、このメールに返信することはできませんのでご注意ください
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are dealing with an email that is multipart, you will need to use the &lt;code>walk()&lt;/code> method. Combined with &lt;code>get_content_maintype()&lt;/code> and &lt;code>get_content_subtype()&lt;/code> to identify or find things like plain text and HTML or binary attachments.
-There already exists some good Python documentation for this. So I won't go into it here.&lt;/p>
-&lt;p>That's it for this article. Next I will give some information on regex for dealing with Japanese. But you can also take a look at this &lt;a href="https://bas-man.github.io/post/regex-double-byte-python3/">earlier post&lt;/a>.&lt;/p></description></item><item><title>Generic Regex Match Function Multiple Groups</title><link>https://bas-man.github.io/post/generic-regex-match-function-multiple-groups/</link><pubDate>Tue, 12 Jan 2021 16:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/generic-regex-match-function-multiple-groups/</guid><description>
+&lt;p>When you are done. You can move on to the next article in the series.&lt;/p></description></item><item><title>Generic Regex Match Function Multiple Groups</title><link>https://bas-man.github.io/post/generic-regex-match-function-multiple-groups/</link><pubDate>Tue, 12 Jan 2021 16:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/generic-regex-match-function-multiple-groups/</guid><description>
 &lt;p>If you have read my previous posts; you might know I am currently working on a new project to move some services to a self-hosted solution. As part of this, I have been working on dealing with &lt;code>unicode&lt;/code> characters in regex.&lt;/p>
 &lt;p>In relation to this I have found that I am writing the same function repeatedly. The only difference being the number matches being returned. So I decided we need to refactor this.&lt;/p>
 &lt;p>Here is my solution&lt;/p>
