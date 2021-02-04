@@ -1,4 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/api/</link><description>Recent content in api on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Wed, 03 Feb 2021 09:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/api/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 4</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-4/</link><pubDate>Wed, 03 Feb 2021 09:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-4/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/api/</link><description>Recent content in api on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Thu, 04 Feb 2021 16:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/api/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 5</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-5/</link><pubDate>Thu, 04 Feb 2021 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-5/</guid><description>
+&lt;p>Part 5 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>Today I will be looking at a regex expression, and making a generic function for searching an email for some specific contents.&lt;/p>
+&lt;p>In my previous post I referred you to &amp;quot;&lt;a href="https://bas-man.github.io/post/regex-double-byte-python3/">Working with double-byte regex expressions with Python3&lt;/a>&amp;quot;.&lt;/p>
+&lt;p>I will now just quickly go over a generic function I to deal with my use case. I did this because initially I had to write three different functions that all did basically the same thing, the only difference being the number of &lt;em>named groups&lt;/em> that each method returned.&lt;/p>
+&lt;p>In order to prevent oneself from making too many typing mistakes. We should store our regex strings as constants.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="c1"># Bus&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="n">BUS_DATA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="sa">r&lt;/span>&lt;span class="s2">&amp;#34;^「(?P&amp;lt;busname&amp;gt;[一-龯]\d{1,2})\s(?P&amp;lt;destination&amp;gt;[一-龯]+)行き・&amp;#34;&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="s2">&amp;#34;(?P&amp;lt;stop&amp;gt;[一-龯]+)」&amp;#34;&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Things to take note of:&lt;br>
+&lt;code>[一-龯]&lt;/code> equates to &lt;code>[a-z]&lt;/code> where we accept any single character between &lt;code>a&lt;/code> and &lt;code>z&lt;/code>. This is not perfect, but covers all the characters that I need to be concerned with in Japanese.&lt;/p>
+&lt;p>Here we have &lt;code>[一-龯]\d{1,2}&lt;/code>. All bus names in Tokyo are made up of one full kanji and a number. So this regular expression says, match one kanji followed be either 1, or 2 digits. Example: &lt;code>渋11&lt;/code>, &lt;code>渋61&lt;/code>&lt;br>
+This is then surrounded with parentheses. Creating a capture group. And this group is also named using the &lt;code>?P&amp;lt;name&amp;gt;&lt;/code>; giving us one complete capture of &lt;code>(?P&amp;lt;busname&amp;gt;[一-龯]\d{1,2})&lt;/code>.&lt;br>
+Let' break down the other two capture groups.&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>(?P&amp;lt;destination&amp;gt;[一-龯]+)行き&lt;/code> This captures one or more kanji and is the final destination of the bus. Where it will terminate service.&lt;/li>
+&lt;li>&lt;code>(?P&amp;lt;stop&amp;gt;[一-龯]+)&lt;/code> This captures again, one or more kanji and is the name of the bus stop where it was boarded.&lt;/li>
+&lt;/ol>
+&lt;p>Let's take a look at the generic function.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">findMatches&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">regex&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="nb">dict&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">2&lt;/span> &lt;span class="n">match&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">re&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">search&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">regex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">re&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">UNICODE&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">re&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MULTILINE&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">3&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">match&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">4&lt;/span> &lt;span class="n">matches&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">dict&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">5&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">match&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">groupdict&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;span class="ln">6&lt;/span> &lt;span class="n">matches&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">match&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">group&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">7&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">matches&lt;/span>
+&lt;span class="ln">8&lt;/span> &lt;span class="c1"># No Matches&lt;/span>
+&lt;span class="ln">9&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="bp">None&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What is this doing? We are taking in a string of text, which is from an email and is a single string of multi line text. We are also taking in the regex expression.&lt;br>
+The function call looks like this:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">matches&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">findMatches&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">BUS_DATA&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Where body might be:&lt;br>
+&lt;code>'02月03日 18時15分\nNAME_OF_PASMO_USER\n「渋11\u3000田園調布駅行き・昭和女子大」でタッチしました。\n\n東急セキュリティ\n'&lt;/code>&lt;/p>
+&lt;p>First we create a match object using &lt;code>re.search()&lt;/code>.&lt;br>
+We tell match it's getting multiline text and that text is not ascii.&lt;br>
+If we find a match using the regex, we are going to create a dictionary object.&lt;/p>
+&lt;p>We then go over the match object getting the key names (busname, destination, stop). We get the values associated with those keys using &lt;code>match.group(key)&lt;/code> and assign these values to their keys in the new dictionary object. We finally return that object.&lt;/p>
+&lt;p>However there is a chance there will be no match. So we should return &lt;code>None&lt;/code> in that case and we can test for that later in our code.&lt;/p>
+&lt;p>This is probably not the best solution. I could, of course, simply return the match object without creating a dictionary.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 4</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-4/</link><pubDate>Wed, 03 Feb 2021 09:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-4/</guid><description>
 &lt;p>Part 4 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -18,6 +83,9 @@
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -93,6 +161,9 @@ There already exists some good Python documentation for this. So I won't go into
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -262,6 +333,9 @@ I am using:&lt;/p>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
 &lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;hr>
@@ -397,6 +471,9 @@ The goal here is to be able to query gmail for a select set of emails. Process t
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
