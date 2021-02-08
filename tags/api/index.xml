@@ -1,4 +1,154 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/api/</link><description>Recent content in api on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Thu, 04 Feb 2021 16:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/api/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 5</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-5/</link><pubDate>Thu, 04 Feb 2021 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-5/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/api/</link><description>Recent content in api on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 08 Feb 2021 13:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/api/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 6</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-6/</link><pubDate>Mon, 08 Feb 2021 13:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-6/</guid><description>
+&lt;p>Part 6 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>Greetings. In this article I will be going over the thought process of how I handled multiple emails in a single script.&lt;br>
+In most cases there will only be a single email that needs to be processed at any given time. But to allow for more flexibility and to have a single place of control, and unfortunately complexity, I have decided to use a single script.&lt;/p>
+&lt;h2 id="some-background">Some background&lt;/h2>
+&lt;p>The services I receive email from have some well defined static attributes.&lt;/p>
+&lt;ul>
+&lt;li>Sending Address&lt;/li>
+&lt;li>Subject Line&lt;/li>
+&lt;/ul>
+&lt;p>About once a month they will also send billing information using the same &lt;em>Sending Address&lt;/em> which can be ignored by the script.&lt;br>
+Because of this; the logic will be something along the lines of.&lt;/p>
+&lt;ol>
+&lt;li>Check the subject line. If it exist in the list of known subject lines process the email.&lt;/li>
+&lt;li>If 1 true. Double check that the sending address is an approved/known sending address.&lt;/li>
+&lt;li>If 1 is false. Log an issue (This should not occur due to the filtering which is being done within Gmail.)&lt;/li>
+&lt;li>If 1 is true, but the sending address is false. Log the message.&lt;/li>
+&lt;li>If both 1 and 2 are true. This is a valid notification email.
+&lt;ol>
+&lt;li>Determine which notification is being handled using the &lt;em>Sender's Address&lt;/em>.&lt;/li>
+&lt;li>Apply the correct regex expression(s) to get the information&lt;/li>
+&lt;li>Send the notification and log its successful handling.&lt;/li>
+&lt;li>Attach the &lt;em>notified&lt;/em> label to the email.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="organization">Organization&lt;/h2>
+&lt;h3 id="constantspy">constants.py&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="n">SUB_1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;something&amp;#34;&lt;/span>
+&lt;span class="ln">2&lt;/span>&lt;span class="n">SUB_2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;something&amp;#34;&lt;/span>
+&lt;span class="ln">3&lt;/span>
+&lt;span class="ln">4&lt;/span>&lt;span class="n">SUBJECTS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">SUB_1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SUB_2&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="ln">5&lt;/span>
+&lt;span class="ln">6&lt;/span>&lt;span class="n">FROM_BUS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;email address of sender&amp;gt;&amp;#34;&lt;/span>
+&lt;span class="ln">7&lt;/span>&lt;span class="n">FROM_KIDZDUO&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;email address of sender&amp;gt;&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="gmailpy">gmail.py&lt;/h3>
+&lt;p>I have intentionally used a somewhat defensive coding style here.&lt;/p>
+&lt;h3 id="the-code-look-something-like-this">The code look something like this&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">def&lt;/span> &lt;span class="nf">handle_each_email&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message_id&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="nb">tuple&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 2&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">None&lt;/span>
+&lt;span class="ln"> 3&lt;/span> &lt;span class="n">single_email&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message_id&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 4&lt;/span> &lt;span class="c1"># Check the subject is an expected notification subject line&lt;/span>
+&lt;span class="ln"> 5&lt;/span> &lt;span class="n">subject&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;subject&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">subject&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">constants&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SUBJECTS&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 7&lt;/span> &lt;span class="c1"># workout which notification we are dealing with and use the correct&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="c1"># regular expression string&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="n">sender&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="n">email_body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">single_email&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get_content&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">sender&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">constants&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FROM_BUS&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">12&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">findMatches&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_body&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">BUS_DATA&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="n">datetime&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">findMatches&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_body&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">BUS_DATE_TIME&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="c1"># Merge data and datetime into a single dictionary&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">update&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">datetime&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;BUS&amp;#34;&lt;/span>
+&lt;span class="ln">19&lt;/span> &lt;span class="k">elif&lt;/span> &lt;span class="n">sender&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">constants&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FROM_KIDZDUO&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">findMatches&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_body&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="n">patterns&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">KIDZDUO_ENTEREXIT&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;KIDZDUO&amp;#34;&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="c1"># This needs to be logged. Means failed to match sender.&lt;/span>
+&lt;span class="ln">25&lt;/span> &lt;span class="c1"># if notifier is None:&lt;/span>
+&lt;span class="ln">26&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">warning&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Failed to process message_id: {message_id} &amp;#34;&lt;/span>
+&lt;span class="ln">27&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Matched Subject: {subject} &amp;#34;&lt;/span>
+&lt;span class="ln">28&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Sender not matched: {sender}&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">29&lt;/span> &lt;span class="k">pass&lt;/span>
+&lt;span class="ln">30&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">notifier&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>
+&lt;span class="ln">31&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">32&lt;/span> &lt;span class="c1"># Not an expected subject line. Ignore this email&lt;/span>
+&lt;span class="ln">33&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;This is not a notifcation.&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">34&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;sender: {sender}&lt;/span>&lt;span class="se">\n\t&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">35&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;subject: {subject}&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">36&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">notifier&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="the-break-down">The break down&lt;/h3>
+&lt;ol>
+&lt;li>First we set &lt;em>data&lt;/em> and &lt;em>notifier&lt;/em> to &lt;em>None&lt;/em>&lt;/li>
+&lt;li>Get the full email&lt;/li>
+&lt;li>Get the subject line&lt;/li>
+&lt;li>Check that the subject line is one of the expect subject strings&lt;/li>
+&lt;li>Get the sending address and email body&lt;/li>
+&lt;li>Check who the sender is:
+&lt;ol>
+&lt;li>If it's the bus company. set &lt;em>data&lt;/em> using the bus regex and set &lt;em>notifier&lt;/em> to &amp;quot;BUS&amp;quot;&lt;/li>
+&lt;li>If it's Kidsduo. Set the &lt;em>data&lt;/em> using the kidzduo regex and set &lt;em>nofifer&lt;/em> to &amp;quot;KIDZDUO&amp;quot;&lt;/li>
+&lt;li>Otherwise log the warning and return &lt;em>notifier&lt;/em> and &lt;em>data&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>If item 4 above is false, log an info message and return &lt;em>notifier&lt;/em> and &lt;em>data&lt;/em> both of which should be &lt;em>None&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;h3 id="main-loop">Main loop&lt;/h3>
+&lt;p>Let's see how we will process this in a batch form if needed.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python3" data-lang="python3">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">for&lt;/span> &lt;span class="n">message_id&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">list_of_message_ids&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 2&lt;/span> &lt;span class="n">processed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">False&lt;/span>
+&lt;span class="ln"> 3&lt;/span> &lt;span class="n">notifier&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">handle_each_email&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message_id&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 4&lt;/span> &lt;span class="c1"># Notifier tells us how the data dict is structured&lt;/span>
+&lt;span class="ln"> 5&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;BUS&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln"> 6&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Bus&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln"> 7&lt;/span> &lt;span class="c1"># Your notification / bot code here&lt;/span>
+&lt;span class="ln"> 8&lt;/span> &lt;span class="n">processed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;span class="ln"> 9&lt;/span> &lt;span class="k">elif&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;KIDZDUO&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">10&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;KidsDuo&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">11&lt;/span> &lt;span class="c1"># Your notification / bot code here&lt;/span>
+&lt;span class="ln">12&lt;/span> &lt;span class="n">processed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;span class="ln">13&lt;/span> &lt;span class="k">elif&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="ow">is&lt;/span> &lt;span class="kc">None&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="ow">is&lt;/span> &lt;span class="ow">not&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">14&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">warning&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Subject matched but From was not matched&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">15&lt;/span> &lt;span class="k">elif&lt;/span> &lt;span class="n">notifier&lt;/span> &lt;span class="ow">is&lt;/span> &lt;span class="kc">None&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="ow">is&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">16&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Non-Notification email from expected sender&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">17&lt;/span> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">18&lt;/span> &lt;span class="c1"># We should not get here. But log it.&lt;/span>
+&lt;span class="ln">19&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">warning&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Something went wrong. Unexpected match. &amp;#34;&lt;/span>
+&lt;span class="ln">20&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="s2">&amp;#34;Don&amp;#39;t know how to handle data.&amp;#34;&lt;/span>
+&lt;span class="ln">21&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;span class="ln">22&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">processed&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;span class="ln">23&lt;/span> &lt;span class="c1"># Mail was processed. Add label so it&amp;#39;s not processed again&lt;/span>
+&lt;span class="ln">24&lt;/span> &lt;span class="c1"># Gmail only allows for the shortest time interval of one day.&lt;/span>
+&lt;span class="ln">25&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;adding label&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">26&lt;/span> &lt;span class="n">add_label_to_message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message_id&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">secrets&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">LABEL_ID&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">27&lt;/span>&lt;span class="c1"># End of the program&lt;/span>
+&lt;span class="ln">28&lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Ending cleanly&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="ln">29&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note that there are several checks that should probably be made. The return of &lt;code>add_label_to_message()&lt;/code> for example.&lt;/p>
+&lt;p>I will be making the code available in GitHub later. Along with the &lt;em>systemd&lt;/em> configuration I used to have the script run a select times of the day and week. Watch for the future post on this.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 5</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-5/</link><pubDate>Thu, 04 Feb 2021 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-5/</guid><description>
 &lt;p>Part 5 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
@@ -22,12 +172,15 @@
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
 &lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
+&lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;hr>
 &lt;p>Today I will be looking at a regex expression, and making a generic function for searching an email for some specific contents.&lt;/p>
 &lt;p>In my previous post I referred you to &amp;quot;&lt;a href="https://bas-man.github.io/post/regex-double-byte-python3/">Working with double-byte regex expressions with Python3&lt;/a>&amp;quot;.&lt;/p>
-&lt;p>I will now just quickly go over a generic function I to deal with my use case. I did this because initially I had to write three different functions that all did basically the same thing, the only difference being the number of &lt;em>named groups&lt;/em> that each method returned.&lt;/p>
+&lt;p>I will now just quickly go over a generic function I wrote to deal with my use case. I did this because initially I had to write three different functions that all did basically the same thing, the only difference being the number of &lt;em>named groups&lt;/em> that each method returned.&lt;/p>
 &lt;p>In order to prevent oneself from making too many typing mistakes. We should store our regex strings as constants.&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="ln">1&lt;/span>&lt;span class="c1"># Bus&lt;/span>
 &lt;span class="ln">2&lt;/span>&lt;span class="n">BUS_DATA&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>
@@ -38,7 +191,7 @@
 &lt;code>[一-龯]&lt;/code> equates to &lt;code>[a-z]&lt;/code> where we accept any single character between &lt;code>a&lt;/code> and &lt;code>z&lt;/code>. This is not perfect, but covers all the characters that I need to be concerned with in Japanese.&lt;/p>
 &lt;p>Here we have &lt;code>[一-龯]\d{1,2}&lt;/code>. All bus names in Tokyo are made up of one full kanji and a number. So this regular expression says, match one kanji followed be either 1, or 2 digits. Example: &lt;code>渋11&lt;/code>, &lt;code>渋61&lt;/code>&lt;br>
 This is then surrounded with parentheses. Creating a capture group. And this group is also named using the &lt;code>?P&amp;lt;name&amp;gt;&lt;/code>; giving us one complete capture of &lt;code>(?P&amp;lt;busname&amp;gt;[一-龯]\d{1,2})&lt;/code>.&lt;br>
-Let' break down the other two capture groups.&lt;/p>
+Let's break down the other two capture groups.&lt;/p>
 &lt;ol>
 &lt;li>&lt;code>(?P&amp;lt;destination&amp;gt;[一-龯]+)行き&lt;/code> This captures one or more kanji and is the final destination of the bus. Where it will terminate service.&lt;/li>
 &lt;li>&lt;code>(?P&amp;lt;stop&amp;gt;[一-龯]+)&lt;/code> This captures again, one or more kanji and is the name of the bus stop where it was boarded.&lt;/li>
@@ -86,6 +239,9 @@ If we find a match using the regex, we are going to create a dictionary object.&
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -164,6 +320,9 @@ There already exists some good Python documentation for this. So I won't go into
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -336,6 +495,9 @@ I am using:&lt;/p>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
 &lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
+&lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;hr>
@@ -474,6 +636,9 @@ The goal here is to be able to query gmail for a select set of emails. Process t
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
