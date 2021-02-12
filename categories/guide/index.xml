@@ -1,4 +1,94 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Guide on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/guide/</link><description>Recent content in Guide on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 08 Feb 2021 13:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 6</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-6/</link><pubDate>Mon, 08 Feb 2021 13:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-6/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Guide on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/guide/</link><description>Recent content in Guide on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Fri, 12 Feb 2021 09:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Google API Gmail LINE Notifications Part 7</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-7/</link><pubDate>Fri, 12 Feb 2021 09:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-7/</guid><description>
+&lt;p>Final part in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Gmail Python Line Bot&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-1/">1. Installation &amp;amp; First Run&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-2/">2. Labels&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-3/">3. Getting the Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-4/">4. Processing Email Contents&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-5/">5. Processing Email - Being Selective&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-6/">6. Processing Email - Single Script / Multiple Emails&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="https://bas-man.github.io/post/google-api-gmail-notifications-7/">7. Automation &amp;amp; Code&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>This will be the final instalment of this series. Today I will briefly share how the systemd configuration files are set and provide a link to the GitHub repo.&lt;/p>
+&lt;h2 id="systemd-service">Systemd Service&lt;/h2>
+&lt;p>I am running my code under Debian. In order to learn something new. I chose to use systemd to provide scheduling for the script execution.&lt;/p>
+&lt;p>These files should be placed under &lt;code>/etc/systemd/system&lt;/code>&lt;/p>
+&lt;p>Here is the script: &lt;code>gnotifier.service&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="o">[&lt;/span>Unit&lt;span class="o">]&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="nv">Description&lt;/span>&lt;span class="o">=&lt;/span>Monitor Gmail Notifier
+&lt;span class="ln"> 3&lt;/span>&lt;span class="nv">Wants&lt;/span>&lt;span class="o">=&lt;/span>gnotifier.timer
+&lt;span class="ln"> 4&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="o">[&lt;/span>Service&lt;span class="o">]&lt;/span>
+&lt;span class="ln"> 6&lt;/span>&lt;span class="nv">Type&lt;/span>&lt;span class="o">=&lt;/span>oneshot
+&lt;span class="ln"> 7&lt;/span>&lt;span class="nv">ExecStart&lt;/span>&lt;span class="o">=&lt;/span>/usr/bin/python3 /home/ACCOUNT/gmail/gmail.py
+&lt;span class="ln"> 8&lt;/span>&lt;span class="nv">WorkingDirectory&lt;/span>&lt;span class="o">=&lt;/span>/home/ACCOUNT/gmail
+&lt;span class="ln"> 9&lt;/span>
+&lt;span class="ln">10&lt;/span>
+&lt;span class="ln">11&lt;/span>&lt;span class="o">[&lt;/span>Install&lt;span class="o">]&lt;/span>
+&lt;span class="ln">12&lt;/span>&lt;span class="nv">WantedBy&lt;/span>&lt;span class="o">=&lt;/span>multi-user.target
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is fairly straight forward. The filename itself provides the service name &lt;code>gnotifier&lt;/code>. We also specify that this script executes once and terminates: &lt;code>oneshot&lt;/code>.
+To have the service execute multiple times we provide the &lt;code>Wants=gnotifier.timer&lt;/code>; this says that we need to read &lt;code>gnotifier.timer&lt;/code> to get schedule information.&lt;/p>
+&lt;h2 id="systemd-timers">Systemd Timers&lt;/h2>
+&lt;p>&lt;code>gnotifier.timer&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="ln"> 1&lt;/span>&lt;span class="o">[&lt;/span>Unit&lt;span class="o">]&lt;/span>
+&lt;span class="ln"> 2&lt;/span>&lt;span class="nv">Description&lt;/span>&lt;span class="o">=&lt;/span>Triggers gnotifier service
+&lt;span class="ln"> 3&lt;/span>&lt;span class="nv">Requires&lt;/span>&lt;span class="o">=&lt;/span>gnotifier.service
+&lt;span class="ln"> 4&lt;/span>
+&lt;span class="ln"> 5&lt;/span>&lt;span class="o">[&lt;/span>Timer&lt;span class="o">]&lt;/span>
+&lt;span class="ln"> 6&lt;/span>&lt;span class="nv">Unit&lt;/span>&lt;span class="o">=&lt;/span>gnotifier.service
+&lt;span class="ln"> 7&lt;/span>&lt;span class="c1"># KidzDuo arriving&lt;/span>
+&lt;span class="ln"> 8&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Mon,Tue,Thu *-*-* 14:20,25,30,35,40,45,50,55:00
+&lt;span class="ln"> 9&lt;/span>&lt;span class="c1"># Swimming&lt;/span>
+&lt;span class="ln">10&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Wed *-*-* 15:50,55:00
+&lt;span class="ln">11&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Wed *-*-* 16:0,5,10,15,20:00
+&lt;span class="ln">12&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Wed *-*-* 18:0,5,10,15,20,25:00
+&lt;span class="ln">13&lt;/span>&lt;span class="c1"># KidzDuo Leaving&lt;/span>
+&lt;span class="ln">14&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Mon,Tue,Thu *-*-* 18:0,5,10,15,20,25,30,35:00
+&lt;span class="ln">15&lt;/span>&lt;span class="nv">OnCalendar&lt;/span>&lt;span class="o">=&lt;/span>Mon,Tue,Thu *-*-* 19:0,5,10,15,20,25:00
+&lt;span class="ln">16&lt;/span>&lt;span class="nv">AccuracySec&lt;/span>&lt;span class="o">=&lt;/span>1s
+&lt;span class="ln">17&lt;/span>
+&lt;span class="ln">18&lt;/span>&lt;span class="o">[&lt;/span>Install&lt;span class="o">]&lt;/span>
+&lt;span class="ln">19&lt;/span>&lt;span class="nv">WantedBy&lt;/span>&lt;span class="o">=&lt;/span>timers.target
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>There are many ways to configure the timers. Here I have chosen &lt;code>OnCalendar&lt;/code>
+Let's take a look at one example:
+&lt;code>OnCalendar=Mon,Tue,Thu *-*-* 14:20,25,30,35,40,45,50,55:00&lt;/code>&lt;/p>
+&lt;p>Days of the week: &lt;code>Mon,Tue,Thu&lt;/code>&lt;br>
+Hour: &lt;code>14&lt;/code> (2pm)&lt;br>
+Minutes: &lt;code>20,25,30,35,40,45,50,55&lt;/code> Every 5 minutes starting at 20 minutes.&lt;br>
+Seconds: &lt;code>00&lt;/code>&lt;/p>
+&lt;h2 id="enable-the-service">Enable the service&lt;/h2>
+&lt;p>You will need to issue the following commands&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>systemctl enable gnotifier
+&lt;span class="ln">2&lt;/span>systemctl start gnotifier
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>You can check your &lt;code>systemd timers&lt;/code> using&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>systemctl list-timers
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="some-references">Some references&lt;/h3>
+&lt;p>&lt;a href="https://opensource.com/article/20/7/systemd-timers">OpenSource Article&lt;/a>&lt;br>
+&lt;a href="https://wiki.archlinux.org/index.php/Systemd/Timers">ArchLinux Wiki&lt;/a>&lt;/p>
+&lt;h2 id="github-repo">GitHub Repo&lt;/h2>
+&lt;p>You can find the code for this project &lt;a href="https://github.com/Bas-Man/gnotify-to-line">here&lt;/a>.&lt;/p></description></item><item><title>Google API Gmail LINE Notifications Part 6</title><link>https://bas-man.github.io/post/google-api-gmail-notifications-6/</link><pubDate>Mon, 08 Feb 2021 13:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/google-api-gmail-notifications-6/</guid><description>
 &lt;p>Part 6 in a series of articles on implementing a notification system using Gmail and &lt;a href="https://notify-bot.line.me/doc/en/">Line Bot&lt;/a>&lt;/p>
 &lt;table>
 &lt;thead>
