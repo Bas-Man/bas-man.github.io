@@ -30,5 +30,5 @@ In the case of &lt;code>SoaLookup&lt;/code>, I will need to do some more process
 &lt;li>First lets make an &lt;code>iter()&lt;/code> out of &lt;code>soa_response&lt;/code> and loop over it.&lt;/li>
 &lt;li>In the loop we get the &lt;code>rname()&lt;/code> or the administrative contact and the &lt;code>mname()&lt;/code> or primary name server for this domain as well as &lt;code>serial()&lt;/code> and access to a few more elements.&lt;/li>
 &lt;/ul>
-&lt;p>Line 26 is just a cobbled together function to redisplay &lt;code>rname()&lt;/code> as a more valid email address which what it really represents. If anyone can point in the direction of a better way to handle this it would greatly appreciated.&lt;/p>
+&lt;p>Line 26 is just a cobbled together function to redisplay &lt;code>rname()&lt;/code> as a more valid email address which is what it really represents. If anyone can point in the direction of a better way to handle this it would greatly appreciated.&lt;/p>
 &lt;p>I hope you find this interesting and useful.&lt;/p></description></item></channel></rss>
