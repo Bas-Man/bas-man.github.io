@@ -1,6 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>coding on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/coding/</link><description>Recent content in coding on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Thu, 25 Mar 2021 15:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>MX and Host lookup using the trust-dns-resolver Crate</title><link>https://bas-man.github.io/post/rust-trust-dns-resolver-mx-and-host-lookup/</link><pubDate>Thu, 25 Mar 2021 15:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/rust-trust-dns-resolver-mx-and-host-lookup/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>coding on Bas-Man's Musings</title><link>https://bas-man.github.io/categories/coding/</link><description>Recent content in coding on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Fri, 26 Mar 2021 12:00:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/categories/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>SOA lookup using the trust-dns-resolver Crate</title><link>https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/</link><pubDate>Fri, 26 Mar 2021 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/</guid><description>
+&lt;p>This is a second article on using the &lt;strong>trust-dns-resolver&lt;/strong> crate&lt;br>
+&lt;strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.&lt;/strong>&lt;/p>
+&lt;h2 id="getting-started">Getting Started&lt;/h2>
+&lt;p>First we will need to create our development environment.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>cargo new trust-dns-resolver &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$_&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will give us our standard rust directly structure. We need to add our crate to the &lt;code>Cargo.toml&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>-snip-
+&lt;span class="ln">2&lt;/span>&lt;span class="o">[&lt;/span>dependencies&lt;span class="o">]&lt;/span>
+&lt;span class="ln">3&lt;/span>trust-dns-resolver &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;0.20.1&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Next edit the &lt;code>src/main.rs&lt;/code> as follows.&lt;/p>
+&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/b869526dc3bf085e7c5de14f3fa57494.js">&lt;/script>
+&lt;p>Compile and run the code to make sure everything is ok. There should be no output.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>cargo run
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This outputs the following&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>Admin: dns-admin.google.com.
+&lt;span class="ln">2&lt;/span>Admin Email: dns-admin@google.com
+&lt;span class="ln">3&lt;/span>Primary: ns1.google.com.
+&lt;span class="ln">4&lt;/span>Serial: &lt;span class="m">364996005&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="explaining-the-code">Explaining the code&lt;/h3>
+&lt;p>Documentation for the SOA RData can be found &lt;a href="https://docs.rs/trust-dns-proto/0.20.1/trust_dns_proto/rr/rdata/soa/struct.SOA.html">here&lt;/a>&lt;br>
+Let's take a look at what we are doing here.&lt;br>
+Like the first example we create a resolver which will do the work of doing the DNS lookups.&lt;br>
+Next we use the resolver to call &lt;code>soa_lookup()&lt;/code> and store the result into &lt;code>soa_response&lt;/code>&lt;br>
+&lt;code>soa_response&lt;/code> will contain either and &lt;code>SoaLookup&lt;/code> or an &lt;code>Err&lt;/code>. For this reason we need to handle these two cases. I have changed things up a little this time and I am passing a reference to the &lt;code>display_soa()&lt;/code> function. So I am allowing &lt;code>display_soa()&lt;/code> to borrow the data. In doing this I am saving on memory and I am also promising that I am not going to mutate &lt;code>soa_response&lt;/code> within this function. I will cheat a little and &lt;code>clone()&lt;/code> some data later.&lt;br>
+Within &lt;code>display_soa&lt;/code> I again use &lt;code>match&lt;/code> to handle my two cases.&lt;br>
+In the case of &lt;code>Err&lt;/code>. I do nothing and just report there were no records.&lt;br>
+In the case of &lt;code>SoaLookup&lt;/code>, I will need to do some more processing.&lt;/p>
+&lt;ul>
+&lt;li>First lets make an &lt;code>iter()&lt;/code> out of &lt;code>soa_response&lt;/code> and loop over it.&lt;/li>
+&lt;li>In the loop we get the &lt;code>rname()&lt;/code> or the administrative contact and the &lt;code>mname()&lt;/code> or primary name server for this domain as well as &lt;code>serial()&lt;/code> and access to a few more elements.&lt;/li>
+&lt;/ul>
+&lt;p>Line 26 is just a cobbled together function to redisplay &lt;code>rname()&lt;/code> as a more valid email address which what it really represents. If anyone can point in the direction of a better way to handle this it would greatly appreciated.&lt;/p>
+&lt;p>I hope you find this interesting and useful.&lt;/p></description></item><item><title>MX and Host lookup using the trust-dns-resolver Crate</title><link>https://bas-man.github.io/post/rust-trust-dns-resolver-mx-and-host-lookup/</link><pubDate>Thu, 25 Mar 2021 15:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/rust-trust-dns-resolver-mx-and-host-lookup/</guid><description>
 &lt;p>I used to often work with DNS in one of my previous jobs. So I have always had a long running interesting in DNS. Most recently I have been looking into &lt;a href="https://en.wikipedia.org/wiki/Rust_(programming_language)">Rust&lt;/a>. I wanted to see how easy it might be to use rust to access DNS records, one; because rust is said to be fast, and also because it's a safe programming language.&lt;/p>
-&lt;p>This will be a brief write up at my attempt use to use &lt;a href="https://crates.io/crates/trust-dns-resolver">trust-dns-resolver&lt;/a> to do &lt;a href="https://en.wikipedia.org/wiki/MX_record">MX&lt;/a> record lookups and subsequently host address lookups.&lt;/p>
+&lt;p>This will be a brief write up at my attempt to use &lt;a href="https://crates.io/crates/trust-dns-resolver">trust-dns-resolver&lt;/a> to do &lt;a href="https://en.wikipedia.org/wiki/MX_record">MX&lt;/a> record lookups and subsequently host address lookups.&lt;/p>
 &lt;p>&lt;strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.&lt;/strong>&lt;/p>
 &lt;h2 id="getting-started">Getting Started&lt;/h2>
 &lt;p>First we will need to create our development environment.&lt;/p>
@@ -78,7 +111,7 @@
 &lt;p>Let's take a look at what we are doing here.&lt;br>
 First we create a resolver which will do the work of doing the DNS lookups.&lt;br>
 Next we use the resolver to call &lt;code>mx_lookup()&lt;/code> and store the result into &lt;code>mx_response&lt;/code>&lt;br>
-&lt;code>mx_response&lt;/code> will contain either and &lt;code>MXLookup&lt;/code> or and &lt;code>Err&lt;/code>. For this reason we need to handle these two cases. Here I will use &lt;code>match&lt;/code>.&lt;br>
+&lt;code>mx_response&lt;/code> will contain either and &lt;code>MXLookup&lt;/code> or an &lt;code>Err&lt;/code>. For this reason we need to handle these two cases. Here I will use &lt;code>match&lt;/code>.&lt;br>
 In the case of &lt;code>Err&lt;/code>. I do nothing and just report there were no records.&lt;br>
 In the case of &lt;code>MXLookup&lt;/code>, I will need to do some more processing.&lt;/p>
 &lt;ul>
