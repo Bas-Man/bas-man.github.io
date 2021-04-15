@@ -1,4 +1,141 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rust on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/rust/</link><description>Recent content in rust on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Sat, 10 Apr 2021 23:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Deconstructing SPF with Rust using Generics</title><link>https://bas-man.github.io/post/deconstructing-spf-with-rust-using-generics/</link><pubDate>Sat, 10 Apr 2021 23:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/deconstructing-spf-with-rust-using-generics/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rust on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/rust/</link><description>Recent content in rust on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Wed, 14 Apr 2021 15:25:30 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Manage Rust Code by Breaking it Up</title><link>https://bas-man.github.io/post/manage-rust-code-by-breaking-it-up/</link><pubDate>Wed, 14 Apr 2021 15:25:30 +0900</pubDate><guid>https://bas-man.github.io/post/manage-rust-code-by-breaking-it-up/</guid><description>
+&lt;p>We often start small coding projects, and we often tend to start them off in a single file. But sometimes, the project naturally grows larger and more complex. The code thus becomes more difficult to manage in a single file.&lt;/p>
+&lt;p>At these times we often need to break the code up across multiple files so that we can focus on a particular functionality. This is where I found myself as I am toying with my SPF code.&lt;/p>
+&lt;p>The &lt;a href="https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html">rust guide&lt;/a> on this is pretty clear. While I was collecting some links for this article. I also came across this short &lt;a href="https://www.youtube.com/watch?v=zQ0_nwRrB3c">youtube&lt;/a> post.&lt;/p>
+&lt;h2 id="current-code-structure">Current Code Structure&lt;/h2>
+&lt;p>My current src structure is shown below.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>@trust-dns#tree src
+&lt;span class="ln">2&lt;/span>src
+&lt;span class="ln">3&lt;/span>└── main.rs
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>With about &lt;code>460&lt;/code> lines of code. Probably past time to re-organise the code.
+Since this is merely a project for learning. I am not being very picky with my naming convention. So I opted to create a folder simply called &lt;code>dns&lt;/code>. This is where I will move the basic portions of code.&lt;/p>
+&lt;h2 id="dns-folder">DNS Folder&lt;/h2>
+&lt;p>The directory structure now looks like:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln">1&lt;/span>src
+&lt;span class="ln">2&lt;/span>├── dns
+&lt;span class="ln">3&lt;/span>│   ├── mechanismkind.rs
+&lt;span class="ln">4&lt;/span>│   ├── mod.rs
+&lt;span class="ln">5&lt;/span>│   ├── mx.rs
+&lt;span class="ln">6&lt;/span>│   ├── soa.rs
+&lt;span class="ln">7&lt;/span>│   └── spf_mechanism.rs
+&lt;span class="ln">8&lt;/span>└── main.rs
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dnsmechanismkindrs">dns/mechanismkind.rs&lt;/h3>
+&lt;p>Contains&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln"> 1&lt;/span>&lt;span class="cp">#[derive(Debug, Clone)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enum&lt;/span> &lt;span class="nc">MechanismKind&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">impl&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">MechanismKind&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="sd">/// Returns `true` if the mechanism_kind is [`Include`].
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="sd">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">is_include&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="kt">bool&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">matches&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Self&lt;/span>::&lt;span class="n">Include&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dnsmxrs">dns/mx.rs&lt;/h3>
+&lt;p>Contains the code related to an MX lookup response&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">config&lt;/span>::&lt;span class="o">*&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">error&lt;/span>::&lt;span class="n">ResolveResult&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">lookup&lt;/span>::&lt;span class="n">MxLookup&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">Resolver&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">display_mx&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mx_response&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">ResolveResult&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">MxLookup&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">match&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mx_response&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">Err&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">_&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">println&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;No Records&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">Ok&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mx_response&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dnssoars">dns/soa.rs&lt;/h3>
+&lt;p>Contains the code related to a SOA response&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln">1&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">error&lt;/span>::&lt;span class="n">ResolveResult&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">trust_dns_resolver&lt;/span>::&lt;span class="n">lookup&lt;/span>::&lt;span class="n">SoaLookup&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">display_soa&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">soa_response&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">ResolveResult&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">SoaLookup&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">5&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">6&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">convert_rname_to_email_address&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rname&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nb">String&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nb">String&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">rname&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">rname&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">clone&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">8&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">9&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dnsspf_mechanismrs">dns/spf_mechanism.rs&lt;/h3>
+&lt;p>Contains the code related to a TXT response, specifically SPF&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">crate&lt;/span>::&lt;span class="n">dns&lt;/span>::&lt;span class="n">mechanismkind&lt;/span>::&lt;span class="n">MechanismKind&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ipnetwork&lt;/span>::&lt;span class="n">IpNetwork&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="cp">#[derive(Debug, Clone)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="nc">SpfMechanism&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">kind&lt;/span>: &lt;span class="nc">MechanismKind&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">qualifier&lt;/span>: &lt;span class="nc">char&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mechanism&lt;/span>: &lt;span class="nc">T&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">impl&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpfMechanism&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="nb">String&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">11&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">new_include&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">qualifier&lt;/span>: &lt;span class="nc">char&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mechanism&lt;/span>: &lt;span class="nb">String&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nc">Self&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpfMechanism&lt;/span>::&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">MechanismKind&lt;/span>::&lt;span class="n">Include&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">qualifier&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mechanism&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">13&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">14&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">15&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">16&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">impl&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpfMechanism&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">IpNetwork&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">17&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">new_ip4&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">qualifier&lt;/span>: &lt;span class="nc">char&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mechanism&lt;/span>: &lt;span class="nc">IpNetwork&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nc">Self&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">18&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpfMechanism&lt;/span>::&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">MechanismKind&lt;/span>::&lt;span class="n">IpV4&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">qualifier&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mechanism&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">19&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">20&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">21&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">22&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">impl&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpfMechanism&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">23&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">24&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>There is also this extra file named &lt;code>mod.rs&lt;/code>. This file has three purposes.&lt;/p>
+&lt;ol>
+&lt;li>It is an index of the files/modules contained within the directory &lt;code>dns&lt;/code>&lt;/li>
+&lt;li>Rust maps the directory name and the file &lt;code>mod.rs&lt;/code> so they are seen as one and the same. So in this case &lt;code>dns&lt;/code> is more or less an alias to &lt;code>mod.rs&lt;/code>.&lt;/li>
+&lt;li>Because of point 2. It also can also contain code for the given module. Hopefully this will become clear.&lt;/li>
+&lt;/ol>
+&lt;p>Lets take a look at &lt;code>mod.rs&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln">1&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">mechanismkind&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">mx&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">3&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">soa&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln">4&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">spf_mechanism&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pub mod mechanismkind&lt;/code> tells rust there is a file called &lt;code>mechanismkind.rs&lt;/code> inside &lt;code>dns&lt;/code>. This applies to the other lines within &lt;code>mod.rs&lt;/code>.&lt;br>
+In this case there is no code. I am using &lt;code>dns&lt;/code> as a root for my module.&lt;br>
+But because &lt;code>mod.rs&lt;/code> contains these lines, I can now make use of &lt;code>use&lt;/code> to include the code they contain. These are also marked &lt;code>pub&lt;/code> so they can be used in code written in &lt;code>main.rs&lt;/code>&lt;/p>
+&lt;p>Example:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln">1&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">crate&lt;/span>::&lt;span class="n">dns&lt;/span>::&lt;span class="n">mechanismkind&lt;/span>::&lt;span class="n">MechanismKind&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This boils down to:&lt;br>
+Look inside &lt;code>dns&lt;/code> -&amp;gt; mod.rs -&amp;gt; look inside &lt;code>mechanismkind&lt;/code> -&amp;gt; mechanismkind.rs and from mechanismkind.rs use &lt;code>MechanismKind&lt;/code> and the code which defines its &lt;code>enum&lt;/code> and &lt;code>impl&lt;/code>&lt;/p>
+&lt;h3 id="mainrs">main.rs&lt;/h3>
+&lt;p>At the beginning of &lt;code>main.rs&lt;/code> I now have:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln">1&lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">dns&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Rust now knows about the directory called `dns`
+&lt;/span>&lt;span class="ln">2&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">crate&lt;/span>::&lt;span class="n">dns&lt;/span>::&lt;span class="n">spf_mechanism&lt;/span>::&lt;span class="n">SpfMechanism&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Access and use the code in `spf_mechanism.rs`
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Also &lt;code>main.rs&lt;/code> now only contains &lt;code>264&lt;/code> lines of code.&lt;/p>
+&lt;p>If you want to see the code at this stage you can access it &lt;a href="https://github.com/Bas-Man/learning-rust-trust-dns-resolver/tree/SEGMENT-CODE">here&lt;/a>&lt;/p>
+&lt;p>If you want to the next iteration where I made the structure a little nicer&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="ln"> 1&lt;/span>src
+&lt;span class="ln"> 2&lt;/span>├── dns
+&lt;span class="ln"> 3&lt;/span>│   ├── mod.rs
+&lt;span class="ln"> 4&lt;/span>│   ├── mx.rs
+&lt;span class="ln"> 5&lt;/span>│   ├── soa.rs
+&lt;span class="ln"> 6&lt;/span>│   └── spf
+&lt;span class="ln"> 7&lt;/span>│   ├── kinds.rs
+&lt;span class="ln"> 8&lt;/span>│   ├── mechanism.rs
+&lt;span class="ln"> 9&lt;/span>│   └── mod.rs
+&lt;span class="ln">10&lt;/span>└── main.rs
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And resulted in &lt;code>main.rs&lt;/code> only containing &lt;code>64&lt;/code> lines of code. You can visit &lt;a href="https://github.com/Bas-Man/learning-rust-trust-dns-resolver/tree/SEGMENT-CODE2">here&lt;/a>&lt;/p>
+&lt;p>In this case &lt;code>spf/mod.rs&lt;/code> contains the code for &lt;code>Spf&lt;/code>, and loads the code from &lt;code>kind.rs&lt;/code> and &lt;code>mechanism.rs&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="ln"> 1&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">kinds&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 2&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">mod&lt;/span> &lt;span class="nn">mechanism&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 4&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">crate&lt;/span>::&lt;span class="n">dns&lt;/span>::&lt;span class="n">spf&lt;/span>::&lt;span class="n">mechanism&lt;/span>::&lt;span class="n">SpfMechanism&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 5&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ipnetwork&lt;/span>::&lt;span class="n">IpNetwork&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 6&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="cp">#[derive(Default, Debug)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 7&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="nc">Spf&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">source&lt;/span>: &lt;span class="nb">String&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="ln"> 9&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">//snip
+&lt;/span>&lt;span class="ln">10&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Because this code lives inside &lt;code>mod.rs&lt;/code> I have listed &lt;code>kinds&lt;/code> and &lt;code>mechanism&lt;/code> so that rust knows these files exist within the &lt;code>spf&lt;/code> directory.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Spf&lt;/code> depends on &lt;code>SpfMechanism&lt;/code> which is found in &lt;code>mechanism.rs&lt;/code>&lt;/li>
+&lt;li>&lt;code>SpfMechanism&lt;/code> depends on &lt;code>MechanismKind&lt;/code> which is found in &lt;code>kind.rs&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Again, these are just some of my rambling thought as I learn a bit more about rust.&lt;/p>
+&lt;p>If you have thoughts, advice. I would be glad to hear them.&lt;/p></description></item><item><title>Deconstructing SPF with Rust using Generics</title><link>https://bas-man.github.io/post/deconstructing-spf-with-rust-using-generics/</link><pubDate>Sat, 10 Apr 2021 23:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/deconstructing-spf-with-rust-using-generics/</guid><description>
 &lt;p>As I mentioned in my previous article &lt;a href="https://bas-man.github.io/post/deconstructing-spf-with-rust/">Deconstructing SPF Records with Rust&lt;/a>. There is a case for using &lt;code>generics&lt;/code> given the amount of overlap between the different mechanisms.&lt;/p>
 &lt;p>So in this article I will document how I transitioned from using unique structs for each &lt;code>mechanism&lt;/code>, leading to less overall code and other benefits.&lt;/p>
 &lt;p>While I was considering how best to go about doing generics, I came across this very nice write up on &lt;a href="https://dev.to">dev.to&lt;/a> entitled &lt;a href="https://dev.to/talzvon/rust-generic-types-in-method-definitions-4iah">Rust Generic Types in Method Definitions&lt;/a>. It's certainly worth a read.&lt;/p>
