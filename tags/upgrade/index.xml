@@ -1,42 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>upgrade on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/upgrade/</link><description>Recent content in upgrade on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Fri, 11 Dec 2020 13:00:30 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/upgrade/index.xml" rel="self" type="application/rss+xml"/><item><title>Raspberry Pi Stretch to Buster Missing Steps</title><link>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</link><pubDate>Fri, 11 Dec 2020 13:00:30 +0900</pubDate><guid>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</guid><description>
-&lt;p>I recently went through the process of upgrading my raspberry Pis from Stretch to Buster. I had previously done this moving from Jessie.&lt;/p>
-&lt;p>Whilst I had no real issues with task following the guides that I found. I did discover one thing that concerned me, and was missing from the guides.&lt;/p>
-&lt;p>After upgrading to Buster, my &lt;code>/boot&lt;/code> had less than 200kb of free storage.&lt;/p>
-&lt;p>I did some reading and found that Buster seems to need a lot more space in &lt;code>/boot&lt;/code> than for previous releases. Buster itself now defaults to 256M of space for &lt;code>/boot&lt;/code>&lt;/p>
-&lt;p>So I went about solving this issue.&lt;/p>
-&lt;p>I would suggest that you do these steps before upgrading just to avoid any possible problems.&lt;/p>
-&lt;h2 id="warning">Warning!&lt;/h2>
-&lt;p>This action does have the potential to cause data loss. You should backup your data onto another device. Use a tool such as &lt;a href="https://www.balena.io/etcher/">etcher&lt;/a> to make a block copy of your disk.&lt;/p>
-&lt;h3 id="what-you-will-need">What you will need&lt;/h3>
-&lt;ul>
-&lt;li>A spare Linux machine with gui interface.
-&lt;ul>
-&lt;li>Alternatively, if you have a spare SD card, you can install Buster or Stretch on to that and boot from it. Then use the original hardware to update the previously exiting card.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>USB card reader.&lt;/li>
-&lt;li>monitor, keyboard and mouse&lt;/li>
-&lt;li>&lt;code>gparted&lt;/code> installed.&lt;/li>
-&lt;/ul>
-&lt;h3 id="the-steps">The steps&lt;/h3>
-&lt;p>These are the basic steps that will need to be followed.&lt;/p>
-&lt;ol>
-&lt;li>Shrink the rootfs and run check&lt;/li>
-&lt;li>Move rootfs to the right using the mouse to drag it to the right, and run check (this will take some time)&lt;/li>
-&lt;li>Expand /boot partition to 256M and run check&lt;/li>
-&lt;/ol>
-&lt;ul>
-&lt;li>There could be issues with this last step. We will cover them later.&lt;/li>
-&lt;/ul>
-&lt;h4 id="getting-situated">Getting situated&lt;/h4>
-&lt;p>If you have spare linux machine. Set it up and getting it running with the SD card reader attached.&lt;/p>
-&lt;p>If you don't have a spare machine, but have a spare SD card. Install your preferred linux distro. Shutdown the existing server and then swap out the old SD card for the new and get it running with all the required attached devices.&lt;/p>
-&lt;p>If it does not boot up into x-windows by default, login and then issue the command &lt;code>startx&lt;/code>. If you have issues, then use &lt;code>sudo&lt;/code> to execute as root.
-Launch &lt;code>gparted&lt;/code> either using a terminal or through the drop down menu system. If gparted is not installed. Open a terminal and issue the following commands.&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="ln">1&lt;/span>apt update
-&lt;span class="ln">2&lt;/span>apt install gparted
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Insert the old SD card in to the reader and give gparted a few moments to scan the devices.
-&lt;strong>Be careful here. We want to make sure that we are working with the correct device and not the SD card we are booting from. So make sure to select the correct&lt;/strong> &lt;em>/dev&lt;/em> &lt;strong>device.&lt;/strong> It should be mounted on the system as &lt;em>/media/XXX&lt;/em>&lt;/p>
-&lt;p>Rather than rewrite something that has been covered on other sites. I would direct you to the sites below.&lt;/p>
-&lt;p>&lt;a href="https://learn.adafruit.com/resizing-raspberry-pi-boot-partition/edit-partitions">https://learn.adafruit.com/resizing-raspberry-pi-boot-partition/edit-partitions&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://bugzilla.gnome.org/show_bug.cgi?id=649324">https://bugzilla.gnome.org/show_bug.cgi?id=649324&lt;/a>&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>upgrade on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/upgrade/</link><description>Recent content in upgrade on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Fri, 11 Dec 2020 13:00:30 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/upgrade/index.xml" rel="self" type="application/rss+xml"/><item><title>Raspberry Pi Stretch to Buster Missing Steps</title><link>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</link><pubDate>Fri, 11 Dec 2020 13:00:30 +0900</pubDate><guid>https://bas-man.github.io/post/raspberry-stretch-to-buster-missing-steps/</guid><description>I recently went through the process of upgrading my raspberry Pis from Stretch to Buster. I had previously done this moving from Jessie.
+Whilst I had no real issues with task following the guides that I found. I did discover one thing that concerned me, and was missing from the guides.
+After upgrading to Buster, my /boot had less than 200kb of free storage.
+I did some reading and found that Buster seems to need a lot more space in /boot than for previous releases.</description></item></channel></rss>

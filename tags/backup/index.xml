@@ -1,70 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>backup on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/backup/</link><description>Recent content in backup on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Tue, 18 Aug 2020 16:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/backup/index.xml" rel="self" type="application/rss+xml"/><item><title>Use launchd instead of crontab on your Mac</title><link>https://bas-man.github.io/post/launchd-instead-of-cron/</link><pubDate>Tue, 18 Aug 2020 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/launchd-instead-of-cron/</guid><description>
-&lt;p>As of &lt;code>Mac OS 10.4&lt;/code> &lt;strong>crontab&lt;/strong> has been depreciated but not ended. So its a good idea to know how to use its replacement under Mac OS. Welcome to &lt;code>Launchd&lt;/code>.&lt;/p>
-&lt;p>This will be a short guide on how to use launchd in a simple form to replace a crontab job. In my case I am automating the backup of my Plex server.
-You can see my previous article &lt;a href="https://bas-man.github.io/post/plex-macos-backup/">here&lt;/a>&lt;/p>
-&lt;p>Launchd has a lot of other features. I will not look at them here.&lt;/p>
-&lt;p>You can checkout these other resources:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://www.launchd.info">launchd.info&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html#//apple_ref/doc/uid/10000172i-SW7-BCIEDDBJ">The offical Apple page.&lt;/a>&lt;/li>
-&lt;li>command line: &lt;code>man launchd.plist&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;p>A basic example of a &lt;code>plist&lt;/code> file for &lt;code>launchd&lt;/code>. In this case we will use &lt;code>plexback.plist&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="ln"> 1&lt;/span>&lt;span class="cp">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span>
-&lt;span class="ln"> 2&lt;/span>&lt;span class="cp">&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34;
-&lt;/span>&lt;span class="ln"> 3&lt;/span>&lt;span class="cp"> &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span>
-&lt;span class="ln"> 4&lt;/span>&lt;span class="nt">&amp;lt;plist&lt;/span> &lt;span class="na">version=&lt;/span>&lt;span class="s">&amp;#34;1.0&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
-&lt;span class="ln"> 5&lt;/span>&lt;span class="nt">&amp;lt;dict&amp;gt;&lt;/span>
-&lt;span class="ln"> 6&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Label&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln"> 7&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>my.example.backupplex&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
-&lt;span class="ln"> 8&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>ProgramArguments&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln"> 9&lt;/span> &lt;span class="nt">&amp;lt;array&amp;gt;&lt;/span>
-&lt;span class="ln">10&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>/usr/bin/caffeinate&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
-&lt;span class="ln">11&lt;/span> &lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>/User/ACCOUNT/bin/plexbackup.sh&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
-&lt;span class="ln">12&lt;/span> &lt;span class="nt">&amp;lt;/array&amp;gt;&lt;/span>
-&lt;span class="ln">13&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>StartCalendarInterval&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln">14&lt;/span> &lt;span class="nt">&amp;lt;dict&amp;gt;&lt;/span>
-&lt;span class="ln">15&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Hour&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln">16&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>6&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
-&lt;span class="ln">17&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Minute&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln">18&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>2&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
-&lt;span class="ln">19&lt;/span> &lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>Weekday&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
-&lt;span class="ln">20&lt;/span> &lt;span class="nt">&amp;lt;integer&amp;gt;&lt;/span>0&lt;span class="nt">&amp;lt;/integer&amp;gt;&lt;/span>
-&lt;span class="ln">21&lt;/span> &lt;span class="nt">&amp;lt;/dict&amp;gt;&lt;/span>
-&lt;span class="ln">22&lt;/span>&lt;span class="nt">&amp;lt;/dict&amp;gt;&lt;/span>
-&lt;span class="ln">23&lt;/span>&lt;span class="nt">&amp;lt;/plist&amp;gt;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note:
-Replace &lt;code>ACCOUNT&lt;/code> with your login username.&lt;/p>
-&lt;p>You will need to create this file under your ~/Library/LaunchAgents/&lt;/p>
-&lt;p>If your system is always running and never shuts down. You will need to issue the command:&lt;br>
-&lt;code>launchctl load -w ~/Library/LaunchAgents/plexback.plist&lt;/code>&lt;br>
-This will register your task with the scheduler that is used with launchd.&lt;/p></description></item><item><title>Back up your Plex Media Server on Mac OS</title><link>https://bas-man.github.io/post/plex-macos-backup/</link><pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/plex-macos-backup/</guid><description>
-&lt;h2 id="the-challenge">The Challenge&lt;/h2>
-&lt;p>How to automate the backing up of my &lt;a href="https://www.plex.tv">Plex Media Server&lt;/a>&lt;/p>
-&lt;h2 id="solution">Solution&lt;/h2>
-&lt;p>A Bash Script&lt;/p>
-&lt;p>I wanted to automate this process. If I didn't, it probably wouldn't get done.&lt;/p>
-&lt;p>This script was adapted from another GitHub Gist that I found &lt;a href="https://gist.github.com/shnhrrsn/7f22abe085a07e250c851d53db55bae2">here&lt;/a>.&lt;/p>
-&lt;script type="application/javascript" src="https://gist.github.com/Bas-Man/1e86a002ef5c09644567f496553737e9.js">&lt;/script>
-&lt;p>You will probably need to modify the following variables.&lt;/p>
-&lt;ul>
-&lt;li>plexDatabase&lt;/li>
-&lt;li>plexPlistFile&lt;/li>
-&lt;li>backupDirectory&lt;/li>
-&lt;/ul>
-&lt;p>Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not
-complete if your machine can go to sleep. As it suggests use the 'caffeinate' command to prevent
-your machine from sleeping during backup. It will be able to sleep after the script completes.&lt;/p>
-&lt;p>Don't forget to give the script execution permission using 'chmod +x scriptname'&lt;/p>
-&lt;p>Install a cronjob under your user account using:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="ln">1&lt;/span> crontab -e
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>The contents of my cronjob&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="ln">1&lt;/span>&lt;span class="nv">SHELL&lt;/span>&lt;span class="o">=&lt;/span>/bin/bash
-&lt;span class="ln">2&lt;/span>&lt;span class="m">06&lt;/span> &lt;span class="m">02&lt;/span> * * Sun /usr/bin/caffeinate &lt;span class="nv">$HOME&lt;/span>/bin/plexbackup.sh
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Notes:&lt;/p>
-&lt;ul>
-&lt;li>You need a SHELL set for the cronjob to run the command.&lt;/li>
-&lt;li>The script runs weekly on Sunday from 6:02am&lt;/li>
-&lt;li>It uses &lt;code>caffeinate&lt;/code> so that the machine does not sleep during backup. I do not have my sleep value set to 0 on this machine.&lt;/li>
-&lt;li>My backup script is located in my home directory under the folder &lt;em>&lt;strong>bin&lt;/strong>&lt;/em>&lt;/li>
-&lt;/ul></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>backup on Bas-Man's Musings</title><link>https://bas-man.github.io/tags/backup/</link><description>Recent content in backup on Bas-Man's Musings</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Tue, 18 Aug 2020 16:30:00 +0900</lastBuildDate><atom:link href="https://bas-man.github.io/tags/backup/index.xml" rel="self" type="application/rss+xml"/><item><title>Use launchd instead of crontab on your Mac</title><link>https://bas-man.github.io/post/launchd-instead-of-cron/</link><pubDate>Tue, 18 Aug 2020 16:30:00 +0900</pubDate><guid>https://bas-man.github.io/post/launchd-instead-of-cron/</guid><description>As of Mac OS 10.4 crontab has been depreciated but not ended. So its a good idea to know how to use its replacement under Mac OS. Welcome to Launchd.
+This will be a short guide on how to use launchd in a simple form to replace a crontab job. In my case I am automating the backup of my Plex server. You can see my previous article here
+Launchd has a lot of other features.</description></item><item><title>Back up your Plex Media Server on Mac OS</title><link>https://bas-man.github.io/post/plex-macos-backup/</link><pubDate>Sat, 16 May 2020 12:00:00 +0900</pubDate><guid>https://bas-man.github.io/post/plex-macos-backup/</guid><description>The Challenge How to automate the backing up of my Plex Media Server
+Solution A Bash Script
+I wanted to automate this process. If I didn&amp;rsquo;t, it probably wouldn&amp;rsquo;t get done.
+This script was adapted from another GitHub Gist that I found here.
+You will probably need to modify the following variables.
+plexDatabase plexPlistFile backupDirectory Pay attention to lines 17 ~ 21. These refer to the possibility that your script may not complete if your machine can go to sleep.</description></item></channel></rss>
