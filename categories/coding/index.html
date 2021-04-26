@@ -66,35 +66,14 @@ While I was considering how best to go about doing generics, I came across this 
 <a href=https://bas-man.github.io//tags/structs/>structs</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-txt-lookup/><h2 class=post-title>TXT lookup using the trust-dns-resolver Crate</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on March 29, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;280&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is the third article on using the <strong>trust-dns-resolver</strong> crate<br><strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.</strong></p><h2 id=getting-started>Getting Started</h2><p>First we will need to create our development environment.</p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>cargo new trust-dns-resolver <span class=o>&amp;&amp;</span> <span class=nb>cd</span> <span class=nv>$_</span>
-</code></pre></div><p>This will give us our standard rust directly structure. We need to add our crate to the <code>Cargo.toml</code></p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>-snip-
-<span class=o>[</span>dependencies<span class=o>]</span>
-trust-dns-resolver <span class=o>=</span> <span class=s2>&#34;0.20.1&#34;</span>
-</code></pre></div><p>Next edit the <code>src/main.rs</code> as follows.</p><script type=application/javascript src=https://gist.github.com/Bas-Man/eb35052052066903ec9ffe9eac57a55b.js></script><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>cargo run
-</code></pre></div><p>This outputs the following</p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>TXT Record 1:
-globalsign-smime-dv<span class=o>=</span>CDYX+XFHUw2wml6/Gb8+59BsH31KzUr6c1l2BPvqKX8<span class=o>=</span>
-
-TXT Record 2:
-<span class=nv>v</span><span class=o>=</span>spf1 <span class=nv>redirect</span><span class=o>=</span>_spf.google.com
-
-</code></pre></div><h3 id=explaining-the-code>Explaining the code</h3><p>Documentation for the TXT RData can be found <a href=https://docs.rs/trust-dns-proto/0.20.1/trust_dns_proto/rr/rdata/txt/struct.TXT.html>here</a><br>Let&rsquo;s take a look at what we are doing here.<br>Like the previous examples we create a resolver which will do the work of doing the DNS lookups.<br>Next we use the resolver to call <code>txt_lookup()</code> and store the result into <code>txt_response</code>.</p><p><code>txt_response</code> will contain either a <code>TxtLookup</code> or an <code>Err</code>. For this reason we need to handle these two cases. As before I am passing a reference to the <code>display_txt()</code> function.<br>Within <code>display_txt</code> I use <code>match</code> to handle my two cases.<br>In the case of <code>Err</code>. I do nothing and just report there were no TXT records.<br>In the case of <code>TxtLookup</code>, I will need to do some more processing.
-I simply make an <code>iter()</code> out of <code>txt_response</code> and loop over it and call <code>to_string()</code> on each record in the <code>iter()</code>.</p><p>I went down a rabbit hole for a while because I incorrectly thought I had to call <code>txt_data()</code> which returns a <code>Box&lt;[u8]</code>, a smart pointer.</p><p>I hope you find this interesting and useful.</p><p>P.S: I might revisit this when I look at using regular expressions.</p></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is the third article on using the <strong>trust-dns-resolver</strong> crate<br><strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.</strong></p><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-txt-lookup/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
 <a href=https://bas-man.github.io//tags/crate/>crate</a>&nbsp;
 <a href=https://bas-man.github.io//tags/trust-dns-resolver/>trust-dns-resolver</a>&nbsp;
 <a href=https://bas-man.github.io//tags/txt/>txt</a>&nbsp;
 <a href=https://bas-man.github.io//tags/dns/>dns</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/><h2 class=post-title>SOA lookup using the trust-dns-resolver Crate</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on March 26, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;369&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is a second article on using the <strong>trust-dns-resolver</strong> crate<br><strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.</strong></p><h2 id=getting-started>Getting Started</h2><p>First we will need to create our development environment.</p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>cargo new trust-dns-resolver <span class=o>&amp;&amp;</span> <span class=nb>cd</span> <span class=nv>$_</span>
-</code></pre></div><p>This will give us our standard rust directly structure. We need to add our crate to the <code>Cargo.toml</code></p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>-snip-
-<span class=o>[</span>dependencies<span class=o>]</span>
-trust-dns-resolver <span class=o>=</span> <span class=s2>&#34;0.20.1&#34;</span>
-</code></pre></div><p>Next edit the <code>src/main.rs</code> as follows.</p><script type=application/javascript src=https://gist.github.com/Bas-Man/b869526dc3bf085e7c5de14f3fa57494.js></script><p>Compile and run the code to make sure everything is ok.</p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>cargo run
-</code></pre></div><p>This outputs the following</p><div class=highlight><pre class=chroma><code class=language-zsh data-lang=zsh>Admin: dns-admin.google.com.
-Admin Email: dns-admin@google.com
-Primary: ns1.google.com.
-Serial: <span class=m>364996005</span>
-</code></pre></div><h3 id=explaining-the-code>Explaining the code</h3><p>Documentation for the SOA RData can be found <a href=https://docs.rs/trust-dns-proto/0.20.1/trust_dns_proto/rr/rdata/soa/struct.SOA.html>here</a><br>Let&rsquo;s take a look at what we are doing here.<br>Like the first example we create a resolver which will do the work of doing the DNS lookups.<br>Next we use the resolver to call <code>soa_lookup()</code> and store the result into <code>soa_response</code><br><code>soa_response</code> will contain either and <code>SoaLookup</code> or an <code>Err</code>. For this reason we need to handle these two cases. I have changed things up a little this time and I am passing a reference to the <code>display_soa()</code> function. So I am allowing <code>display_soa()</code> to borrow the data. In doing this I am saving on memory and I am also promising that I am not going to mutate <code>soa_response</code> within this function. I will cheat a little and <code>clone()</code> some data later.<br>Within <code>display_soa</code> I again use <code>match</code> to handle my two cases.<br>In the case of <code>Err</code>. I do nothing and just report there were no records.<br>In the case of <code>SoaLookup</code>, I will need to do some more processing.</p><ul><li>First lets make an <code>iter()</code> out of <code>soa_response</code> and loop over it.</li><li>In the loop we get the <code>rname()</code> or the administrative contact and the <code>mname()</code> or primary name server for this domain as well as <code>serial()</code> and access to a few more elements.</li></ul><p>Line 26 is just a cobbled together function to redisplay <code>rname()</code> as a more valid email address which is what it really represents. If anyone can point in the direction of a better way to handle this it would greatly appreciated.</p><p>I hope you find this interesting and useful.</p></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is a second article on using the <strong>trust-dns-resolver</strong> crate<br><strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.</strong></p><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
 <a href=https://bas-man.github.io//tags/crate/>crate</a>&nbsp;
 <a href=https://bas-man.github.io//tags/trust-dns-resolver/>trust-dns-resolver</a>&nbsp;
 <a href=https://bas-man.github.io//tags/soa/>soa</a>&nbsp;
@@ -110,44 +89,7 @@ This will be a brief write up at my attempt to use trust-dns-resolver to do MX r
 <a href=https://bas-man.github.io//tags/dns/>dns</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/google-api-gmail-notifications-7/><h2 class=post-title>Google API Gmail LINE Notifications Part 7</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on February 12, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;306&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Final part in a series of articles on implementing a notification system using Gmail and <a href=https://notify-bot.line.me/doc/en/>Line Bot</a></p><table><thead><tr><th>Gmail Python Line Bot</th></tr></thead><tbody><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-1/>1. Installation & First Run</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-2/>2. Labels</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-3/>3. Getting the Emails</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-4/>4. Processing Email Contents</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-5/>5. Processing Email - Being Selective</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-6/>6. Processing Email - Single Script / Multiple Emails</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-7/>7. Automation & Code</a></td></tr></tbody></table><hr><p>This will be the final instalment of this series. Today I will briefly share how the systemd configuration files are set and provide a link to the GitHub repo.</p><h2 id=systemd-service>Systemd Service</h2><p>I am running my code under Debian. In order to learn something new. I chose to use systemd to provide scheduling for the script execution.</p><p>These files should be placed under <code>/etc/systemd/system</code></p><p>Here is the script: <code>gnotifier.service</code></p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=o>[</span>Unit<span class=o>]</span>
-<span class=nv>Description</span><span class=o>=</span>Monitor Gmail Notifier
-<span class=nv>Wants</span><span class=o>=</span>gnotifier.timer
-
-<span class=o>[</span>Service<span class=o>]</span>
-<span class=nv>Type</span><span class=o>=</span>oneshot
-<span class=nv>ExecStart</span><span class=o>=</span>/usr/bin/python3 /home/ACCOUNT/gmail/gmail.py
-<span class=nv>WorkingDirectory</span><span class=o>=</span>/home/ACCOUNT/gmail
-
-
-<span class=o>[</span>Install<span class=o>]</span>
-<span class=nv>WantedBy</span><span class=o>=</span>multi-user.target
-</code></pre></div><p>This is fairly straight forward. The filename itself provides the service name <code>gnotifier</code>. We also specify that this script executes once and terminates: <code>oneshot</code>.
-To have the service execute multiple times we provide the <code>Wants=gnotifier.timer</code>; this says that we need to read <code>gnotifier.timer</code> to get schedule information.</p><h2 id=systemd-timers>Systemd Timers</h2><p><code>gnotifier.timer</code></p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=o>[</span>Unit<span class=o>]</span>
-<span class=nv>Description</span><span class=o>=</span>Triggers gnotifier service
-<span class=nv>Requires</span><span class=o>=</span>gnotifier.service
-
-<span class=o>[</span>Timer<span class=o>]</span>
-<span class=nv>Unit</span><span class=o>=</span>gnotifier.service
-<span class=c1># KidzDuo arriving</span>
-<span class=nv>OnCalendar</span><span class=o>=</span>Mon,Tue,Thu *-*-* 14:20,25,30,35,40,45,50,55:00
-<span class=c1># Swimming</span>
-<span class=nv>OnCalendar</span><span class=o>=</span>Wed *-*-* 15:50,55:00
-<span class=nv>OnCalendar</span><span class=o>=</span>Wed *-*-* 16:0,5,10,15,20:00
-<span class=nv>OnCalendar</span><span class=o>=</span>Wed *-*-* 18:0,5,10,15,20,25:00
-<span class=c1># KidzDuo Leaving</span>
-<span class=nv>OnCalendar</span><span class=o>=</span>Mon,Tue,Thu *-*-* 18:0,5,10,15,20,25,30,35:00
-<span class=nv>OnCalendar</span><span class=o>=</span>Mon,Tue,Thu *-*-* 19:0,5,10,15,20,25:00
-<span class=nv>AccuracySec</span><span class=o>=</span>1s
-
-<span class=o>[</span>Install<span class=o>]</span>
-<span class=nv>WantedBy</span><span class=o>=</span>timers.target
-</code></pre></div><p>There are many ways to configure the timers. Here I have chosen <code>OnCalendar</code>
-Let&rsquo;s take a look at one example:
-<code>OnCalendar=Mon,Tue,Thu *-*-* 14:20,25,30,35,40,45,50,55:00</code></p><p>Days of the week: <code>Mon,Tue,Thu</code><br>Hour: <code>14</code> (2pm)<br>Minutes: <code>20,25,30,35,40,45,50,55</code> Every 5 minutes starting at 20 minutes.<br>Seconds: <code>00</code></p><h2 id=enable-the-service>Enable the service</h2><p>You will need to issue the following commands</p><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>systemctl enable gnotifier
-systemctl start gnotifier
-</code></pre></div><p>You can check your <code>systemd timers</code> using</p><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>systemctl list-timers
-</code></pre></div><h3 id=some-references>Some references</h3><p><a href=https://opensource.com/article/20/7/systemd-timers>OpenSource Article</a><br><a href=https://wiki.archlinux.org/index.php/Systemd/Timers>ArchLinux Wiki</a></p><h2 id=github-repo>GitHub Repo</h2><p>You can find the code for this project <a href=https://github.com/Bas-Man/gnotify-to-line>here</a>.</p></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Final part in a series of articles on implementing a notification system using Gmail and <a href=https://notify-bot.line.me/doc/en/>Line Bot</a>.</p><a href=https://bas-man.github.io/post/google-api-gmail-notifications-7/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
 <a href=https://bas-man.github.io//tags/python/>python</a>&nbsp;
 <a href=https://bas-man.github.io//tags/api/>api</a>&nbsp;
 <a href=https://bas-man.github.io//tags/notification/>notification</a>&nbsp;</div></article></div><ul class="pager main-pager"><li class=next><a href=https://bas-man.github.io/categories/coding/page/2/>Older Posts &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/Bas-Man title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>

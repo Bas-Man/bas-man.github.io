@@ -19,105 +19,13 @@
 <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=tags-heading><h1>Python</h1><hr class=small></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=posts-list><article class=post-preview><a href=https://bas-man.github.io/post/google-api-gmail-notifications-2/><h2 class=post-title>Google API Gmail LINE Notifications Part 2</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on February 1, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;863&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Part 2 in a series of articles on implementing a notification system using Gmail and <a href=https://notify-bot.line.me/doc/en/>Line Bot</a></p><table><thead><tr><th>Gmail Python Line Bot</th></tr></thead><tbody><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-1/>1. Installation & First Run</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-2/>2. Labels</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-3/>3. Getting the Emails</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-4/>4. Processing Email Contents</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-5/>5. Processing Email - Being Selective</a></td></tr><tr><td><a href=https://bas-man.github.io/post/google-api-gmail-notifications-6/>6. Processing Email - Single Script / Multiple Emails</a></td></tr></tbody></table><hr><p>Hi again. If you followed the guide I referenced in the previous post. <a href=https://medium.com/better-programming/a-beginners-guide-to-the-google-gmail-api-and-its-documentation-c73495deff08>A Beginner’s Guide to the Gmail API and Its Documentation</a>. The next section will be somewhat familiar.</p><p>In this section we will be accessing the labels used within Gmail, creating a new label, and also getting the new label&rsquo;s <strong>id</strong>. The id is critical because the google API does not use the label&rsquo;s name. It is merely the name displayed in the user interface.</p><p>I am going to structure some of the code also at this point.</p><p>This will be the new starting code.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>pickle</span><span class=o>,</span> <span class=nn>os.path</span><span class=o>,</span> <span class=nn>sys</span>
-<span class=kn>from</span> <span class=nn>googleapiclient.discovery</span> <span class=kn>import</span> <span class=n>build</span>
-<span class=kn>from</span> <span class=nn>google_auth_oauthlib.flow</span> <span class=kn>import</span> <span class=n>InstalledAppFlow</span>
-<span class=kn>from</span> <span class=nn>google.auth.transport.requests</span> <span class=kn>import</span> <span class=n>Request</span>
-
-<span class=c1># If modifying these scopes, delete the file token.pickle.</span>
-<span class=n>SCOPES</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;https://www.googleapis.com/auth/gmail.modify&#39;</span><span class=p>,</span>
-          <span class=s1>&#39;https://www.googleapis.com/auth/gmail.labels&#39;</span><span class=p>]</span>
-
-<span class=k>def</span> <span class=nf>get_service</span><span class=p>():</span>
-    <span class=s2>&#34;&#34;&#34;Shows basic usage of the Gmail API.
-</span><span class=s2>    Lists the user&#39;s Gmail labels.
-</span><span class=s2>    &#34;&#34;&#34;</span>
-    <span class=n>creds</span> <span class=o>=</span> <span class=bp>None</span>
-    <span class=c1># The file token.pickle stores the user&#39;s access and refresh tokens, and is</span>
-    <span class=c1># created automatically when the authorization flow completes for the first</span>
-    <span class=c1># time.</span>
-    <span class=k>if</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>exists</span><span class=p>(</span><span class=s1>&#39;token.pickle&#39;</span><span class=p>):</span>
-        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=s1>&#39;token.pickle&#39;</span><span class=p>,</span> <span class=s1>&#39;rb&#39;</span><span class=p>)</span> <span class=k>as</span> <span class=n>token</span><span class=p>:</span>
-            <span class=n>creds</span> <span class=o>=</span> <span class=n>pickle</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>token</span><span class=p>)</span>
-    <span class=c1># If there are no (valid) credentials available, let the user log in.</span>
-    <span class=k>if</span> <span class=ow>not</span> <span class=n>creds</span> <span class=ow>or</span> <span class=ow>not</span> <span class=n>creds</span><span class=o>.</span><span class=n>valid</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>creds</span> <span class=ow>and</span> <span class=n>creds</span><span class=o>.</span><span class=n>expired</span> <span class=ow>and</span> <span class=n>creds</span><span class=o>.</span><span class=n>refresh_token</span><span class=p>:</span>
-            <span class=n>creds</span><span class=o>.</span><span class=n>refresh</span><span class=p>(</span><span class=n>Request</span><span class=p>())</span>
-        <span class=k>else</span><span class=p>:</span>
-            <span class=n>flow</span> <span class=o>=</span> <span class=n>InstalledAppFlow</span><span class=o>.</span><span class=n>from_client_secrets_file</span><span class=p>(</span>
-                <span class=s1>&#39;credentials.json&#39;</span><span class=p>,</span> <span class=n>SCOPES</span><span class=p>)</span>
-            <span class=n>creds</span> <span class=o>=</span> <span class=n>flow</span><span class=o>.</span><span class=n>run_local_server</span><span class=p>(</span><span class=n>port</span><span class=o>=</span><span class=mi>0</span><span class=p>)</span>
-        <span class=c1># Save the credentials for the next run</span>
-        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=s1>&#39;token.pickle&#39;</span><span class=p>,</span> <span class=s1>&#39;wb&#39;</span><span class=p>)</span> <span class=k>as</span> <span class=n>token</span><span class=p>:</span>
-            <span class=n>pickle</span><span class=o>.</span><span class=n>dump</span><span class=p>(</span><span class=n>creds</span><span class=p>,</span> <span class=n>token</span><span class=p>)</span>
-    <span class=c1># Another option to ignore google cache logging issue</span>
-    <span class=c1># service = build(&#39;gmail&#39;, &#39;v1&#39;, credentials=creds, cache_discovery=False)</span>
-    <span class=n>service</span> <span class=o>=</span> <span class=n>build</span><span class=p>(</span><span class=s1>&#39;gmail&#39;</span><span class=p>,</span> <span class=s1>&#39;v1&#39;</span><span class=p>,</span> <span class=n>credentials</span><span class=o>=</span><span class=n>creds</span><span class=p>)</span>
-    <span class=k>return</span> <span class=n>service</span>
-
-    
-<span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-    <span class=n>service</span> <span class=o>=</span> <span class=n>get_service</span><span class=p>()</span>
-
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
-    <span class=n>main</span><span class=p>()</span>
-
-
-</code></pre></div><p>I have moved the code that will connect to the API into its own function call <em>get_service</em> which returns an object we can use to access the API.
-The keen reader my have noticed that I have updated the SCOPES. I will be modifying emails in a later post in the series and we also need access to the labels to be able to read and modify them.</p><p>The next set of functions will be added to the file just above: <strong>def main():</strong></p><p>First may want to be able to get a list of all the labels we have in our Gmail account. This can be done using this code.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>get_labels</span><span class=p>(</span><span class=n>service</span><span class=p>):</span>
-    <span class=n>list_of_labels</span> <span class=o>=</span> <span class=n>service</span><span class=o>.</span><span class=n>users</span><span class=p>()</span><span class=o>.</span><span class=n>labels</span><span class=p>()</span><span class=o>.</span><span class=n>list</span><span class=p>(</span><span class=n>userId</span><span class=o>=</span><span class=s1>&#39;me&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>execute</span><span class=p>()</span>
-    <span class=k>return</span> <span class=n>list_of_labels</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s1>&#39;labels&#39;</span><span class=p>)</span>
-</code></pre></div><p>get_labels return a list of json objects. Which are just dictionaries in python.</p><p>Next we may want to create a new label to use with Gmail. This can be done with following code.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>define_label</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>mlv</span><span class=o>=</span><span class=s2>&#34;show&#34;</span><span class=p>,</span> <span class=n>llv</span><span class=o>=</span><span class=s2>&#34;labelShow&#34;</span><span class=p>):</span>
-    <span class=n>label</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-    <span class=n>label</span><span class=p>[</span><span class=s2>&#34;messageListVisibility&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=n>mlv</span>
-    <span class=n>label</span><span class=p>[</span><span class=s2>&#34;labelListVisibility&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=n>llv</span>
-    <span class=n>label</span><span class=p>[</span><span class=s2>&#34;name&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=n>name</span>
-    <span class=k>return</span> <span class=n>label</span>
-</code></pre></div><p>This is the simplest json form that will create a valid label in Gmail.
-If we call this function:</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>define_label</span><span class=p>(</span><span class=s2>&#34;test&#34;</span><span class=p>)</span>
-</code></pre></div><p>we get the following json string:</p><div class=highlight><pre class=chroma><code class=language-text data-lang=text>{
-  &#39;messageListVisibility&#39;: &#39;show&#39;,
-  &#39;labelListVisibility&#39;: &#39;labelShow&#39;,
-  &#39;name&#39;: &#39;test&#39;
-}
-</code></pre></div><p>After creating this object we want to actually add it to Gmail. We can do that using the following code.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>add_label_to_gmail</span><span class=p>(</span><span class=n>service</span><span class=p>,</span> <span class=n>label</span><span class=p>):</span>
-    <span class=k>try</span><span class=p>:</span>
-        <span class=n>created_label</span> <span class=o>=</span> <span class=n>service</span><span class=o>.</span><span class=n>users</span><span class=p>()</span><span class=o>.</span><span class=n>labels</span><span class=p>()</span><span class=o>.</span><span class=n>create</span><span class=p>(</span><span class=n>userId</span><span class=o>=</span><span class=s1>&#39;me&#39;</span><span class=p>,</span>
-                                                        <span class=n>body</span><span class=o>=</span><span class=n>label</span><span class=p>)</span><span class=o>.</span><span class=n>execute</span><span class=p>()</span>
-        <span class=k>return</span> <span class=n>created_label</span>
-    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-        <span class=n>logger</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=n>e</span><span class=p>)</span>
-</code></pre></div><p>What add_label_to_gmail() does is call the API with a body of json containing the information to create a new label within Gmail. If there is a problem, for example, trying to add a new label when one with the name already exists; we will get an exception.<br>If everything goes well we will get a new json containing the original json we created, <em>but</em> it will also now contain the label&rsquo;s <em>id</em></p><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>{
-  &#39;id&#39;: &#39;Label_30&#39;,
-  &#39;name&#39;: &#39;test&#39;,
-  &#39;messageListVisibility&#39;: &#39;show&#39;,
-  &#39;labelListVisibility&#39;: &#39;labelShow&#39;
-}
-</code></pre></div><p>We can now get that new <em>id</em> using the next function</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>get_new_label_id</span><span class=p>(</span><span class=n>new_label</span><span class=p>):</span>
-    <span class=k>return</span> <span class=n>new_label</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s1>&#39;id&#39;</span><span class=p>)</span>
-</code></pre></div><p>This simply returns label as a string.</p><p>In practice this means making the following set of calls.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>new_label</span> <span class=o>=</span> <span class=n>define_label</span><span class=p>(</span><span class=s2>&#34;test&#34;</span><span class=p>)</span>
-<span class=n>new_label</span> <span class=o>=</span> <span class=n>add_label_to_gmail</span><span class=p>(</span><span class=n>service</span><span class=p>,</span> <span class=n>new_label</span><span class=p>)</span>
-<span class=n>new_id</span> <span class=o>=</span> <span class=n>get_new_label_id</span><span class=p>(</span><span class=n>new_label</span><span class=p>)</span>
-</code></pre></div><p>But why or how do we use this new <em>id</em> once its been created and added to Gmail?<br>As mentioned at in the first article. I am working on making a system that queries and sends notifications based on some emails. I have a need to query Gmail fairly frequently during certain times of the day, say once every 5 minutes. Gmail&rsquo;s search options only allows me to limit my search conditions to emails that are newer_than:1day. That means, I will see the same emails repeatedly triggering multiple notifications.</p><p>The fix? Add a label when a message is processed and then use <em>-label:labelname</em> in the search string. Meaning that once an email is processed. It won&rsquo;t get processed a second time.</p><p>How do you add a label to a message?</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>add_label_to_message</span><span class=p>(</span><span class=n>service</span><span class=p>,</span> <span class=n>msg_id</span><span class=p>,</span> <span class=n>label_id</span><span class=p>):</span>
-    <span class=k>try</span><span class=p>:</span>
-        <span class=n>msg</span> <span class=o>=</span> <span class=n>service</span><span class=o>.</span><span class=n>users</span><span class=p>()</span><span class=o>.</span><span class=n>messages</span><span class=p>()</span><span class=o>.</span><span class=n>modify</span><span class=p>(</span><span class=n>userId</span><span class=o>=</span><span class=s1>&#39;me&#39;</span><span class=p>,</span>
-                                                <span class=nb>id</span><span class=o>=</span><span class=n>msg_id</span><span class=p>,</span>
-                                                <span class=n>body</span><span class=o>=</span><span class=p>{</span><span class=s1>&#39;removeLabelIds&#39;</span><span class=p>:</span> <span class=p>[],</span>
-                                                      <span class=s1>&#39;addLabelIds&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>label_id</span><span class=p>]}</span>
-                                                <span class=p>)</span><span class=o>.</span><span class=n>execute</span><span class=p>()</span>
-    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-      <span class=c1># Do something here. print or log</span>
-
-</code></pre></div><p>This takes the service, a msg_id, and the label_id we got after creating the new label.</p><p>Where does the msg_id come from? That is a story for the next post in our series.</p></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Part 2 in a series of articles on implementing a notification system using Gmail and <a href=https://notify-bot.line.me/doc/en/>Line Bot</a>.</p><a href=https://bas-man.github.io/post/google-api-gmail-notifications-2/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
 <a href=https://bas-man.github.io//tags/python/>python</a>&nbsp;
 <a href=https://bas-man.github.io//tags/api/>api</a>&nbsp;
 <a href=https://bas-man.github.io//tags/notification/>notification</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/google-api-gmail-notifications-1/><h2 class=post-title>Google API Gmail LINE Notifications Part 1</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on February 1, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;478&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry>This will be a series of articles on implementing a notification system using Gmail and Line Bot
-The goal here is to be able to query gmail for a select set of emails. Process them and then send a notification. This could be altered to work with a Bot of some other service.
-Gmail Python Line Bot 1. Installation & First Run 2.
-<a href=https://bas-man.github.io/post/google-api-gmail-notifications-1/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This will be a series of articles on implementing a notification system using Gmail and <a href=https://notify-bot.line.me/doc/en/>Line Bot</a>.<br>The goal here is to be able to query gmail for a select set of emails. Process them and then send a notification. This could be altered to work with a Bot of some other service.</p><a href=https://bas-man.github.io/post/google-api-gmail-notifications-1/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/gmail/>gmail</a>&nbsp;
 <a href=https://bas-man.github.io//tags/python/>python</a>&nbsp;
 <a href=https://bas-man.github.io//tags/api/>api</a>&nbsp;
 <a href=https://bas-man.github.io//tags/notification/>notification</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/regex-double-byte-python3/><h2 class=post-title>Working with double-byte regex expressions with Python3</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on January 5, 2021
