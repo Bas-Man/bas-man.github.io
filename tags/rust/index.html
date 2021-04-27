@@ -28,7 +28,13 @@
 &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><script type=application/javascript src=https://gist.github.com/Bas-Man/b869526dc3bf085e7c5de14f3fa57494.js></script></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
 <a href=https://bas-man.github.io//tags/dns/>dns</a>&nbsp;
 <a href=https://bas-man.github.io//tags/soa/>soa</a>&nbsp;
-<a href=https://bas-man.github.io//tags/lookup/>lookup</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-looking-at-regex-addendum/><h2 class=post-title>Looking at Regex in Rust (Addendum)</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on April 22, 2021
+<a href=https://bas-man.github.io//tags/lookup/>lookup</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-spf-a-mx/><h2 class=post-title>SPF: Adding Support for A and MX Mechanisms in Rust</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on April 27, 2021
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;330&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is a quick followup on my progress in deconstructing SPF using Rust.<br>Today I was able to implement both <code>A</code> and <code>MX</code> mechanisms.</p><a href=https://bas-man.github.io/post/rust-spf-a-mx/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
+<a href=https://bas-man.github.io//tags/spf/>spf</a>&nbsp;
+<a href=https://bas-man.github.io//tags/mx/>mx</a>&nbsp;
+<a href=https://bas-man.github.io//tags/learning/>learning</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-looking-at-regex-addendum/><h2 class=post-title>Looking at Regex in Rust (Addendum)</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on April 22, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;652&nbsp;words
 &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry>Hi. In my previous article Looking at Regex in Rust. I covered some basics. Today I will go over some new things that I have learned, as I expanded on things that my regex expression needs to handle. In particular the need to handle the possible existence or none existence of qualifiers +,-,~,?.
@@ -82,13 +88,6 @@ While I was considering how best to go about doing generics, I came across this 
 <a href=https://bas-man.github.io//tags/crate/>crate</a>&nbsp;
 <a href=https://bas-man.github.io//tags/trust-dns-resolver/>trust-dns-resolver</a>&nbsp;
 <a href=https://bas-man.github.io//tags/txt/>txt</a>&nbsp;
-<a href=https://bas-man.github.io//tags/dns/>dns</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/><h2 class=post-title>SOA lookup using the trust-dns-resolver Crate</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on March 26, 2021
-&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;369&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>This is a second article on using the <strong>trust-dns-resolver</strong> crate<br><strong>Warning: This code is not intended to be used in production. You should review and adjust to your own needs.</strong></p><a href=https://bas-man.github.io/post/rust-trust-dns-resolver-soa-lookup/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
-<a href=https://bas-man.github.io//tags/crate/>crate</a>&nbsp;
-<a href=https://bas-man.github.io//tags/trust-dns-resolver/>trust-dns-resolver</a>&nbsp;
-<a href=https://bas-man.github.io//tags/soa/>soa</a>&nbsp;
 <a href=https://bas-man.github.io//tags/dns/>dns</a>&nbsp;</div></article></div><ul class="pager main-pager"><li class=next><a href=https://bas-man.github.io/tags/rust/page/2/>Older Posts &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/Bas-Man title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
 <i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://dev.to/basman title=Dev><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
 <i class="fab fa-dev fa-stack-1x fa-inverse"></i></span></a></li><li><a href="https://flipboard.com/@baspann/coding-kq8v8rh8z?from=share%25!%28EXTRA%20string=%29" title=Flipboard><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
