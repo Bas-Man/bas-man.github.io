@@ -22,38 +22,38 @@ This will involve creating some tests, and basic functions."><meta name=twitter:
 <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>Swift: Deconstruct SPF - Struct Mechanism</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on May 19, 2021
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;724&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role=main class=blog-post><p>Today, I will start on building out the functionality of the <code>struct Mechanism</code>.<br>This will involve creating some tests, and basic functions.</p><h2 id=instantiate-the-mechanism-struct>Instantiate the Mechanism Struct</h2><p>We have our struct defined as such:</p><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>struct Mechanism {
-    var kind: MechanismKind;
-    var qualifier: Qualifier;
-    var mechanism: String;
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role=main class=blog-post><p>Today, I will start on building out the functionality of the <code>struct Mechanism</code>.<br>This will involve creating some tests, and basic functions.</p><h2 id=instantiate-the-mechanism-struct>Instantiate the Mechanism Struct</h2><p>We have our struct defined as such:</p><div class=highlight><pre class=chroma><code class=language-swift data-lang=swift><span class=kd>struct</span> <span class=nc>Mechanism</span> <span class=p>{</span>
+    <span class=kd>var</span> <span class=nv>kind</span><span class=p>:</span> <span class=n>MechanismKind</span><span class=p>;</span>
+    <span class=kd>var</span> <span class=nv>qualifier</span><span class=p>:</span> <span class=n>Qualifier</span><span class=p>;</span>
+    <span class=kd>var</span> <span class=nv>mechanism</span><span class=p>:</span> <span class=nb>String</span><span class=p>;</span>
     
-    init(k: MechanismKind, q: Qualifier, m: String) {
-        kind = k;
-        qualifier = q;
-        mechanism = m;
-    }
-    func mechanismString() -&gt; String {
-        self.mechanism;
-    }
-    func whatKind() -&gt; MechanismKind {
-        return self.kind;
-    }
-    func isPass() -&gt; Bool {
-        return self.qualifier == Qualifier.Pass;
-    }
-    func isFail() -&gt; Bool {
-        return self.qualifier == Qualifier.Fail;
-    }
-    func isSoftFail() -&gt; Bool {
-        return self.qualifier == Qualifier.SoftFail;
-    }
-    func isNeutral() -&gt; Bool {
-        return self.qualifier == Qualifier.Neutral;
-    }
-    func isNone() -&gt; Bool {
-        return self.qualifier == Qualifier.None;
-    }
-}
+    <span class=kd>init</span><span class=p>(</span><span class=n>k</span><span class=p>:</span> <span class=n>MechanismKind</span><span class=p>,</span> <span class=n>q</span><span class=p>:</span> <span class=n>Qualifier</span><span class=p>,</span> <span class=n>m</span><span class=p>:</span> <span class=nb>String</span><span class=p>)</span> <span class=p>{</span>
+        <span class=n>kind</span> <span class=p>=</span> <span class=n>k</span><span class=p>;</span>
+        <span class=n>qualifier</span> <span class=p>=</span> <span class=n>q</span><span class=p>;</span>
+        <span class=n>mechanism</span> <span class=p>=</span> <span class=n>m</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>mechanismString</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>String</span> <span class=p>{</span>
+        <span class=kc>self</span><span class=p>.</span><span class=n>mechanism</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>whatKind</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=n>MechanismKind</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>kind</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>isPass</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>Bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>qualifier</span> <span class=p>==</span> <span class=n>Qualifier</span><span class=p>.</span><span class=n>Pass</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>isFail</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>Bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>qualifier</span> <span class=p>==</span> <span class=n>Qualifier</span><span class=p>.</span><span class=n>Fail</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>isSoftFail</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>Bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>qualifier</span> <span class=p>==</span> <span class=n>Qualifier</span><span class=p>.</span><span class=n>SoftFail</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>isNeutral</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>Bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>qualifier</span> <span class=p>==</span> <span class=n>Qualifier</span><span class=p>.</span><span class=n>Neutral</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=kd>func</span> <span class=nf>isNone</span><span class=p>()</span> <span class=p>-&gt;</span> <span class=nb>Bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=kc>self</span><span class=p>.</span><span class=n>qualifier</span> <span class=p>==</span> <span class=n>Qualifier</span><span class=p>.</span><span class=n>None</span><span class=p>;</span>
+    <span class=p>}</span>
+<span class=p>}</span>
 </code></pre></div><h3 id=init>init</h3><p>This will instantiate the struct. Provide what kind of <strong>mechanism</strong> it is. Its <strong>qualifier</strong>, and the value of its <strong>mechanism</strong>.</p><h3 id=mechanismstring>mechanismString</h3><p>This will allow us to access the information stored in <code>mechanism</code> as a simple <code>String</code></p><h3 id=ispass>isPass</h3><p>This will return <code>Bool</code> of <strong>true</strong> if the Qualifier is <code>Pass</code></p><h3 id=isfail>isFail</h3><p>This will return <code>Bool</code> of <strong>true</strong> if the Qualifier is <code>Fail</code></p><h3 id=issoftfail>isSoftFail</h3><p>This will return <code>Bool</code> of <strong>true</strong> if the Qualifier is <code>SoftFail</code></p><h3 id=isneutral>isNeutral</h3><p>This will return <code>Bool</code> of <strong>true</strong> if the Qualifier is <code>Neutral</code></p><h3 id=isnone>isNone</h3><p>This will return <code>Bool</code> of <strong>true</strong> if the Qualifier is <code>None</code></p><h3 id=whatkind>whatKind</h3><p>This will help us understand if the mechanism represents a <strong>redirect</strong>, <strong>A</strong>, or some other mechanism.</p><h2 id=testing>Testing</h2><p>For this we need to take a look at <code>Tests/DeconSpfTests/DeconSpfTests.swift</code>.<br>Within this file we have the following initial set of code.</p><div class=highlight><pre class=chroma><code class=language-swift data-lang=swift><span class=kd>import</span> <span class=nc>XCTest</span>
 <span class=p>@</span><span class=n>testable</span> <span class=kd>import</span> <span class=nc>DeconSpf</span><span class=p>;</span>
 
