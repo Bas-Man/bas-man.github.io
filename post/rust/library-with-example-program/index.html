@@ -1,0 +1,156 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>Rust: Add an Example Program to your Library Crate - Bas-Man's Musings</title><meta name=description content="Recently I decided that I might actually publish my little rust crate. To that end I started looking into some of the things that are needed and what can be done. I have published a perl module in the past. And as a rule for myself, I like to provide an example program that uses a module or library. That is what I will look at today."><meta name=author content="Bas-Man"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"Bas-Man\u0027s Musings","url":"https:\/\/bas-man.github.io\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/bas-man.github.io\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/bas-man.github.io\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/bas-man.github.io\/post\/rust\/library-with-example-program\/","name":"Rust add an example program to your library crate"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Bas-Man"},"headline":"Rust: Add an Example Program to your Library Crate","description":"Recently I decided that I might actually publish my little rust crate. To that end I started looking into some of the things that are needed and what can be done. I have published a perl module in the past. And as a rule for myself, I like to provide an example program that uses a module or library. That is what I will look at today.\n","inLanguage":"en","wordCount":900,"datePublished":"0001-01-01T00:00:00","dateModified":"0001-01-01T00:00:00","image":"https:\/\/bas-man.github.io\/","keywords":["rust, crate, lib"],"mainEntityOfPage":"https:\/\/bas-man.github.io\/post\/rust\/library-with-example-program\/","publisher":{"@type":"Organization","name":"https:\/\/bas-man.github.io\/","logo":{"@type":"ImageObject","url":"https:\/\/bas-man.github.io\/","height":60,"width":60}}}</script><meta property="og:title" content="Rust: Add an Example Program to your Library Crate"><meta property="og:description" content="Recently I decided that I might actually publish my little rust crate. To that end I started looking into some of the things that are needed and what can be done. I have published a perl module in the past. And as a rule for myself, I like to provide an example program that uses a module or library. That is what I will look at today."><meta property="og:url" content="https://bas-man.github.io/post/rust/library-with-example-program/"><meta property="og:type" content="website"><meta property="og:site_name" content="Bas-Man's Musings"><meta name=twitter:title content="Rust: Add an Example Program to your Library Crate"><meta name=twitter:description content="Recently I decided that I might actually publish my little rust crate. To that end I started looking into some of the things that are needed and what can be done. I have published a perl module in the …"><meta name=twitter:card content="summary"><link href=https://bas-man.github.io/images/favicons/favicon.ico rel=icon type=image/x-icon><meta name=generator content="Hugo 0.83.1"><link rel=alternate href=https://bas-man.github.io/index.xml type=application/rss+xml title="Bas-Man's Musings"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css integrity=sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y crossorigin=anonymous><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://bas-man.github.io/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://bas-man.github.io/css/highlight.min.css><link rel=stylesheet href=https://bas-man.github.io/css/codeblock.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css integrity=sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css integrity=sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R crossorigin=anonymous><link rel=stylesheet href=/css/custom.css><link href=/css/boxes.css rel=stylesheet><script async src="https://www.googletagmanager.com/gtag/js?id=G-CBZDLNDS8F"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-CBZDLNDS8F')</script><script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-166598762-1','auto'),ga('send','pageview'))</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
+<a class=navbar-brand href=https://bas-man.github.io/>Bas-Man's Musings</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Home href=/>Home</a></li><li class=navlinks-container><a class=navlinks-parent>Categories</a><div class=navlinks-children><a href=/series>Series</a>
+<a href=/categories>Categories</a>
+<a href=/tags>Tags</a></div></li><li class=navlinks-container><a class=navlinks-parent>Projects</a><div class=navlinks-children><a href=/projects/github/>GitHub</a>
+<a href=/projects/line-notify-from-email/>Line Notification</a></div></li><li class=navlinks-container><a class=navlinks-parent>Docs</a><div class=navlinks-children><a href=/docs/bind-dns-setup/>Bind DNS Setup</a>
+<a href=/docs/gmail-zapier-line-notify/>Gmail & Zapier</a></div></li><li class=navlinks-container><a class=navlinks-parent>References</a><div class=navlinks-children><a href=/cheatsheets/python/>Python</a>
+<a href=/cheatsheets/perl/>Perl</a>
+<a href=/cheatsheets/rust/>Rust</a>
+<a href=/cheatsheets/git/>Git</a>
+<a href=/cheatsheets/latex/>LaTeX</a></div></li><li class=navlinks-container><a class=navlinks-parent>Snippets</a><div class=navlinks-children><a href=/cheatsheets/python/snippets/>Python</a>
+<a href=/cheatsheets/perl/snippets/>Perl</a>
+<a href=/cheatsheets/rust/snippets/>Rust</a>
+<a href=/cheatsheets/git/snippets/>Git</a></div></li><li><a title=About href=/about/>About</a></li></ul></div></div></nav><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>Rust: Add an Example Program to your Library Crate</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on January 1, 0001
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;900&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role=main class=blog-post><p>Recently I decided that I might actually publish my little rust crate. To that end I started looking into some of the things that are needed and what can be done. I have published a <strong>perl</strong> module in the past. And as a rule for myself, I like to provide an example program that uses a <em>module</em> or <em>library</em>. That is what I will look at today.</p><p>When I started this project to learn <strong>rust</strong>, I was simply making a single program. As things evolved, it became more complex and turned in to a program that uses a library. This was all fine.</p><p>But as I looked at making this a library crate. I noticed when I compiled my library it was also bringing in external crates that my library didn&rsquo;t need. Why? Because my crate was a library and an <strong>binary</strong>.</p><h2 id=cargotoml>Cargo.toml</h2><h3 id=old>Old</h3><div class=highlight><pre class=chroma><code class=language-toml data-lang=toml><span class=p>[</span><span class=nx>package</span><span class=p>]</span>
+<span class=err>--</span> <span class=nx>snip</span> <span class=err>--</span>
+<span class=nx>edition</span> <span class=p>=</span> <span class=s2>&#34;2018&#34;</span>
+
+<span class=p>[</span><span class=nx>dependencies</span><span class=p>]</span>
+<span class=nx>trust</span><span class=err>-</span><span class=nx>dns</span><span class=err>-</span><span class=nx>resolver</span> <span class=p>=</span> <span class=s2>&#34;0.20.1&#34;</span>
+<span class=nx>ipnetwork</span> <span class=p>=</span> <span class=s2>&#34;0.17.0&#34;</span>
+<span class=nx>regex</span> <span class=p>=</span> <span class=s2>&#34;1&#34;</span>
+</code></pre></div><p>In the old toml file we can see that all of my dependencies are listed together. Even though my library only really makes use of <code>ipnetwork</code> and <code>regex</code>. At this point my regex was not using the <code>lazy_static</code> crate.</p><p>I also have not listed any <code>[lib]</code> section.</p><h3 id=new>New</h3><div class=highlight><pre class=chroma><code class=language-toml data-lang=toml><span class=p>[</span><span class=nx>lib</span><span class=p>]</span>
+<span class=nx>name</span> <span class=p>=</span> <span class=s2>&#34;redacted&#34;</span> <span class=err>(</span><span class=nx>at</span> <span class=nx>least</span> <span class=nx>until</span> <span class=nx>I</span> <span class=nx>publish</span> <span class=nx>it</span><span class=err>)</span>
+<span class=nx>path</span> <span class=p>=</span> <span class=s2>&#34;src/lib.rs&#34;</span>
+
+<span class=p>[[</span><span class=nx>example</span><span class=p>]]</span>
+<span class=nx>name</span> <span class=p>=</span> <span class=s2>&#34;trust-dns-demo&#34;</span>
+<span class=nx>path</span> <span class=p>=</span> <span class=s2>&#34;examples/trust-dns-resolver.rs&#34;</span>
+
+<span class=p>[</span><span class=nx>dependencies</span><span class=p>]</span>
+<span class=nx>ipnetwork</span> <span class=p>=</span> <span class=s2>&#34;0.17.0&#34;</span>
+<span class=nx>regex</span> <span class=p>=</span> <span class=s2>&#34;1&#34;</span>
+<span class=nx>lazy_static</span> <span class=p>=</span> <span class=s2>&#34;1.4.0&#34;</span>
+
+<span class=p>[</span><span class=nx>dev</span><span class=err>-</span><span class=nx>dependencies</span><span class=p>]</span>
+<span class=nx>trust</span><span class=err>-</span><span class=nx>dns</span><span class=err>-</span><span class=nx>resolver</span> <span class=p>=</span> <span class=s2>&#34;0.20.1&#34;</span>
+</code></pre></div><p>In this new toml file. I have moved the <code>trust-dns-resolver</code> down under <code>[dev-dependencies]</code>. In this way when I compile my library the <code>trust-*</code> crate and any of its dependencies will not be compiled. This has an added benefit that when <strong>docs</strong> are created. Only items under <code>[dependencies]</code> are included in the docs.</p><p>Though you can also run:</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>cargo doc --no-deps
+</code></pre></div><p>This will prevent docs from generating docs for dependencies.</p><h2 id=crate-directory-structure>Crate Directory Structure</h2><h3 id=old-1>Old</h3><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>├── Cargo.lock
+├── Cargo.toml
+├── LICENSE
+├── README.md
+└── src
+    ├── lib.rs
+    ├── main.rs
+    └── spf
+</code></pre></div><p>The old setup has a <code>main.rs</code>. This in effect tells <strong>cargo</strong> that this a binary crate. The <code>[lib]</code> in <code>Cargo.toml</code> also tells it that it is library crate.</p><p>The affect of having a <code>main.rs</code> is that both a binary and library are compiled. In my case <code>main.rs</code> has a dependency on <code>trust-dns-resolver</code>.</p><p>To make this compile as only a library and also provide an executable example program, the solution is to define an <code>example</code> <strong>target</strong>.</p><p>As seen above.</p><div class=highlight><pre class=chroma><code class=language-toml data-lang=toml><span class=p>[[</span><span class=nx>example</span><span class=p>]]</span>
+<span class=nx>name</span> <span class=p>=</span> <span class=s2>&#34;trust-dns-demo&#34;</span>
+<span class=nx>path</span> <span class=p>=</span> <span class=s2>&#34;examples/trust-dns-resolver.rs&#34;</span>
+</code></pre></div><p>This defines a new target that can be compiled. Notes from <a href=https://doc.rust-lang.org/cargo/>The Cargo Book</a> specifically,
+<a href=https://doc.rust-lang.org/cargo/reference/cargo-targets.html#examples>Example</a> states.</p><blockquote><p>Files located under the examples directory are example uses of the functionality provided by the library. When compiled, they are placed in the target/debug/examples directory.</p></blockquote><blockquote><p>Examples can use the public API of the package&rsquo;s library. They are also linked with the [dependencies] and [dev-dependencies] defined in Cargo.toml.</p></blockquote><h3 id=new-1>New</h3><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>.
+├── Cargo.lock
+├── Cargo.toml
+├── LICENSE
+├── README.md
+├── examples
+│   └── trust-dns-resolver.rs
+└── src
+    ├── lib.rs
+    └── spf
+</code></pre></div><p>What I did here was to create an <code>examples</code> directory, rename and move the <code>main.rs</code> to this new directory as <code>trust-dns-demo.rs</code></p><h2 id=the-result>The result</h2><p>When I run a build. I only use the main dependencies.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ cargo build
+  Compiling memchr v2.3.4
+  Compiling serde v1.0.125
+  Compiling regex-syntax v0.6.23
+  Compiling lazy_static v1.4.0
+  Compiling aho-corasick v0.7.15
+  Compiling regex v1.4.6
+  Compiling ipnetwork v0.17.0
+  Compiling something v0.1.0 <span class=o>(</span>/Users/me/Documents/Development/rust/something/
+</code></pre></div><p>However, when I run a test.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>cargo <span class=nb>test</span>
+   Compiling libc v0.2.96
+   Compiling cfg-if v1.0.0
+   Compiling proc-macro2 v1.0.27
+   Compiling unicode-xid v0.2.2
+   -- snip <span class=m>40</span> items <span class=k>for</span> brevity --
+   Compiling idna v0.2.3
+   Compiling rand v0.8.3
+   Compiling url v2.2.2
+   Compiling thiserror-impl v1.0.25
+   Compiling enum-as-inner v0.3.3
+   Compiling thiserror v1.0.25
+   Compiling trust-dns-proto v0.20.3
+   Compiling trust-dns-resolver v0.20.3
+   Compiling something v0.1.0 <span class=o>(</span>/Users/me/Documents/Development/rust/something<span class=o>)</span>
+    Finished <span class=nb>test</span> <span class=o>[</span>unoptimized + debuginfo<span class=o>]</span> target<span class=o>(</span>s<span class=o>)</span> in 21.68s
+     Running unittests <span class=o>(</span>target/debug/deps/something-49ff56fbf5edcf40<span class=o>)</span>
+
+running <span class=m>69</span> tests
+<span class=nb>test</span> spf::kinds::test_kind_ip4 ... ok
+<span class=nb>test</span> spf::kinds::test_kind_exists ... ok
+<span class=nb>test</span> spf::kinds::test_kind_a ... ok
+-- Snip <span class=m>60</span> items <span class=k>for</span> brevity --
+<span class=nb>test</span> spf::tests::spf::test_spf::test_redirect ... ok
+<span class=nb>test</span> spf::tests::spf::test_spf::test_netblocks2_google_com ... ok
+<span class=nb>test</span> spf::tests::spf::ptr::capture::test_match_on_ptr ... ok
+<span class=nb>test</span> spf::tests::spf::ptr::parse::test_exist ... ok
+<span class=nb>test</span> spf::tests::spf::ptr::parse::test_exist_colon ... ok
+<span class=nb>test</span> spf::tests::spf::ptr::capture::test_match_on_ptr_colon ... ok
+
+<span class=nb>test</span> result: ok. <span class=m>69</span> passed<span class=p>;</span> <span class=m>0</span> failed<span class=p>;</span> <span class=m>0</span> ignored<span class=p>;</span> <span class=m>0</span> measured<span class=p>;</span> <span class=m>0</span> filtered out<span class=p>;</span> finished in 0.01s
+
+   Doc-tests something
+
+running <span class=m>5</span> tests
+<span class=nb>test</span> src/spf/mod.rs - spf::Spf::from_str <span class=o>(</span>line 66<span class=o>)</span> ... ok
+<span class=nb>test</span> src/spf/kinds.rs - spf::kinds::MechanismKind::as_str <span class=o>(</span>line 82<span class=o>)</span> ... ok
+<span class=nb>test</span> src/spf/mechanism.rs - spf::mechanism::Mechanism&lt;IpNetwork&gt;::raw <span class=o>(</span>line 155<span class=o>)</span> ... ok
+<span class=nb>test</span> src/spf/mechanism.rs - spf::mechanism::Mechanism&lt;String&gt;::new_a <span class=o>(</span>line 65<span class=o>)</span> ... ok
+<span class=nb>test</span> src/spf/mechanism.rs - spf::mechanism::Mechanism&lt;IpNetwork&gt;::string <span class=o>(</span>line 171<span class=o>)</span> ... ok
+
+<span class=nb>test</span> result: ok. <span class=m>5</span> passed<span class=p>;</span> <span class=m>0</span> failed<span class=p>;</span> <span class=m>0</span> ignored<span class=p>;</span> <span class=m>0</span> measured<span class=p>;</span> <span class=m>0</span> filtered out<span class=p>;</span> finished in 0.64s
+</code></pre></div><p>Note the inclusion of:</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>Compiling trust-dns-proto v0.20.3
+Compiling trust-dns-resolver v0.20.3
+</code></pre></div><h2 id=making-the-example-program-run>Making the Example program Run</h2><p>This can be done pretty simply.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ cargo run --example
+error: <span class=s2>&#34;--example&#34;</span> takes one argument.
+Available examples:
+    trust-dns-demo
+</code></pre></div><p>So we can simply run</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>$ cargo run --example trust-dns-demo
+Finished dev <span class=o>[</span>unoptimized + debuginfo<span class=o>]</span> target<span class=o>(</span>s<span class=o>)</span> in 0.21s
+ Running <span class=sb>`</span>target/debug/examples/trust-dns-demo<span class=sb>`</span>
+List of TXT records found <span class=k>for</span> gmail.com.
+TXT Record 1:
+<span class=nv>v</span><span class=o>=</span>spf1 <span class=nv>redirect</span><span class=o>=</span>_spf.google.com
+TXT Record 2:
+globalsign-smime-dv<span class=o>=</span>CDYX+XFHUw2wml6/Gb8+59BsH31KzUr6c1l2BPvqKX8<span class=o>=</span>
+
+Decontructing SPF Record
+Spf <span class=o>{</span> source: <span class=s2>&#34;v=spf1 redirect=_spf.google.com&#34;</span>, version: <span class=s2>&#34;v=spf1&#34;</span>, from_src: true, include: None, redirect: Some<span class=o>(</span>Mechanism <span class=o>{</span> kind: Redirect, qualifier: Pass, mechanism: <span class=s2>&#34;_spf.google.com&#34;</span> <span class=o>})</span>, is_redirected: true, a: None, mx: None, ip4: None, ip6: None, ptr: None, exists: None, all: None <span class=o>}</span>
+SPF1: <span class=nv>v</span><span class=o>=</span>spf1 <span class=nv>redirect</span><span class=o>=</span>_spf.google.com
+
+
+Is a redirect: <span class=nb>true</span>
+
+redirect: _spf.google.com
+mechanism: <span class=nv>redirect</span><span class=o>=</span>_spf.google.com
+</code></pre></div><h2 id=closing>Closing</h2><p>That&rsquo;s it for this article. I hope it is a fairly understandable way to provide an example program along with your rust library.</p><div class=blog-tags><a href=https://bas-man.github.io//tags/rust/>rust</a>&nbsp;
+<a href=https://bas-man.github.io//tags/crate/>crate</a>&nbsp;
+<a href=https://bas-man.github.io//tags/lib/>lib</a>&nbsp;</div><hr><section id=social-share><div class="list-inline footer-links"><div class=share-box aria-hidden=true><ul class=share><li><a href="//twitter.com/share?url=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f&text=Rust%3a%20Add%20an%20Example%20Program%20to%20your%20Library%20Crate&via=" target=_blank title="Share on Twitter"><i class="fab fa-twitter"></i></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook"></i></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f&title=Rust%3a%20Add%20an%20Example%20Program%20to%20your%20Library%20Crate" target=_blank title="Share on Reddit"><i class="fab fa-reddit"></i></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f&title=Rust%3a%20Add%20an%20Example%20Program%20to%20your%20Library%20Crate" target=_blank title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f&title=Rust%3a%20Add%20an%20Example%20Program%20to%20your%20Library%20Crate" target=_blank title="Share on StumbleUpon"><i class="fab fa-stumbleupon"></i></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fbas-man.github.io%2fpost%2frust%2flibrary-with-example-program%2f&description=Rust%3a%20Add%20an%20Example%20Program%20to%20your%20Library%20Crate" target=_blank title="Share on Pinterest"><i class="fab fa-pinterest"></i></a></li></ul></div></div></section><h4 class=see-also>See also</h4><ul><li><a href=/cheatsheets/rust/snippets/trust-dns-resolver-mx/>Using trust-dns-resolver to do mx lookups</a></li><li><a href=/cheatsheets/rust/snippets/trust-dns-resolver-soa/>Using trust-dns-resolver to do soa lookups</a></li><li><a href=/post/rust/lazy-static-regex/>Rust: Lazy Static Regex</a></li><li><a href=/post/rust/domain-name-validation/>Rust: Domain Name Validation</a></li><li><a href=/post/rust/rust-move-to-crate-add-testable-documentation/>Rust: Move from binary to library and Add Documentation Examples that are tested.</a></li></ul></article><ul class="pager blog-pager"><li class=next><a href=https://bas-man.github.io/post/site-launched/ data-toggle=tooltip data-placement=top title="Site Launch">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/Bas-Man title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://dev.to/basman title=Dev><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-dev fa-stack-1x fa-inverse"></i></span></a></li><li><a href="https://flipboard.com/@baspann/coding-kq8v8rh8z?from=share%25!%28EXTRA%20string=%29" title=Flipboard><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-flipboard fa-stack-1x fa-inverse"></i></span></a></li><li><a href title=RSS><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">Bas-Man
+&nbsp;&bull;&nbsp;&copy;
+2020 - 2021
+&nbsp;&bull;&nbsp;
+<a href=https://bas-man.github.io/>Bas-Man's Musings</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.83.1</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js integrity=sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js integrity=sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe crossorigin=anonymous></script><script src=https://code.jquery.com/jquery-1.12.4.min.js integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin=anonymous></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script src=https://bas-man.github.io/js/main.js></script><script src=https://bas-man.github.io/js/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><script>$(document).ready(function(){$("pre.chroma").css("padding","0")})</script><script>renderMathInElement(document.body)</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://bas-man.github.io/js/load-photoswipe.js></script><div class=cookie-container><p>By using this site, you agree to our use of cookies.
+We use cookies on this website to give you the best experience on our
+site. To find out more, read our <a href=/privacy/>privacy</a> policy.</p><button class=cookie-btn>
+Okay</button></div><script src=/js/custom.js></script></body></html>
