@@ -16,7 +16,34 @@
 <button class="pswp__button pswp__button--share" title=Share></button>
 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=tags-heading><h1>git</h1><hr class=small></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=posts-list><article class=post-preview><a href=https://bas-man.github.io/cheatsheets/git/snippets/merge-hotfix/><h2 class=post-title>Merge a hot fix from Master back into Dev branch</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on December 14, 2020
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=tags-heading><h1>git</h1><hr class=small></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=posts-list><article class=post-preview><a href=https://bas-man.github.io/cheatsheets/git/snippets/post-receive-hook/><h2 class=post-title>Auto generate a static website after a remote push to the server.</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on June 22, 2021
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;77&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell><span class=cp>#!/bin/bash
+</span><span class=cp></span>
+<span class=nv>DOMAIN</span><span class=o>=[</span>domain-name<span class=o>]</span>
+<span class=nv>GIT_REPO</span><span class=o>=</span>/var/repos/<span class=o>[</span>repo-name<span class=o>]</span>.repo.git
+<span class=nv>WORKING_DIRECTORY</span><span class=o>=</span>/tmp/<span class=nv>$DOMAIN</span>
+<span class=nv>PUBLIC_WWW</span><span class=o>=</span>/var/www/<span class=nv>$DOMAIN</span>
+<span class=nv>BACKUP_WWW</span><span class=o>=</span>/tmp/<span class=nv>$DOMAIN</span>-backup
+
+<span class=nb>set</span> -e
+
+rm -rf <span class=nv>$WORKING_DIRECTORY</span>
+rsync -aqz <span class=nv>$PUBLIC_WWW</span>/ <span class=nv>$BACKUP_WWW</span>
+<span class=nb>trap</span> <span class=s2>&#34;echo &#39;A problem occurred.  Reverting to backup.&#39;; rsync -aqz --del </span><span class=nv>$BACKUP_WWW</span><span class=s2>/ </span><span class=nv>$PUBLIC_WWW</span><span class=s2>; r
+</span><span class=s2>m -rf </span><span class=nv>$WORKING_DIRECTORY</span><span class=s2>&#34;</span> EXIT
+
+git clone <span class=nv>$GIT_REPO</span> <span class=nv>$WORKING_DIRECTORY</span>
+git clone https://github.com/<span class=o>[</span>them<span class=o>]</span> <span class=nv>$WORKING_DIRECTORY</span>/themes/beautifulhugo
+<span class=c1># The following section should be changed to use rsync so that it nicely updates</span>
+<span class=c1># the directory instead of making it blank.</span>
+rm -rf <span class=nv>$PUBLIC_WWW</span>/*
+hugo -s <span class=nv>$WORKING_DIRECTORY</span> -d <span class=nv>$PUBLIC_WWW</span> -b <span class=s2>&#34;http://</span><span class=si>${</span><span class=nv>DOMAIN</span><span class=si>}</span><span class=s2>&#34;</span>
+rm -rf <span class=nv>$WORKING_DIRECTORY</span>
+</code></pre></div></div><div class=blog-tags><a href=https://bas-man.github.io//tags/git/>git</a>&nbsp;
+<a href=https://bas-man.github.io//tags/post-receive/>post-receive</a>&nbsp;
+<a href=https://bas-man.github.io//tags//></a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/cheatsheets/git/snippets/merge-hotfix/><h2 class=post-title>Merge a hot fix from Master back into Dev branch</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on December 14, 2020
 &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
 &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;23&nbsp;words
 &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Taken from Stack Overflow
@@ -37,7 +64,13 @@ git rebase master
 </code></pre></div><p>Don&rsquo;t forget to use &ndash;force when pushing upstream.</p></div><div class=blog-tags><a href=https://bas-man.github.io//tags/git/>git</a>&nbsp;
 <a href=https://bas-man.github.io//tags/lastmod/>lastmod</a>&nbsp;
 <a href=https://bas-man.github.io//tags/hugo/>hugo</a>&nbsp;
-<a href=https://bas-man.github.io//tags/rewrite/>rewrite</a>&nbsp;</div></article></div></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/Bas-Man title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<a href=https://bas-man.github.io//tags/rewrite/>rewrite</a>&nbsp;</div></article><article class=post-preview><a href=https://bas-man.github.io/post/git/auto-update-site-from-git-push/><h2 class=post-title>Auto Update Site from a Git Push</h2></a><p class=post-meta><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on June 22, 2021
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;680&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Bas-Man</span></p><div class=post-entry><p>Hi,</p><p>For a little while now I have been thinking about moving my personal blog to a self-hosted service. One of the options I have been considering is <a href=https://www.linode.com>Linode</a>.</p><p>As part of this idea. I wanted to see how I might be able to automate some of the processes. This is just a write up on one of my ideas so far.</p><a href=https://bas-man.github.io/post/git/auto-update-site-from-git-push/ class=post-read-more>[Read More]</a></div><div class=blog-tags><a href=https://bas-man.github.io//tags/git/>git</a>&nbsp;
+<a href=https://bas-man.github.io//tags/hooks/>hooks</a>&nbsp;
+<a href=https://bas-man.github.io//tags/bash/>bash</a>&nbsp;
+<a href=https://bas-man.github.io//tags/script/>script</a>&nbsp;</div></article></div></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/Bas-Man title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
 <i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://dev.to/basman title=Dev><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
 <i class="fab fa-dev fa-stack-1x fa-inverse"></i></span></a></li><li><a href="https://flipboard.com/@baspann/coding-kq8v8rh8z?from=share%25!%28EXTRA%20string=%29" title=Flipboard><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
 <i class="fab fa-flipboard fa-stack-1x fa-inverse"></i></span></a></li><li><a href=/tags/git/index.xml title=RSS><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
